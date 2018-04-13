@@ -14,9 +14,10 @@ with open("data/wijk1_batterijen.txt") as f:
 targetList = []
 
 # [1:] to ignore header
-for house in houses[1:]:
+for count, house in enumerate(houses[1:]):
     targetList.append({"location" : (int(house[0]),int(house[1])),
-                        houses[0][2] : float(house[2])})
+                        houses[0][2] : float(house[2]),
+                        "id" : count})
 houses = targetList
 
 targetList = []
@@ -30,10 +31,11 @@ for battery in batteries[1:]:
 batteries = targetList
 
 targetList = []
-for battery in batteries:
+for count, battery in enumerate(batteries):
     battery[0] = battery[0].strip("[] ").split(", ")
     targetList.append({"location" : (int(battery[0][0]),int(battery[0][1])),
-                       "Capacity" : float(battery[1])})
+                       "capacity" : float(battery[1]),
+                       "id" : count})
 batteries = targetList
 
 def manhattan(house,battery):
