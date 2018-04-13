@@ -9,7 +9,6 @@ with open("data/wijk1_huizen.csv","r") as f:
 with open("data/wijk1_batterijen.txt") as f:
     reader = csv.reader(f, delimiter="\t")
     batteries = list(reader)
-print(batteries)
 
 # Convert list of houses to dictionary
 targetList = []
@@ -21,15 +20,24 @@ for house in houses[1:]:
 houses = targetList
 
 targetList = []
+
 for battery in batteries[1:]:
-    battery[0] = battery[0].strip("[] ").split(", ")
-    targetList.append({"location" : (battery[0][0],battery[0][1]),
-                       "Capacity" : battery[1]})
+    tl = []
+    for entry in battery:
+        if entry:
+            tl.append(entry)
+    targetList.append(tl)
 batteries = targetList
 
+targetList = []
+for battery in batteries:
+    battery[0] = battery[0].strip("[] ").split(", ")
+    targetList.append({"location" : (int(battery[0][0]),int(battery[0][1])),
+                       "Capacity" : float(battery[1])})
+batteries = targetList
 
 def manhattan(house,battery):
     distance = 0
-    for h,b in house["location"], battery:
+    for h,b in house["location"], battery["location"]:
         distance += abs(h - b)
     house["distance"] = distance
