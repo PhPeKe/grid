@@ -1,5 +1,4 @@
 import csv
-import re
 
 # Open csv and txt file
 with open("data/wijk1_huizen.csv","r") as f:
@@ -38,8 +37,24 @@ for count, battery in enumerate(batteries):
                        "id" : count})
 batteries = targetList
 
+# Calculate the manhattan distance
 def manhattan(house,battery):
     distance = 0
     for h,b in house["location"], battery["location"]:
         distance += abs(h - b)
-    house["distance"] = distance
+    #house["distance"] = distance
+    return(distance)
+
+# Large default distance
+for house in houses:
+    house["distance"] = 100000
+
+for h in houses:
+    for b in batteries:
+        print(manhattan(h,b), h["distance"])
+        if manhattan(h,b) < h["distance"]:
+            h["distance"] = int(manhattan(h,b))
+            h["connected to"] = b["id"]
+            print(manhattan(h,b))
+        else:
+            print(b["id"])
