@@ -6,6 +6,7 @@ class House:
         self.id = id
         self.distance = 1000
         self.connection = set()
+        print("hi")
 
     def manhattan(self, batteries):
         for battery in batteries:
