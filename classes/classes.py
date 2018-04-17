@@ -7,6 +7,11 @@ class House:
         self.distance = set()
         self.connection = set()
 
+    def manhattan(self, battery):
+        distance = 0
+        for h,b in self.location, battery.location:
+            distance += abs(h-b)
+        self.distance = distance
 
 class Battery:
 
