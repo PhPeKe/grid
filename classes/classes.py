@@ -9,10 +9,7 @@ class House:
 
     def manhattan(self, batteries):
         for battery in batteries:
-            distance = 0
-            for h,b in self.location, battery.location:
-                print(h,b)
-                distance += abs(h-b)
+            distance = abs(self.location[0] - battery.location[0]) + abs(self.location[1] - battery.location[1])
             print("distance battery ", battery.id, distance)
             if distance < self.distance:
                 self.distance = distance
