@@ -55,6 +55,3 @@ for h in houses:
         if manhattan(h,b) < h["distance"]:
             h["distance"] = int(manhattan(h,b))
             h["connected to"] = b["id"]
-            print(manhattan(h,b))
-        else:
-            print(b["id"])
