@@ -4,11 +4,11 @@ def loadData(houses, batteries):
 
     import csv
     # Open csv and txt file
-    with open("data/wijk1_huizen.csv","r") as f:
+    with open(houses,"r") as f:
         reader = csv.reader(f)
         houses_raw = list(reader)
 
-    with open("data/wijk1_batterijen.txt") as f:
+    with open(batteries, "r") as f:
         reader = csv.reader(f, delimiter="\t")
         batteries_raw = list(reader)
 

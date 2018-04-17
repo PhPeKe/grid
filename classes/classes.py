@@ -6,7 +6,12 @@ class House:
         self.id = id
         self.distance = 1000
         self.connection = set()
-        print("hi")
+
+    def overview(self):
+        if self.connection == set():
+            print("House",self.id,"at",self.location,"has an output of",self.output)
+        else:
+            print("House",self.id,"at",self.location,"has an output of",self.output,"and is connected to Battery",self.connection.id, "which is", self.distance,"meters away at",self.connection.location)
 
     def manhattan(self, batteries):
         for battery in batteries:
