@@ -27,6 +27,7 @@ class Battery:
         self.location = (x,y)
         self.capacity = capacity
         self.id = id
+        self.connectedHouses = []
 
 class Cable:
 
