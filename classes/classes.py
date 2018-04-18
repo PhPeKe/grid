@@ -1,3 +1,4 @@
+from functions.manhattan import manhattan
 class House:
 
     def __init__(self, x, y, output,id):
@@ -13,13 +14,14 @@ class House:
         else:
             print("House",self.id,"at",self.location,"has an output of",self.output,"and is connected to Battery",self.connection.id, "which is", self.distance,"meters away at",self.connection.location)
 
-    def manhattan(self, batteries):
+    def connectNearestBattery(self, batteries):
         for battery in batteries:
-            distance = abs(self.location[0] - battery.location[0]) + abs(self.location[1] - battery.location[1])
-            print("distance battery ", battery.id, distance)
+            distance = manhattan(self, battery)
             if distance < self.distance:
                 self.distance = distance
                 self.connection = battery
+                connectedBattery = battery
+        connectedBattery.connectedHouses.append(self)
 
 class Battery:
 
@@ -28,6 +30,12 @@ class Battery:
         self.capacity = capacity
         self.id = id
         self.connectedHouses = []
+        self.costs = 5000
+
+    def showConnections(self):
+        print("Battery",self.id,"is connected to:")
+        for connection in self.connectedHouses:
+            print("House",connection.id)
 
 class Cable:
 
