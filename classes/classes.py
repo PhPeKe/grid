@@ -19,13 +19,16 @@ class House:
     def connectNearestBattery(self, batteries):
         for battery in batteries:
             distance = manhattan(self, battery)
+            # Check if distance of this battery is closer than last
             if distance < self.distance and battery.capacity > self.output:
+                # Safe distance in House object
                 self.distance = distance
+                # Connect to battery
                 self.connection = battery
-                connectedBattery = battery
                 battery.capacity -= self.output
                 print("Remaining capacity of battery",battery.id,":",battery.capacity)
-        connectedBattery.connectedHouses.append(self)
+        # Append list of reference to houses connected to battery
+        self.connection.connectedHouses.append(self)
 
 class Battery:
 
