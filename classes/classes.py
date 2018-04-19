@@ -10,6 +10,7 @@ class House:
 
     # Provides an overview of the houses values and connections if present
     def overview(self):
+        """Comment like this"""
         if self.connection == set():
             print("House",self.id,"at",self.location,"has an output of",self.output)
         else:

@@ -4,9 +4,15 @@ from functions.loadData import loadData
 from functions.calculateCosts import calculateCosts
 from functions.visualize import visualize
 
+
+# Ask User which wijk to use, force 1,2 or 3 as input
+wijk = input("Choose Wijk")
+while wijk not in ["1","2","3"]:
+    wijk = input("Choose Wijk(1, 2 or 3): ")
+
 # Specify paths for data to load
-housePath = "data/wijk2_huizen.csv"
-batteryPath = "data/wijk2_batterijen.txt"
+housePath = "data/wijk" + wijk + "_huizen.csv"
+batteryPath = "data/wijk" + wijk + "_batterijen.txt"
 
 # Load in data
 houses, batteries = loadData(housePath, batteryPath)
