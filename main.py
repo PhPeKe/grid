@@ -2,6 +2,7 @@
 from classes.classes import *
 from functions.loadData import loadData
 from functions.calculateCosts import calculateCosts
+from functions.visualize import visualize
 
 # Specify paths for data to load
 housePath = "data/wijk1_huizen.csv"
@@ -20,3 +21,5 @@ for battery in batteries:
 
 # Calculate costs for this configuration
 calculateCosts(houses, batteries)
+
+visualize(houses, batteries)
