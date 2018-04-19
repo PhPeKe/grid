@@ -25,11 +25,10 @@ class House:
                 self.distance = distance
                 # Connect to battery
                 self.connection = battery
-                output = self.output
-                print("Remaining capacity of battery",battery.id,":",battery.capacity)
         self.connection.capacity -= self.output
-        # Append list of reference to houses connected to battery
+        # Append reference to houses connected to battery
         self.connection.connectedHouses.append(self)
+
 
 class Battery:
 
@@ -49,10 +48,13 @@ class Battery:
     def showCapacity(self):
         print("Remaining capacity:",self.capacity)
 
+
 class Cable:
 
     def __init__(self):
         self.costs = 9
-        self.connection_battery = set()
-        self.connection_house = set()
+        self.connectionBattery = set()
+        self.connectionHouse = set()
         self.edge = set()
+        self.houseLocation = set()
+        self.batteryLocation = set ()
