@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 
-
+'''' visualisation method using matplotlib and location data from house/battery objects '''
 def visualize(houses, batteries):
     fig, ax = plt.subplots()
 
@@ -24,5 +24,4 @@ def visualize(houses, batteries):
     ax.plot(x, y, 'b    o')
     ax.grid()
     ax.axis('equal')
-    (0.0, 30.0, 10.0, 40.0)
     plt.show()
