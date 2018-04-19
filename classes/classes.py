@@ -26,10 +26,14 @@ class House:
                 self.distance = distance
                 # Connect to battery
                 self.connection = battery
-        self.connection.capacity -= self.output
-        # Append reference to houses connected to battery
-        self.connection.connectedHouses.append(self)
-
+        # Catch error if no connection could be made
+        if not self.connection == set():
+            self.connection.capacity -= self.output
+            # Append reference to houses connected to battery
+            self.connection.connectedHouses.append(self)
+        else:
+            print("Error: NOT ALL HOUSES COULD BE CONNECTED!")
+            self.connection = "NOT CONNECTED!"
 
 class Battery:
 
