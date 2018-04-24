@@ -3,90 +3,53 @@ import matplotlib.lines as lines
 
 '''' visualisation method using matplotlib and location data from house/battery objects '''
 def visualize(houses, batteries):
-    fig, ax = plt.subplots()
 
-    a = []
-    b = []
+    fig, ax = plt.subplots()
+    numBat = len(batteries)
+    colors = ["red", "yellow", "green", "blue", "black"]
+
+    connections = [[] for _ in range(numBat * 2)]
+
+    unconnectedx = []
+    unconnectedy = []
 
     x = []
     y = []
 
-    batt1X = []
-    batt1Y = []
-
-    batt2X = []
-    batt2Y = []
-
-    batt3X = []
-    batt3Y = []
-
-    batt4X = []
-    batt4Y = []
-
-    batt5X = []
-    batt5Y = []
-
+    # display houses (with or without connection)
     for house in houses:
-        print(house.connection.id)
-        # dit moet nog even mooi met nested lists oid
+        if house.connection != "NOT CONNECTED!": # NOTE: the
+            print(house.connection)
 
-        if(house.connection.id == 0):
-            batt1X.append(house.location[0])
-            batt1Y.append(house.location[1])
-        elif(house.connection.id == 1):
-            batt2X.append(house.location[0])
-            batt2Y.append(house.location[1])
-        elif (house.connection.id == 2):
-            batt3X.append(house.location[0])
-            batt3Y.append(house.location[1])
-        elif (house.connection.id == 3):
-            batt4X.append(house.location[0])
-            batt4Y.append(house.location[1])
-        elif (house.connection.id == 4):
-            batt5X.append(house.location[0])
-            batt5Y.append(house.location[1])
+            i = house.connection.id - 1
+            j = house.connection.id + numBat - 1
 
+            connections[i].append(house.location[0])
+            connections[j].append(house.location[1])
+
+        else:
+            unconnectedx.append(house.location[0])
+            unconnectedy.append(house.location[1])
+
+            ax.plot(unconnectedx, unconnectedy, 'bx')
 
     for battery in batteries:
 
         x.append(battery.location[0])
         y.append(battery.location[1])
 
-    #calculate edge
+        ax.plot(x, y, 'bo')
 
+    # display links between houses and their batteries
+    for i in range(0, numBat):
+        ax.plot(connections[i], connections[i+numBat], 'ro')
 
-    ax.plot(batt1X, batt1Y, 'ro')
-    ax.plot(batt2X, batt2Y, 'ro')
-    ax.plot(batt3X, batt3Y, 'ro')
-    ax.plot(batt4X, batt4Y, 'ro')
-    ax.plot(batt5X, batt5Y, 'ro')
+        for j in range (0, len(connections[i])):
 
-    for i in range (0, len(batt1Y)):
-        linex = [batt1X[i],x[0]]
-        liney = [batt1Y[i], y[0]]
-        ax.add_line(lines.Line2D(linex, liney, color = 'red'))
+            linex = [connections[i][j],x[i]]
+            liney = [connections[i+numBat][j], y[i]]
+            ax.add_line(lines.Line2D(linex, liney, color=colors[i], alpha=0.6))
 
-    for i in range (0, len(batt2Y)):
-        linex = [batt2X[i],x[1]]
-        liney = [batt2Y[i], y[1]]
-        ax.add_line(lines.Line2D(linex, liney, color = 'green'))
-
-    for i in range (0, len(batt1Y)):
-        linex = [batt3X[i],x[2]]
-        liney = [batt3Y[i], y[2]]
-        ax.add_line(lines.Line2D(linex, liney, color = 'blue'))
-
-    for i in range (0, len(batt1Y)):
-        linex = [batt4X[i],x[3]]
-        liney = [batt4Y[i], y[3]]
-        ax.add_line(lines.Line2D(linex, liney, color = 'yellow'))
-
-    for i in range (0, len(batt1Y)):
-        linex = [batt5X[i],x[4]]
-        liney = [batt5Y[i], y[4]]
-        ax.add_line(lines.Line2D(linex, liney, color = 'black'))
-
-    ax.plot(x, y, 'bo')
     ax.grid()
     ax.axis('equal')
     plt.show()
