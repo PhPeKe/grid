@@ -9,7 +9,7 @@ import sys
 def main(argv):
 
     if not argv:
-        district, plot, sort = prompt()
+        districtNumber, plot, sort = prompt()
     elif not len(argv) == 3:
         sys.exit("You must enter none or 3 arguments")
     else:
