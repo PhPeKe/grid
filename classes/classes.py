@@ -24,7 +24,7 @@ class House:
             # Append reference to houses connected to battery
             self.connection.connectedHouses.append(self)
         else:
-            print("Error: NOT ALL HOUSES COULD BE CONNECTED!")
+            print("Error: House",str(self.id),"COULD NOT BE CONNECTED!")
             self.connection = "NOT CONNECTED!"
 
     # Makes houses printable
