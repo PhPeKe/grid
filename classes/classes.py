@@ -63,4 +63,4 @@ class Cable:
         self.connectionHouse = set()
         self.edge = set()
         self.houseLocation = set()
-        self.batteryLocation = set ()
+        self.batteryLocation = set()

@@ -6,7 +6,7 @@ def visualize(houses, batteries):
 
     fig, ax = plt.subplots()
     numBat = len(batteries)
-    colors = ["red", "yellow", "green", "blue", "black"]
+    colors = ["xkcd:reddish pink", "xkcd:bright yellow", "xkcd:light neon green", "xkcd:light royal blue", "xkcd:off white"]
 
     connections = [[] for _ in range(numBat * 2)]
 
@@ -30,18 +30,16 @@ def visualize(houses, batteries):
             unconnectedx.append(house.location[0])
             unconnectedy.append(house.location[1])
 
-            ax.plot(unconnectedx, unconnectedy, 'bx')
+            ax.plot(unconnectedx, unconnectedy, 'wx', markersize=10)
 
     for battery in batteries:
 
         x.append(battery.location[0])
         y.append(battery.location[1])
 
-        ax.plot(x, y, 'bo')
-
     # display links between houses and their batteries
     for i in range(0, numBat):
-        ax.plot(connections[i], connections[i+numBat], 'ro')
+        ax.plot(connections[i], connections[i+numBat], 'wo')
 
         for j in range (0, len(connections[i])):
 
@@ -54,11 +52,12 @@ def visualize(houses, batteries):
             linex2 = [edgeX, x[i]]
             liney2 = [edgeY, y[i]]
 
-            ax.add_line(lines.Line2D(linex1, liney1, color=colors[i], alpha=0.6))
-            ax.add_line(lines.Line2D(linex2, liney2, color=colors[i], alpha=0.6))
+            ax.add_line(lines.Line2D(linex1, liney1, color=colors[i], alpha=0.5))
+            ax.add_line(lines.Line2D(linex2, liney2, color=colors[i], alpha=0.5))
 
+    ax.plot(x, y, 'ro')
     ax.grid()
+    ax.set_facecolor('xkcd:charcoal')
     ax.axis('equal')
     plt.show()
-
 
