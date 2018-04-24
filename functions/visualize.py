@@ -45,11 +45,21 @@ def visualize(houses, batteries):
         ax.plot(connections[i], connections[i+numBat], 'ro')
 
         for j in range (0, len(connections[i])):
+            
+            edgeX = x[i]
+            edgeY = connections[i+numBat][j]
 
-            linex = [connections[i][j],x[i]]
-            liney = [connections[i+numBat][j], y[i]]
-            ax.add_line(lines.Line2D(linex, liney, color=colors[i], alpha=0.6))
+            linex1 = [connections[i][j],edgeX]
+            liney1 = [connections[i+numBat][j], edgeY]
+
+            linex2 = [edgeX, x[i]]
+            liney2 = [edgeY, y[i]]
+
+            ax.add_line(lines.Line2D(linex1, liney1, color=colors[i], alpha=0.6))
+            ax.add_line(lines.Line2D(linex2, liney2, color=colors[i], alpha=0.6))
 
     ax.grid()
     ax.axis('equal')
     plt.show()
+
+
