@@ -34,7 +34,7 @@ class House:
     # Makes houses printable
     def __str__(self):
         """Comment like this"""
-        if self.connection == set():
+        if self.connection == set() or self.connection == "NOT CONNECTED!":
             return ("House " + str(self.id) + " at " + str(self.location) + " has an output of " + str(self.output))
         else:
             return ("House " + str(self.id) + " at " + str(self.location) + " has an output of " + str(self.output) + " and is connected to Battery " + str(self.connection.id) + " which is " + str(self.distance) + " meters away at " + str(self.connection.location))
@@ -81,7 +81,7 @@ class District:
             house.connectNearestBattery(self.batteries)
 
     def save(self,name):
-        with open("configurations/" + name + ".csv", "w", newline="") as file:
+        with open("configurations/" + name + ".txt", "w", newline="") as file:
             writer = csv.writer(file, dialect = "excel")
             writer.writerow(["configuration for " + name + " :"])
             writer.writerow([self.costs])
