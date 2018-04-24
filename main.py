@@ -14,12 +14,20 @@ plot = input("Make plot?(y/n): " )
 while plot not in ["y","n"]:
     plot = intput("Press y or n!")
 
+sort = input("Sort by output?(y/n): " )
+while sort not in ["y","n"]:
+    sort = intput("Press y or n!")
+
 # Specify paths for data to load
 housePath = "data/wijk" + wijk + "_huizen.csv"
 batteryPath = "data/wijk" + wijk + "_batterijen.txt"
 
 # Load in data
 houses, batteries = loadData(housePath, batteryPath)
+
+# Sort houses by output
+if sort == "y":
+    houses.sort(key = lambda x: x.output, reverse = True)
 
 # Connect all houses to nearest battery
 for house in houses:
