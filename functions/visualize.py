@@ -19,7 +19,6 @@ def visualize(houses, batteries):
     # display houses (with or without connection)
     for house in houses:
         if house.connection != "NOT CONNECTED!": # NOTE: the
-            print(house.connection)
 
             i = house.connection.id - 1
             j = house.connection.id + numBat - 1
@@ -45,7 +44,7 @@ def visualize(houses, batteries):
         ax.plot(connections[i], connections[i+numBat], 'ro')
 
         for j in range (0, len(connections[i])):
-            
+
             edgeX = x[i]
             edgeY = connections[i+numBat][j]
 

@@ -18,6 +18,7 @@ class House:
                 self.distance = distance
                 # Connect to battery
                 self.connection = battery
+
         # Catch error if no connection could be made
         if not self.connection == set():
             self.connection.capacity -= self.output
