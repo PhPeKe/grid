@@ -1,5 +1,5 @@
 # load classes and functions
-from classes.classes import House, Battery, Cable
+from classes.classes import House, Battery, Cable, District
 from functions.loadData import loadData
 from functions.calculateCosts import calculateCosts
 from functions.visualize import visualize
@@ -13,32 +13,35 @@ def main(argv):
     elif not len(argv) == 3:
         sys.exit("You must enter none or 3 arguments")
     else:
-        district, plot, sort = argv
-        
+        districtNumber, plot, sort = argv
+
     # Specify paths for data to load
-    housePath = "data/wijk" + district + "_huizen.csv"
-    batteryPath = "data/wijk" + district + "_batterijen.txt"
+    housePath = "data/wijk" + districtNumber + "_huizen.csv"
+    batteryPath = "data/wijk" + districtNumber + "_batterijen.txt"
 
     # Load in data
-    houses, batteries = loadData(housePath, batteryPath)
+    district = District(loadData(housePath, batteryPath))
 
     # Sort houses by output (ascending)
     if sort == "ya":
-        houses.sort(key = lambda x: x.output)
+        district.houses.sort(key = lambda x: x.output)
 
     # Sort houses by output (descending)
     if sort == "yd":
-        houses.sort(key = lambda x: x.output, reverse = True)
+        district.houses.sort(key = lambda x: x.output, reverse = True)
 
     # Connect all houses to nearest battery
-    for house in houses:
-        house.connectNearestBattery(batteries)
+    district.connectGreedy()
 
     # Calculate costs for this configuration
-    calculateCosts(houses, batteries)
+    district.calculateCosts()
 
     if plot == "y":
-        visualize(houses, batteries)
+        visualize(district.houses, district.batteries)
+
+    district.save("District" + districtNumber)
+
+    return district
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    district = main(sys.argv[1:])

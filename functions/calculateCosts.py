@@ -5,3 +5,4 @@ def calculateCosts(houses, batteries):
     for battery in batteries:
         costs += battery.costs
     print("This Configuration costs",costs,"€")
+    return costs

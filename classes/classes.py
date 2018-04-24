@@ -1,4 +1,7 @@
 from functions.manhattan import manhattan
+from functions.calculateCosts import calculateCosts
+import csv
+
 class House:
 
     def __init__(self, x, y, output,id):
@@ -50,8 +53,8 @@ class Battery:
         for connection in self.connectedHouses:
             print("House",connection.id)
 
-    def showCapacity(self):
-        print("Remaining capacity:",self.capacity)
+    def __str__(self):
+        return("Remaining capacity of Battery " + str(self.id)+ " : " + str(self.capacity))
 
 
 class Cable:
@@ -63,3 +66,32 @@ class Cable:
         self.edge = set()
         self.houseLocation = set()
         self.batteryLocation = set ()
+
+class District:
+
+    def __init__(self, loadedData):
+        self.houses = loadedData[0]
+        self.batteries = loadedData[1]
+        self.cables = set()
+        self.costs = set()
+
+    def connectGreedy(self):
+        for house in self.houses:
+            house.connectNearestBattery(self.batteries)
+
+    def save(self,name):
+        with open("configurations/" + name + ".csv", "w", newline="") as file:
+            writer = csv.writer(file, dialect = "excel")
+            writer.writerow(["configuration for " + name + " :"])
+            writer.writerow([self.costs])
+            writer.writerow(["\n"])
+            writer.writerow(["---Battery-Stats---"])
+            for battery in self.batteries:
+                writer.writerow([str(battery)])
+            writer.writerow(["\n"])
+            writer.writerow(["---House-Stats---"])
+            for house in self.houses:
+                writer.writerow([str(house)])
+
+    def calculateCosts(self):
+        self.costs = calculateCosts(self.houses, self.batteries)
