@@ -12,11 +12,11 @@ while wijk not in ["1","2","3"]:
 
 plot = input("Make plot?(y/n): " )
 while plot not in ["y","n"]:
-    plot = intput("Press y or n!")
+    plot = input("Press y or n!")
 
 sort = input("Sort by output?(y/n): " )
 while sort not in ["y","n"]:
-    sort = intput("Press y or n!")
+    sort = input("Press y or n!")
 
 # Specify paths for data to load
 housePath = "data/wijk" + wijk + "_huizen.csv"
