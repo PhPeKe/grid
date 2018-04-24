@@ -1,8 +1,8 @@
 def prompt():
     # Ask User which wijk to use, force 1,2 or 3 as input
-    wijk = input("Choose Wijk: ")
-    while wijk not in ["1","2","3"]:
-        wijk = input("Choose Wijk(1, 2 or 3): ")
+    district = input("Choose district: ")
+    while district not in ["1","2","3"]:
+        district = input("Choose district(1, 2 or 3): ")
 
     plot = input("Make plot?(y/n): " )
     while plot not in ["y","n"]:
@@ -12,4 +12,11 @@ def prompt():
     while sort not in ["y","n"]:
         sort = input("Press y or n!")
 
-    return wijk, plot, sort
+    if sort == "y":
+        sort += input("Ascending or descending?(a/d): " )
+        while sort not in ["ya","yd"]:
+            sort = "y"
+            sort += input("Press a or d!: ")
+            print(sort)
+
+    return district, plot, sort
