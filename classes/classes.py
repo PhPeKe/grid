@@ -8,14 +8,6 @@ class House:
         self.distance = 1000
         self.connection = set()
 
-    # Provides an overview of the houses values and connections if present
-    def overview(self):
-        """Comment like this"""
-        if self.connection == set():
-            print("House",self.id,"at",self.location,"has an output of",self.output)
-        else:
-            print("House",self.id,"at",self.location,"has an output of",self.output,"and is connected to Battery",self.connection.id, "which is", self.distance,"meters away at",self.connection.location)
-
     # Greedy algorithm that connects houses to nearest battery
     def connectNearestBattery(self, batteries):
         for battery in batteries:
@@ -34,6 +26,14 @@ class House:
         else:
             print("Error: NOT ALL HOUSES COULD BE CONNECTED!")
             self.connection = "NOT CONNECTED!"
+
+    # Makes houses printable
+    def __str__(self):
+        """Comment like this"""
+        if self.connection == set():
+            return ("House " + str(self.id) + " at " + str(self.location) + " has an output of " + str(self.output))
+        else:
+            return ("House " + str(self.id) + " at " + str(self.location) + " has an output of " + str(self.output) + " and is connected to Battery " + str(self.connection.id) + " which is " + str(self.distance) + " meters away at " + str(self.connection.location))
 
 class Battery:
 
