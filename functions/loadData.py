@@ -1,8 +1,7 @@
-from classes.classes import *
-from functions.loadData import *
+from classes.classes import House, Battery
+import csv
 def loadData(houses, batteries):
 
-    import csv
     # Open csv and txt file
     with open(houses,"r") as f:
         reader = csv.reader(f)
