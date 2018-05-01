@@ -21,7 +21,7 @@ def hillclimber(house, batteries):
                     return
         else:
             print("no possible switches found for house: ", house)
-            return
+            battery
 
 # 1.voor alle huizen die niet eerste keuze batterij hebben:
 # 2.	hoeveel capaciteit moet er bij de eerste keus batterij worden vrijgemaakt?
