@@ -10,11 +10,16 @@ class House:
         self.id = id
         self.distance = 1000
         self.connection = set()
+        self.possible_connections = []
 
     # Greedy algorithm that connects houses to nearest battery
     def connectNearestBattery(self, batteries):
         for battery in batteries:
             distance = manhattan(self, battery)
+            # Save all possible connections
+            possible_connection = (battery, distance)
+            self.possible_connections.append(possible_connection)
+
             # Check if distance of this battery is closer than last
             if distance < self.distance and battery.capacity > self.output:
                 # Safe distance in House object
@@ -30,6 +35,9 @@ class House:
         else:
             print("Error: House",str(self.id),"COULD NOT BE CONNECTED!")
             self.connection = "NOT CONNECTED!"
+
+        # Sort list with possible connections
+        self.possible_connections.sort(key = lambda x: x[1])
 
     # Makes houses printable
     def __str__(self):
