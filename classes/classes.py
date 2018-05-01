@@ -15,7 +15,7 @@ class House:
         self.possible_connections = []
 
     # Greedy algorithm that connects houses to nearest battery
-    def connectNearestBattery(self, batteries):
+    def connectNearestBattery(self, batteries, district):
         for battery in batteries:
             distance = manhattan(self, battery)
             # Save all possible connections
@@ -28,6 +28,11 @@ class House:
                 self.distance = distance
                 # Connect to battery
                 self.connection = battery
+            else:
+                print("Error: House", str(self.id), "COULD NOT BE CONNECTED!")
+                self.connection = "NOT CONNECTED!"
+                district.disconnectedHouses.append(self)
+
 
     def connectRandomBattery(self, batteries, district):
         shuffle(batteries)
@@ -107,7 +112,7 @@ class District:
 
     def connectGreedy(self):
         for house in self.houses:
-            house.connectNearestBattery(self.batteries)
+            house.connectNearestBattery(self.batteries, self)
 
     def connectRandom(self):
         for house in self.houses:

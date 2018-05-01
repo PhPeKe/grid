@@ -41,7 +41,8 @@ def main(argv):
         district.connectGreedy()
     elif method == "random":
         district.connectRandom()
-        #district.connectUnconnected()
+
+    district.connectUnconnected()
 
     # Calculate costs for this configuration
     district.calculateCosts()
