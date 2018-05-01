@@ -40,7 +40,7 @@ def main(argv):
         # Connect all houses to nearest battery
         district.connectGreedy()
     elif method == "random":
-        distric.connectRandom()
+        district.connectRandom()
 
     # Calculate costs for this configuration
     district.calculateCosts()
