@@ -105,6 +105,10 @@ class District:
         for house in self.houses:
             house.connectNearestBattery(self.batteries)
 
+    def connectRandom(self):
+        for house in self.houses:
+            house.connectRandom(self.batteries)
+
     def save(self,name):
         with open("configurations/" + name + ".txt", "w", newline="") as file:
             writer = csv.writer(file, dialect = "excel")
