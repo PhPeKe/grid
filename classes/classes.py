@@ -29,20 +29,20 @@ class House:
                 self.connection = battery
 
     def connectRandomBattery(self, batteries):
-            shuffle(batteries)
-            for battery in batteries:
-                print(battery.id)
-                distance = manhattan(self, battery)
-                # Save all possible connections
-                possible_connection = (battery, distance)
-                self.possible_connections.append(possible_connection)
+        shuffle(batteries)
+        for battery in batteries:
+            print(battery.id)
+            distance = manhattan(self, battery)
+            # Save all possible connections
+            possible_connection = (battery, distance)
+            self.possible_connections.append(possible_connection)
 
-                # Connect if capacity is enough
-                if battery.capacity > self.output:
-                    # Safe distance in House object
-                    self.distance = distance
-                    # Connect to battery
-                    self.connection = battery
+            # Connect if capacity is enough
+            if battery.capacity > self.output:
+                # Safe distance in House object
+                self.distance = distance
+                # Connect to battery
+                self.connection = battery
 
         # Catch error if no connection could be made
         if not self.connection == set():
