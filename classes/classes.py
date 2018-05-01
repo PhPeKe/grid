@@ -1,6 +1,7 @@
 from functions.manhattan import manhattan
 from functions.calculateCosts import calculateCosts
 import csv
+from random import shuffle
 
 class House:
 
@@ -10,13 +11,34 @@ class House:
         self.id = id
         self.distance = 1000
         self.connection = set()
+        self.possible_connections = []
 
     # Greedy algorithm that connects houses to nearest battery
     def connectNearestBattery(self, batteries):
         for battery in batteries:
             distance = manhattan(self, battery)
+            # Save all possible connections
+            possible_connection = (battery, distance)
+            self.possible_connections.append(possible_connection)
+
             # Check if distance of this battery is closer than last
             if distance < self.distance and battery.capacity > self.output:
+                # Safe distance in House object
+                self.distance = distance
+                # Connect to battery
+                self.connection = battery
+
+    def connectRandomBattery(self, batteries):
+        shuffle(batteries)
+        for battery in batteries:
+            print(battery.id)
+            distance = manhattan(self, battery)
+            # Save all possible connections
+            possible_connection = (battery, distance)
+            self.possible_connections.append(possible_connection)
+
+            # Connect if capacity is enough
+            if battery.capacity > self.output:
                 # Safe distance in House object
                 self.distance = distance
                 # Connect to battery
@@ -31,6 +53,9 @@ class House:
             print("Error: House",str(self.id),"COULD NOT BE CONNECTED!")
             self.connection = "NOT CONNECTED!"
             District.disconnectedHouses.append(self)
+
+        # Sort list with possible connections
+        self.possible_connections.sort(key = lambda x: x[1])
 
     # Makes houses printable
     def __str__(self):
@@ -82,6 +107,10 @@ class District:
     def connectGreedy(self):
         for house in self.houses:
             house.connectNearestBattery(self.batteries)
+
+    def connectRandom(self):
+        for house in self.houses:
+            house.connectRandomBattery(self.batteries)
 
     def save(self,name):
         with open("configurations/" + name + ".txt", "w", newline="") as file:

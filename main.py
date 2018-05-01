@@ -17,6 +17,10 @@ def main(argv):
     else:
         districtNumber, plot, sort = argv
 
+    # Connection method executed by district, not implemented in prompt (yet)
+    # --> Use random or greedy!
+    method = "random"
+
     # Specify paths for data to load
     housePath = "data/wijk" + districtNumber + "_huizen.csv"
     batteryPath = "data/wijk" + districtNumber + "_batterijen.txt"
@@ -32,8 +36,11 @@ def main(argv):
     if sort == "yd":
         district.houses.sort(key = lambda x: x.output, reverse = True)
 
-    # Connect all houses to nearest battery
-    district.connectGreedy()
+    if method == "greedy":
+        # Connect all houses to nearest battery
+        district.connectGreedy()
+    elif method == "random":
+        district.connectRandom()
 
     # Calculate costs for this configuration
     district.calculateCosts()
