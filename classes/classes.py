@@ -22,16 +22,17 @@ class House:
             possible_connection = (battery, distance)
             self.possible_connections.append(possible_connection)
 
-            # Check if distance of this battery is closer than last
+                # Check if distance of this battery is closer than last
             if distance < self.distance and battery.capacity > self.output:
                 # Safe distance in House object
                 self.distance = distance
                 # Connect to battery
                 self.connection = battery
-            else:
-                print("Error: House", str(self.id), "COULD NOT BE CONNECTED!")
-                self.connection = "NOT CONNECTED!"
-                district.disconnectedHouses.append(self)
+
+        if self.connection == set():
+            print("Error: House", str(self.id), "COULD NOT BE CONNECTED!")
+            self.connection = "NOT CONNECTED!"
+            district.disconnectedHouses.append(self)
 
 
     def connectRandomBattery(self, batteries, district):
