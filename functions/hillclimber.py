@@ -1,16 +1,20 @@
-def hillclimber(houses, batteries, district):
+def hillclimber(house, batteries):
 
-    # dit in de class zelf doen?
-    # eerst eenzame huizen connecten
-    for disconnectedHouse in district.disconnectedHouses:
+    battery = house.possible_connections[0](0)
+    capacity_d = house.output - battery.capacity
 
-    # tweede keus huizen
-    for secondChoiceHouse in houses:
-        battery = house.possible_connections[0]("id")
-        capacity_d = house.output - battery.capacity
+    for connectedHouse in battery.connectedHouses:
+        if (connectedHouse.output + connectedHouse.connection.capacity) <= capacity_d:
 
-        for connection in battery.connectedHouses:
-            sort: connection.possible_connections
+            for b in connectedHouse.possible_connections:
+                if b.capacity >= connectedHouse.output:
+                    oldconnection = connectedHouse.connection
+                    connectedHouse.connection = b
+                    house.connection = oldconnection
+        else:
+            return
+
+
 
 
 # 1.voor alle huizen die niet eerste keuze batterij hebben:
@@ -26,7 +30,3 @@ def hillclimber(houses, batteries, district):
 # 11.				terug naar regel 4
 # 12.				ja:
 # 13.				switch & door naar volgend huis
-
-
-# weten: lijst huizen die niet 1e keus kregen,
-# met daarin: hoeveel ruimte verschil is er tussen de capaciteit van het huis en overgebleven ruimte in die batterij

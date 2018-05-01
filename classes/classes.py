@@ -1,5 +1,6 @@
 from functions.manhattan import manhattan
 from functions.calculateCosts import calculateCosts
+from functions.hillclimber import hillclimber
 import csv
 from random import shuffle
 
@@ -28,7 +29,7 @@ class House:
                 # Connect to battery
                 self.connection = battery
 
-    def connectRandomBattery(self, batteries):
+    def connectRandomBattery(self, batteries, district):
         shuffle(batteries)
         for battery in batteries:
             print(battery.id)
@@ -52,7 +53,7 @@ class House:
         else:
             print("Error: House",str(self.id),"COULD NOT BE CONNECTED!")
             self.connection = "NOT CONNECTED!"
-            District.disconnectedHouses.append(self)
+            district.disconnectedHouses.append(self)
 
         # Sort list with possible connections
         self.possible_connections.sort(key = lambda x: x[1])
@@ -93,7 +94,6 @@ class Cable:
         self.edge = set()
         self.houseLocation = set()
         self.batteryLocation = set ()
-        self.disconnectedHouses = []
 
 
 class District:
@@ -103,6 +103,7 @@ class District:
         self.batteries = loadedData[1]
         self.cables = set()
         self.costs = set()
+        self.disconnectedHouses = []
 
     def connectGreedy(self):
         for house in self.houses:
@@ -110,7 +111,7 @@ class District:
 
     def connectRandom(self):
         for house in self.houses:
-            house.connectRandomBattery(self.batteries)
+            house.connectRandomBattery(self.batteries, self)
 
     def save(self,name):
         with open("configurations/" + name + ".txt", "w", newline="") as file:
@@ -128,3 +129,7 @@ class District:
 
     def calculateCosts(self):
         self.costs = calculateCosts(self.houses, self.batteries)
+
+    def connectUnconnected(self):
+        for disconnectedHouse in self.disconnectedHouses:
+            hillclimber(disconnectedHouse, self.batteries)
