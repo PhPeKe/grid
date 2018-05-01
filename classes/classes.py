@@ -4,7 +4,7 @@ import csv
 
 class House:
 
-    def __init__(self, x, y, output,id):
+    def __init__(self, x, y, output, id):
         self.location = (x,y)
         self.output = output
         self.id = id
@@ -30,6 +30,7 @@ class House:
         else:
             print("Error: House",str(self.id),"COULD NOT BE CONNECTED!")
             self.connection = "NOT CONNECTED!"
+            District.disconnectedHouses.append(self)
 
     # Makes houses printable
     def __str__(self):
@@ -67,6 +68,8 @@ class Cable:
         self.edge = set()
         self.houseLocation = set()
         self.batteryLocation = set ()
+        self.disconnectedHouses = []
+
 
 class District:
 
