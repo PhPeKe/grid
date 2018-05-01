@@ -1,6 +1,10 @@
 def hillclimber(house, batteries):
 
-    battery = house.possible_connections[0][0]
+    #battery = house.possible_connections[0][0]
+
+    batteries.sort(key=lambda x: x.capacity, reverse=True)
+    battery = batteries[0]
+
     capacity_d = house.output - battery.capacity
 
     # Find a house which is already connected
@@ -18,9 +22,6 @@ def hillclimber(house, batteries):
         else:
             print("no possible switches found for house: ", house)
             return
-
-
-
 
 # 1.voor alle huizen die niet eerste keuze batterij hebben:
 # 2.	hoeveel capaciteit moet er bij de eerste keus batterij worden vrijgemaakt?
