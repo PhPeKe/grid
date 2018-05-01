@@ -107,7 +107,7 @@ class District:
 
     def connectRandom(self):
         for house in self.houses:
-            house.connectRandom(self.batteries)
+            house.connectRandomBattery(self.batteries)
 
     def save(self,name):
         with open("configurations/" + name + ".txt", "w", newline="") as file:
