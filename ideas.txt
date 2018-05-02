@@ -23,6 +23,8 @@
 -"Illegal" solution with closest batteries as best case (not achievable)
 -->Benchmark
 
+
+----------------------------Lecture 2
 --Ideas for algorithms:
 -Bidirectional search
 -depth first
@@ -47,3 +49,10 @@
 -recursive
 -->Slide branch 'n' bound
 --->Find the best solution guaranteed
+
+----------------------------Lecture 3
+Iterative and constructive
+--hill-climber
+-Search for improvement
+-But: sometimes dis-improvement leads to greater improvement
+-->Simulated annealing
