@@ -1,6 +1,8 @@
 from functions.manhattan import manhattan
 from functions.calculateCosts import calculateCosts
 from functions.hillclimber import hillclimber
+from functions.connectUnconnected import connectUnconnected
+
 import csv
 from random import shuffle
 
@@ -50,6 +52,8 @@ class House:
                 self.distance = distance
                 # Connect to battery
                 self.connection = battery
+        if self.connection != possible_connection[0]:
+            district.nthChoiceHouses.append(self)
 
         # Catch error if no connection could be made
         if not self.connection == set():
@@ -110,6 +114,7 @@ class District:
         self.cables = set()
         self.costs = set()
         self.disconnectedHouses = []
+        self.nthChoiceHouses = []
 
     def connectGreedy(self):
         for house in self.houses:
@@ -138,4 +143,8 @@ class District:
 
     def connectUnconnected(self):
         for disconnectedHouse in self.disconnectedHouses:
-            hillclimber(disconnectedHouse, self.batteries)
+            connectUnconnected(disconnectedHouse, self.batteries)
+
+    def hillclimber(self):
+        for nthChoiceHouse in self.nthChoiceHouses:
+            hillclimber(nthChoiceHouse, self.batteries)
