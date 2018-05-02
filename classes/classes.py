@@ -147,6 +147,9 @@ class District:
 
     def hillclimber(self):
         for nthChoiceHouse in self.nthChoiceHouses:
-            hillclimber(nthChoiceHouse, self.batteries, self.houses)
+            if nthChoiceHouse.connection != "NOT CONNECTED!":
+                hillclimber(nthChoiceHouse, self.batteries, self.houses, 0)
+
         for house in self.houses:
-            hillclimber(nthChoiceHouse, self.batteries, self.houses)
+            if house.connection != "NOT CONNECTED!":
+                hillclimber(house, self.batteries, self.houses, 1)
