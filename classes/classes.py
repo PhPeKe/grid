@@ -148,3 +148,5 @@ class District:
     def hillclimber(self):
         for nthChoiceHouse in self.nthChoiceHouses:
             hillclimber(nthChoiceHouse, self.batteries, self.houses)
+        for house in self.houses:
+            hillclimber(nthChoiceHouse, self.batteries, self.houses)
