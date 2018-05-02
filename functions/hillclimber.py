@@ -1,8 +1,23 @@
-def hillclimber(house, batteries):
+from functions.calculateCosts import calculateCosts
+from functions.switch import switch
 
-    battery = house.possible_connections[0]
-    capacity_d = house.output - battery.capacity
+def hillclimber(nthChoiceHouse, batteries, houses):
 
+    currentCosts = calculateCosts(houses, batteries)
+    battery = nthChoiceHouse.possible_connections[0][0]
+    capacity_d = nthChoiceHouse.output - battery.capacity
+
+    batteryConnections = battery.connectedHouses
+    batteryConnections.sort(key=lambda x: x.distance, reverse=True)
+
+    for cHouse in batteryConnections:
+        switch(nthChoiceHouse, cHouse)
+        newCosts = calculateCosts(houses, batteries)
+        if newCosts < currentCosts:
+            return
+        else:
+            switch(nthChoiceHouse, cHouse)
+            return
 
 
 
