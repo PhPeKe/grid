@@ -1,6 +1,7 @@
 from functions.calculateCosts import calculateCosts
 from functions.switch import switch
 
+
 def hillclimber(house, batteries, houses, i):
 
     currentCosts = calculateCosts(houses, batteries)
@@ -27,3 +28,9 @@ def hillclimber(house, batteries, houses, i):
                 if 0 <= i < 4:
                     hillclimber(house, batteries, houses, i+1)
             return
+
+ # combinaties optimaliseren
+ # district meegeven ipv batteries en houses
+ # één framework voor drie hillclimbers
+ # district.save aanroepen om te checken waarom t soms minder goed wordt.
+ 

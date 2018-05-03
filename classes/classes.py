@@ -64,7 +64,7 @@ class House:
         else:
             print("Error: House",str(self.id),"COULD NOT BE CONNECTED!")
             self.connection = "NOT CONNECTED!"
-            district.disconnectedHouses.append(self)
+            district.disconnectedHouses.append(self) # even in district zelf laten maken.
 
         # Sort list with possible connections
         self.possible_connections.sort(key = lambda x: x[1])
