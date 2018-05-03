@@ -56,3 +56,12 @@ Iterative and constructive
 -Search for improvement
 -But: sometimes dis-improvement leads to greater improvement
 -->Simulated annealing
+-Measure magnitude of dis-improvement:
+0.:Random
+1.:Random Change
+2.:Compare score
+3.:estimate chance of improvements
+4.:Go to 1 if chance of improvements too low
+-->Cooling schemes
+(A comparison of simulated annealing cooling schemes: Geman & Geman)
+-->Step for step adjust temperature to set threshold of acceptance for worse solutions

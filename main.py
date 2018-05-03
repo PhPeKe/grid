@@ -5,7 +5,9 @@ from functions.calculateCosts import calculateCosts
 from functions.visualize import visualize
 from functions.prompt import prompt
 from functions.switch import switch
+from functions.BnB import branchBound
 import sys
+from random import shuffle
 
 def main(argv):
 
@@ -37,10 +39,15 @@ def main(argv):
     if sort == "yd":
         district.houses.sort(key = lambda x: x.output, reverse = True)
 
+    # Sort houses random
+    if sort == "yr":
+        shuffle(district.houses)
+
     if method == "greedy":
         # Connect all houses to nearest battery
         district.connectGreedy()
     elif method == "random":
+        # Connect all houses to random battery
         district.connectRandom()
 
     district.connectUnconnected()

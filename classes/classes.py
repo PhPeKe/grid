@@ -36,9 +36,8 @@ class House:
 
 
     def connectRandomBattery(self, batteries, district):
-        shuffle(batteries)
+        #shuffle(batteries)
         for battery in batteries:
-            print(battery.id)
             distance = manhattan(self, battery)
             # Save all possible connections
             possible_connection = (battery, distance)
