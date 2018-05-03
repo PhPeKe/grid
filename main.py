@@ -22,7 +22,7 @@ def main(argv):
 
     # Connection method executed by district, not implemented in prompt (yet)
     # --> Use random or greedy!
-    method = "greedy"
+    method = "random"
 
     # Specify paths for data to load
     housePath = "data/wijk" + districtNumber + "_huizen.csv"
@@ -51,6 +51,7 @@ def main(argv):
         district.connectRandom()
 
     district.connectUnconnected()
+    district.hillClimber()
 
     # Calculate costs for this configuration
     district.calculateCosts()
