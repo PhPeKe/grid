@@ -91,6 +91,16 @@ class Battery:
         for connection in self.connectedHouses:
             print("House",connection.id)
 
+    # Different methods to change location, dont know yet which is most useful
+    def changeLocation(self, location):
+        self.location = location
+
+    def changeXBy(self, x):
+        slef.location = (x, self.location[1])
+
+    def changeYBy(self, y):
+        self.location = (self.location[0],y)
+
     def __str__(self):
         return("Remaining capacity of Battery " + str(self.id)+ " : " + str(self.capacity))
 

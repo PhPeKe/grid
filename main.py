@@ -52,7 +52,7 @@ def main(argv):
 
     district.connectUnconnected()
     #district.hillClimber()
-    branchBound(district)
+    #branchBound(district)
 
     # Calculate costs for this configuration
     district.calculateCosts()
