@@ -5,7 +5,7 @@ from functions.calculateCosts import calculateCosts
 from functions.visualize import visualize
 from functions.prompt import prompt
 from functions.switch import switch
-from functions.BnB import branchBound
+from functions.BnB import optimize
 import sys
 from random import shuffle
 
@@ -22,7 +22,7 @@ def main(argv):
 
     # Connection method executed by district, not implemented in prompt (yet)
     # --> Use random or greedy!
-    method = "random"
+    method = "greedy"
 
     # Specify paths for data to load
     housePath = "data/wijk" + districtNumber + "_huizen.csv"
@@ -50,7 +50,7 @@ def main(argv):
         # Connect all houses to random battery
         district.connectRandom()
 
-    district.connectUnconnected()
+    #district.connectUnconnected()
     #district.hillClimber()
     #branchBound(district)
 
