@@ -51,7 +51,8 @@ def main(argv):
         district.connectRandom()
 
     district.connectUnconnected()
-    district.hillClimber()
+    #district.hillClimber()
+    branchBound(district)
 
     # Calculate costs for this configuration
     district.calculateCosts()

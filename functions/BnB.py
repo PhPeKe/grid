@@ -2,6 +2,7 @@ from functions.calculateCosts import calculateCosts
 from functions.switch import switch
 from random import randint, shuffle
 
+
 def branchBound(district):
     """
     Takes a solution where all houses are connected and then tries to
@@ -30,14 +31,15 @@ def branchBound(district):
         # Switch them as possible
         switch(district.houses[i % length], district.houses[(i % length) + 1])
         district.costs = calculateCosts(district.houses, district.batteries)
+
         # If costs are lower than keep it
         if district.costs < upperBound:
             print("!!!!!!HIT!!!!!!!")
             upperBound = district.costs
-            best = district
-            best.save("Iteration" + str(i))
+            district.save("Iteration" + str(i))
         # Switch back
-        switch(district.houses[i % length], district.houses[(i % length) + 1])
+        else:
+            switch(district.houses[i % length], district.houses[(i % length) + 1])
         i += 1
         if i%length == 0:
             shuffle(district.houses)

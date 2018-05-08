@@ -14,7 +14,7 @@ def hillclimber(house, batteries, houses, i):
     for cHouse in batteryConnections:
         # Try switching two houses when enough capacity space available
         if (cHouse.output + battery.capacity) >= capacity_d:
-            print("house: ", house)
+            print("house: ", house.id)
             switch(house, cHouse)
             newCosts = calculateCosts(houses, batteries)
 
