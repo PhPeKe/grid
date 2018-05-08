@@ -34,7 +34,6 @@ def switch(house1, house2):
     #print(house2.connection)
 
     if house1.connection.capacity < 0 or house2.connection.capacity < 0:
-        print("ERROR: switching is illegal - switching back!")
         switch(house1,house2)
         return False
 
