@@ -68,3 +68,8 @@ Iterative and constructive
 
 ---------------------------Lecture 4
 Constructive algorithms
+
+Dijkstra algorithm: shortest route in a graph
+weighted graph: find shortest route in a graph where not all steps cost the same
+-This is useful for our problem with connections beneath houses
+--Uniform-cost search (slides)

@@ -9,7 +9,7 @@ def optimize(district):
     optimize with bounds
     """
     # Set initial upper bound (cost of the current configuration)
-    upperBound = calculateCosts(district.houses, district.batteries)
+    upperBound = district.costs
 
     # Save initial configuration as best solution so far
     district.save("Initial district")
@@ -56,7 +56,8 @@ def optimize(district):
         if i%length == 0:
             shuffle(district.houses)
     district.calculateCosts()
-
+    return
+"""
 def simulated(district):
     temperature = 100
 
@@ -67,3 +68,4 @@ def simulated(district):
 
     switch(district.houses[index1],district.houses[index2])
     district.costs = calculateCosts(district.houses,district.batteries)
+"""
