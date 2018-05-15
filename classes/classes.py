@@ -162,7 +162,8 @@ class District:
             for battery in self.batteries:
                 writer.writerow([battery.id,battery.capacity,battery.location[0],battery.location[1]])
             for house in self.houses:
-                writer.writerow([house.id,house.connection.id,house.output, house.location[0],house.location[1]])
+                if not house.connection == set():
+                    writer.writerow([house.id,house.connection.id,house.output, house.location[0],house.location[1]])
 
     def load(self,name):
         infile = open("configurations/District1.csv")
@@ -181,6 +182,7 @@ class District:
         self.costs = calculateCosts(self.houses, self.batteries)
 
     def connectUnconnected(self):
+        print("This Configuration costs", calculateCosts(self.houses, self.batteries), "€")
         for disconnectedHouse in self.disconnectedHouses:
             connectUnconnected(disconnectedHouse, self.batteries)
 
@@ -200,15 +202,13 @@ class District:
 
         newcosts = calculateCosts(self.houses, self.batteries)
         print("This Configuration costs", newcosts, "€")
-        print("This Configuration once cost", firstcosts, "€")
-
 
         if (newcosts < firstcosts):
             print("new hillclimber iteration")
             self.hillClimber()
         else:
             print("hillclimber finished")
-            self.save("hillclimberresults")
+            #self.save("hillclimberresults")
             return
 
     def randomHillClimber(self):
@@ -216,7 +216,7 @@ class District:
         upperBound = self.costs
 
         # Save initial configuration as best solution so far
-        self.save("Initial self")
+        #self.save("Initial self")
         stop = int(input("Enter numer of iterations: "))
         sort = input("Sort houses?")
         if sort == "y":
