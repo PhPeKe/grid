@@ -196,12 +196,12 @@ class District:
             oldcosts = calculateCosts(self.houses, self.batteries)
 
             if nthChoiceHouse.connection != "NOT CONNECTED!":
-                hillclimber(nthChoiceHouse, self, 0, [], oldcosts)
+                hillclimber(nthChoiceHouse, self, 0, [])
 
         for house in self.houses:
             oldcosts = calculateCosts(self.houses, self.batteries)
             if house.connection != "NOT CONNECTED!":
-                hillclimber(house, self, 1, [], oldcosts)
+                hillclimber(house, self, 1, [])
 
         newcosts = calculateCosts(self.houses, self.batteries)
         print("This Configuration costs", newcosts, "€")

@@ -15,5 +15,5 @@ def switch(house, battery):
         house.connection.capacity -= house.output
         # 6. Recalculate distance
         house.distance = manhattan(house, house.connection)
-    else:
-        print("Not switching house", house.id, "capacity too low")
+    # else:
+    #     print("Not switching house", house.id, "capacity too low")

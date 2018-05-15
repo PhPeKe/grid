@@ -6,7 +6,7 @@ from functions.switch import switch
 from functions.simultaneousSwitch import simultaneousSwitch
 
 
-def hillclimber(house, district, i, triedhouses, oldcosts):
+def hillclimber(house, district, i, triedhouses):
 
     currentCosts = calculateCosts(district.houses, district.batteries) # kijken of dit ook in district kan en verschil old en first costs
     battery = house.possible_connections[i][0]
@@ -38,9 +38,9 @@ def hillclimber(house, district, i, triedhouses, oldcosts):
                     triedhouses.append(chosenHouse)
     # try each battery
     if 0 <= i < 4:
-        hillclimber(house, district, i + 1, triedhouses, oldcosts)
+        hillclimber(house, district, i + 1, triedhouses)
 
-    combined(house, district, 0, 0, oldcosts, 2)
+    combined(house, district, 0, 0, currentCosts, 2)
     return
 
 #---------------------------------------------------------------------------------------------------------------
@@ -80,7 +80,6 @@ def combined(house, district, count, bcursor, currentCosts, howmany):
                     randomid.append(randomh[i].id)
 
                 # attempt switch if it would free enough capacity in b
-                print("SUM", sum, " + B.CAPACITY", b.capacity,"= ", sum + b.capacity, " HOUSE OUTPUT", house.output)
                 if (sum + b.capacity >= house.output):
 
                     currentH = house.connection
@@ -88,7 +87,6 @@ def combined(house, district, count, bcursor, currentCosts, howmany):
                     for i in range(0, howmany):
                         # sla huidige connections op
                         currentbats.append(randomh[i].connection)
-                        print("b capacity eerst:", b.capacity)
                         multipleSwitch(randomh[i])
 
 
@@ -101,19 +99,24 @@ def combined(house, district, count, bcursor, currentCosts, howmany):
 
                     switch(house, b)
 
-                    if b.capacity < 0:
-                        print("O KUT")
-
                     if calculateCosts(district.houses, district.batteries) < currentCosts:
                         print("COMBINED SWITCH")
                         return
 
                     else:
-                        print("combined fail")
+                        print("SWITCH BACK MAIN PRE:",house, house.connection.id)
+
+                        switch(house, currentH)
+                        print("SWITCH BACK MAIN POST:",house, house.connection.id)
+
                         # terug draaien
                         for i in range(0, howmany):
-                            switch(house, currentH)
+                            print("SWITCH BACK RANDOM PRE:",randomh[i], randomh[i].connection.id)
                             switch(randomh[i], currentbats[i])
+                            print("SWITCH BACK RANDOM POST:",randomh[i], randomh[i].connection.id)
+
+
+
 
     # repeat this process with all the other batteries
     if bcursor < len(district.batteries)-1:
@@ -130,7 +133,6 @@ def combined(house, district, count, bcursor, currentCosts, howmany):
 
 def multipleSwitch(randomhouse):
 
-    oldb = randomhouse.connection
     randombatteries = randomhouse.possible_connections
 
     # check for every battery (starting with smallest distance) whether house could move there
