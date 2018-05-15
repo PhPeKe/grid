@@ -4,6 +4,7 @@ from functions.loadData import loadData
 from functions.visualize import visualize
 from functions.prompt import prompt
 from functions.switch import switch
+from functions.algorithms.kmeans import kmeans
 import sys
 from random import shuffle
 
@@ -53,6 +54,8 @@ def main(argv):
     #district.hillClimber()
     # Calculate costs for this configuration
     district.calculateCosts()
+
+    kmeans(district)
 
     print("Costs: ",district.costs)
     if plot == "y":
