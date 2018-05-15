@@ -3,6 +3,7 @@ from functions.manhattan import manhattan
 
 from functions.calculateCosts import calculateCosts
 from functions.switch import switch
+from functions.simultaneousSwitch import simultaneousSwitch
 
 
 def hillclimber(house, district, i, triedhouses, oldcosts):
@@ -18,11 +19,11 @@ def hillclimber(house, district, i, triedhouses, oldcosts):
 
     # per battery, see if a switch can be made with one of its houses
     for chosenHouse in batteryConnections:
-        if chosenHouse not in triedhouses:
+        if chosenHouse not in triedhouses and chosenHouse != house:
 
             # Try switching two houses when enough capacity space available
             if ((chosenHouse.output + battery.capacity) >= capacity_d) and (chosenHouse.output < (house.connection.capacity + house.output)):
-                switch(house, chosenHouse)
+                simultaneousSwitch(house, chosenHouse)
                 newCosts = calculateCosts(district.houses, district.batteries)
 
                 if newCosts < currentCosts:
@@ -32,13 +33,14 @@ def hillclimber(house, district, i, triedhouses, oldcosts):
                     return
 
                 else:
-                    switch(chosenHouse, house)
+                    simultaneousSwitch(chosenHouse, house)
+
                     triedhouses.append(chosenHouse)
     # try each battery
     if 0 <= i < 4:
         hillclimber(house, district, i + 1, triedhouses, oldcosts)
 
-    #combined(house, district, 0, 0, oldcosts, 2)
+    combined(house, district, 0, 0, oldcosts, 2)
     return
 
 #---------------------------------------------------------------------------------------------------------------
@@ -89,15 +91,15 @@ def combined(house, district, count, bcursor, currentCosts, howmany):
                         print("b capacity eerst:", b.capacity)
                         multipleSwitch(randomh[i])
 
-                        if randomh[i].connection.capacity < 0:
-                            print("yo hier gaat iets fout")
 
                     # switch het te verplaatsen huis en update variabelen
-                    currentH.capacity += house.output
-                    house.connection = b
-                    b.capacity -= house.output
-                    house.distance = manhattan(house, b)
-                    print("B CAPACITY: ", b.capacity, b.id)
+                    # currentH.capacity += house.output
+                    # house.connection = b
+                    # b.capacity -= house.output
+                    # house.distance = manhattan(house, b)
+                    # print("B CAPACITY: ", b.capacity, b.id)
+
+                    switch(house, b)
 
                     if b.capacity < 0:
                         print("O KUT")
@@ -110,9 +112,8 @@ def combined(house, district, count, bcursor, currentCosts, howmany):
                         print("combined fail")
                         # terug draaien
                         for i in range(0, howmany):
-                            randomh[i].connection = currentbats[i]
-
-                        house.connection = currentH
+                            switch(house, currentH)
+                            switch(randomh[i], currentbats[i])
 
     # repeat this process with all the other batteries
     if bcursor < len(district.batteries)-1:
@@ -139,12 +140,14 @@ def multipleSwitch(randomhouse):
 
         # if so, moves house there
         if (rb != randomhouse.connection) and (randomhouse.output <= rb.capacity):
-                oldb.capacity += randomhouse.output
-                print("b capacity na", oldb.capacity, oldb.id)
-                randomhouse.connection = rb
-                rb.capacity -= randomhouse.output
+            switch(randomhouse, rb)
 
-                randomhouse.distance = manhattan(randomhouse, rb)
+                # oldb.capacity += randomhouse.output
+                # print("b capacity na", oldb.capacity, oldb.id)
+                # randomhouse.connection = rb
+                # rb.capacity -= randomhouse.output
+                #
+                # randomhouse.distance = manhattan(randomhouse, rb)
     return
 
  # combinaties optimaliseren
