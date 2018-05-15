@@ -35,6 +35,3 @@ def switch(house1, house2):
 
     if house1.connection.capacity < 0 or house2.connection.capacity < 0:
         switch(house1,house2)
-        return False
-
-    return True
