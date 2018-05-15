@@ -2,7 +2,10 @@ import matplotlib.pyplot as plt
 import matplotlib.lines as lines
 
 '''' visualisation method using matplotlib and location data from house/battery objects '''
-def visualize(houses, batteries):
+def visualize(district):
+
+    houses = district.houses
+    batteries = district.batteries
 
     fig, ax = plt.subplots()
     numBat = len(batteries)
@@ -60,4 +63,3 @@ def visualize(houses, batteries):
     ax.set_facecolor('xkcd:charcoal')
     ax.axis('equal')
     plt.show()
-

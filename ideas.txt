@@ -73,3 +73,12 @@ Dijkstra algorithm: shortest route in a graph
 weighted graph: find shortest route in a graph where not all steps cost the same
 -This is useful for our problem with connections beneath houses
 --Uniform-cost search (slides)
+
+---------------------------Lecture 5
+Simulated annealing: Try different temperature functions --> Experimentation-points
+--> and different start-values
+
+Plant propagation algorithm:
+-> Looking for "good spots"
+--> If good spot was found the children are many and close, if bad spot the children
+    are few and far away

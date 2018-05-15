@@ -180,6 +180,14 @@ class District:
                 temp = object.split(",")
                 self.batteries.append(Battery())
 
+    def disconnect(self):
+        for house in self.houses:
+            house.connection = set()
+            house.distance = 1000
+        for battery in self.batteries:
+            battery.connectedHouses = []
+            battery.capacity = battery.maxCapacity 
+
     def calculateCosts(self):
         self.costs = 0
         for house in self.houses:
