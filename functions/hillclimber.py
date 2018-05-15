@@ -1,14 +1,12 @@
 from random import randint
 from functions.manhattan import manhattan
-
-from functions.calculateCosts import calculateCosts
 from functions.switch import switch
 from functions.simultaneousSwitch import simultaneousSwitch
 
 
 def hillclimber(house, district, i, triedhouses):
 
-    currentCosts = calculateCosts(district.houses, district.batteries) # kijken of dit ook in district kan en verschil old en first costs
+    currentCosts = district.calculateCosts() # kijken of dit ook in district kan en verschil old en first costs
     battery = house.possible_connections[i][0]
     capacity_d = house.output
 
@@ -24,7 +22,7 @@ def hillclimber(house, district, i, triedhouses):
             # Try switching two houses when enough capacity space available
             if ((chosenHouse.output + battery.capacity) >= capacity_d) and (chosenHouse.output < (house.connection.capacity + house.output)):
                 simultaneousSwitch(house, chosenHouse)
-                newCosts = calculateCosts(district.houses, district.batteries)
+                newCosts = district.calculateCosts()
 
                 if newCosts < currentCosts:
                     print("NORMAL SWITCH")
@@ -99,7 +97,10 @@ def combined(house, district, count, bcursor, currentCosts, howmany):
 
                     switch(house, b)
 
-                    if calculateCosts(district.houses, district.batteries) < currentCosts:
+                    if b.capacity < 0:
+                        print("O KUT")
+
+                    if district.calculateCosts() < currentCosts:
                         print("COMBINED SWITCH")
                         return
 

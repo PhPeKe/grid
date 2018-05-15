@@ -1,8 +1,6 @@
 from functions.manhattan import manhattan
-from functions.calculateCosts import calculateCosts
 from functions.hillclimber import hillclimber
 from functions.connectUnconnected import connectUnconnected
-from functions.calculateCosts import calculateCosts
 from functions.switch import switch
 from random import randint, shuffle
 
@@ -92,13 +90,19 @@ class Battery:
         self.id = id
         self.connectedHouses = []
         self.costs = 5000
+        self.totalDistance = set()
+
+    def totalDistance(self):
+        self.totalDistance = 0
+        for house in self.connectedHouses:
+            self.totalDistance += house.distanc
 
     def showConnections(self):
         print("Battery",self.id,"is connected to:")
         for connection in self.connectedHouses:
             print("House",connection.id)
 
-    # Different methods to change location, dont know yet which is most useful
+    # Changing location
     def changeLocation(self, location):
         self.location = location
 
@@ -183,27 +187,27 @@ class District:
                 self.costs += house.distance * 9
         for battery in self.batteries:
             self.costs += battery.costs
+        return self.costs
 
     def connectUnconnected(self):
-        print("This Configuration costs", calculateCosts(self.houses, self.batteries), "€")
         for disconnectedHouse in self.disconnectedHouses:
             connectUnconnected(disconnectedHouse, self.batteries)
 
     def hillClimber(self):
-        firstcosts = calculateCosts(self.houses, self.batteries)
+        firstcosts =  self.calculateCosts()
 
         for nthChoiceHouse in self.nthChoiceHouses:
-            oldcosts = calculateCosts(self.houses, self.batteries)
+            oldcosts = self.calculateCosts()
 
             if nthChoiceHouse.connection != "NOT CONNECTED!":
                 hillclimber(nthChoiceHouse, self, 0, [])
 
         for house in self.houses:
-            oldcosts = calculateCosts(self.houses, self.batteries)
+            oldcosts = district.calculateCosts()
             if house.connection != "NOT CONNECTED!":
                 hillclimber(house, self, 1, [])
 
-        newcosts = calculateCosts(self.houses, self.batteries)
+        newcosts = district.calculateCosts()
         print("This Configuration costs", newcosts, "€")
 
         if (newcosts < firstcosts):
@@ -211,5 +215,5 @@ class District:
             self.hillClimber()
         else:
             print("hillclimber finished")
-            #self.save("hillclimberresults")
+            self.save("hillclimberresults")
             return
