@@ -103,7 +103,7 @@ class Battery:
         self.location = location
 
     def changeXBy(self, x):
-        slef.location = (x, self.location[1])
+        self.location = (x, self.location[1])
 
     def changeYBy(self, y):
         self.location = (self.location[0],y)
@@ -208,54 +208,5 @@ class District:
             self.hillClimber()
         else:
             print("hillclimber finished")
-            #self.save("hillclimberresults")
+            self.save("hillclimberresults")
             return
-
-    def randomHillClimber(self):
-        # Set initial upper bound (cost of the current configuration)
-        upperBound = self.costs
-
-        # Save initial configuration as best solution so far
-        #self.save("Initial self")
-        stop = int(input("Enter numer of iterations: "))
-        sort = input("Sort houses?")
-        if sort == "y":
-            sort = input("output, distance or both?")
-
-        if sort == "o":
-            self.houses.sort(key = lambda x: x.output)
-
-        if sort == "d":
-            self.houses.sort(key = lambda x: x.distance)
-
-        if sort == "b":
-            for house in self.houses:
-                house.score = house.distance + house.output
-
-            self.houses.sort(key = lambda x: x.score)
-
-
-        i = 0
-        #district.houses.sort(key = lambda x: x.output, reverse = True)
-
-        # Splice houselist with each step!
-        length = len(self.houses) - 1
-        while i < stop:
-            # Switch them as possible
-            switch(self.houses[i % length], self.houses[(i % length) + 1])
-            self.calculateCosts()
-
-            # If costs are lower than keep it
-            if self.costs < upperBound:
-                print("!!!!!!HIT!!!!!!!: ",str(i))
-                print(upperBound, self.costs)
-                # Adjust upper bound
-                upperBound = self.costs
-                self.save("Iteration" + str(i))
-            # Switch back and recalculate costs
-            elif self.costs > upperBound:
-                switch(self.houses[i % length], self.houses[(i % length) + 1])
-                self.calculateCosts()
-            i += 1
-            if i%length == 0:
-                shuffle(self.houses)

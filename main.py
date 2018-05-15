@@ -5,7 +5,6 @@ from functions.calculateCosts import calculateCosts
 from functions.visualize import visualize
 from functions.prompt import prompt
 from functions.switch import switch
-from functions.BnB import optimize
 import sys
 from random import shuffle
 
@@ -51,7 +50,7 @@ def main(argv):
         district.connectRandom()
 
     district.connectUnconnected()
-    district.hillClimber()
+    #district.hillClimber()
     # Calculate costs for this configuration
     district.calculateCosts()
 
