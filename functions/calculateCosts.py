@@ -5,5 +5,5 @@ def calculateCosts(houses, batteries):
             costs += house.distance * 9
     for battery in batteries:
         costs += battery.costs
-    print("This Configuration costs",costs,"€")
+    #print("This Configuration costs",costs,"€")
     return costs

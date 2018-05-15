@@ -146,21 +146,28 @@ class District:
             connectUnconnected(disconnectedHouse, self.batteries)
 
     def hillClimber(self):
-        oldcosts = calculateCosts(self.houses, self.batteries)
+        firstcosts = calculateCosts(self.houses, self.batteries)
 
         for nthChoiceHouse in self.nthChoiceHouses:
+            oldcosts = calculateCosts(self.houses, self.batteries)
+
             if nthChoiceHouse.connection != "NOT CONNECTED!":
-                hillclimber(nthChoiceHouse, self.batteries, self.houses, 0)
+                hillclimber(nthChoiceHouse, self, 0, [], oldcosts)
 
         for house in self.houses:
+            oldcosts = calculateCosts(self.houses, self.batteries)
             if house.connection != "NOT CONNECTED!":
-                hillclimber(house, self.batteries, self.houses, 1)
+                hillclimber(house, self, 1, [], oldcosts)
 
         newcosts = calculateCosts(self.houses, self.batteries)
+        print("This Configuration costs", newcosts, "€")
+        print("This Configuration once cost", firstcosts, "€")
 
-        if (newcosts < oldcosts):
+
+        if (newcosts < firstcosts):
             print("new hillclimber iteration")
             self.hillClimber()
         else:
             print("hillclimber finished")
+            self.save("hillclimberresults")
             return
