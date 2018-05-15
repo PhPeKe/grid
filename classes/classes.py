@@ -92,6 +92,12 @@ class Battery:
         self.id = id
         self.connectedHouses = []
         self.costs = 5000
+        self.totalDistance = set()
+
+    def totalDistance(self):
+        self.totalDistance = 0
+        for house in self.connectedHouses:
+            self.totalDistance += house.distance
 
     def showConnections(self):
         print("Battery",self.id,"is connected to:")
