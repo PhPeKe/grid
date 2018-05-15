@@ -10,8 +10,6 @@ def simultaneousSwitch(house1, house2):
       # print(house2,"\n")
       # print(house1.connection)
       # print(house2.connection)
-        print(house1.id, house1.connection.id)
-        print(house2.id, house2.connection.id)
 
     # 1. Remove house from list of connected houses in battery object
         house1.connection.connectedHouses.remove(house1)
@@ -42,8 +40,8 @@ def simultaneousSwitch(house1, house2):
       # print(house1.connection)
       # print(house2.connection)
 
-    else:
-        print("not switching")
+    # else:
+    #     print("not switching")
 
     # if house1.connection.capacity < 0 or house2.connection.capacity < 0:
     #     simultaneousSwitch(house1, house2)
