@@ -50,7 +50,7 @@ def main(argv):
         district.connectRandom()
 
     district.connectUnconnected()
-    #district.hillClimber()
+    district.hillClimber()
     # Calculate costs for this configuration
     district.calculateCosts()
 

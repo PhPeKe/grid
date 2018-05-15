@@ -208,5 +208,5 @@ class District:
             self.hillClimber()
         else:
             print("hillclimber finished")
-            self.save("hillclimberresults")
+            #self.save("hillclimberresults")
             return
