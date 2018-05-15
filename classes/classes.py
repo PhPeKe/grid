@@ -197,23 +197,21 @@ class District:
         firstcosts =  self.calculateCosts()
 
         for nthChoiceHouse in self.nthChoiceHouses:
-            oldcosts = self.calculateCosts()
-
             if nthChoiceHouse.connection != "NOT CONNECTED!":
                 hillclimber(nthChoiceHouse, self, 0, [])
 
         for house in self.houses:
-            oldcosts = district.calculateCosts()
             if house.connection != "NOT CONNECTED!":
                 hillclimber(house, self, 1, [])
 
-        newcosts = district.calculateCosts()
+        newcosts = self.costs
         print("This Configuration costs", newcosts, "€")
+        print("prev: ", firstcosts)
 
         if (newcosts < firstcosts):
             print("new hillclimber iteration")
             self.hillClimber()
         else:
             print("hillclimber finished")
-            self.save("hillclimberresults")
+            #self.save("hillclimberresults")
             return
