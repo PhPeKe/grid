@@ -20,7 +20,7 @@ def main(argv):
 
     # Connection method executed by district, not implemented in prompt (yet)
     # --> Use random or greedy!
-    method = "random"
+    method = "greedy"
 
     # Specify paths for data to load
     housePath = "data/wijk" + districtNumber + "_huizen.csv"
@@ -50,13 +50,13 @@ def main(argv):
         district.connectRandom()
 
     district.connectUnconnected()
-    district.hillClimber()
+    #district.hillClimber()
     # Calculate costs for this configuration
     district.calculateCosts()
 
     print("Costs: ",district.costs)
     if plot == "y":
-        visualize(district.houses, district.batteries)
+        visualize(district)
 
     district.save("District" + districtNumber)
 
