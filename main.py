@@ -5,7 +5,7 @@ from functions.calculateCosts import calculateCosts
 from functions.visualize import visualize
 from functions.prompt import prompt
 from functions.switch import switch
-from functions.BnB import branchBound
+from functions.BnB import optimize
 import sys
 from random import shuffle
 
@@ -52,10 +52,10 @@ def main(argv):
 
     district.connectUnconnected()
     district.hillClimber()
-
     # Calculate costs for this configuration
     district.calculateCosts()
 
+    print("Costs: ",district.costs)
     if plot == "y":
         visualize(district.houses, district.batteries)
 
