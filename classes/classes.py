@@ -102,11 +102,9 @@ class Battery:
     def changeLocation(self, location):
         self.location = location
 
-    def changeXBy(self, x):
-        self.location = (x, self.location[1])
-
-    def changeYBy(self, y):
-        self.location = (self.location[0],y)
+        # Change distance when battery is moved
+        for house in self.connectedHouses:
+            house.distance = manhattan(house, self)
 
     def __str__(self):
         return("Remaining capacity of Battery " + str(self.id)+ " : " + str(self.capacity))
@@ -179,7 +177,12 @@ class District:
                 self.batteries.append(Battery())
 
     def calculateCosts(self):
-        self.costs = calculateCosts(self.houses, self.batteries)
+        self.costs = 0
+        for house in self.houses:
+            if not house.distance == 1000:
+                self.costs += house.distance * 9
+        for battery in self.batteries:
+            self.costs += battery.costs
 
     def connectUnconnected(self):
         print("This Configuration costs", calculateCosts(self.houses, self.batteries), "€")

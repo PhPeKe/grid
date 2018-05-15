@@ -45,6 +45,7 @@ def main(argv):
     if method == "greedy":
         # Connect all houses to nearest battery
         district.connectGreedy()
+
     elif method == "random":
         # Connect all houses to random battery
         district.connectRandom()
