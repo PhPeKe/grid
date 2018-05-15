@@ -1,5 +1,4 @@
 from random import randint
-from functions.manhattan import manhattan
 from functions.switch import switch
 from functions.simultaneousSwitch import simultaneousSwitch
 
@@ -8,7 +7,7 @@ def hillclimber(house, district, i, triedhouses):
 
     currentCosts = district.calculateCosts() # kijken of dit ook in district kan en verschil old en first costs
 
-    print("CURRENT COSTS:", currentCosts, "HOUSE: ", house.id)
+    #print("CURRENT COSTS:", currentCosts, "HOUSE: ", house.id)
     battery = house.possible_connections[i][0]
     capacity_d = house.output
 
@@ -34,7 +33,7 @@ def hillclimber(house, district, i, triedhouses):
                     newCosts = district.calculateCosts()
 
                     if newCosts < currentCosts:
-                        print("NORMAL SWITCH")
+                        #print("NORMAL SWITCH")
                         if i == 0:
                             district.nthChoiceHouses.remove(house)
                         return
@@ -53,7 +52,7 @@ def hillclimber(house, district, i, triedhouses):
 def combined(house, district, count, bcursor, currentCosts, howmany):
     #geef nummer van batterij mee en increase dat na 100 keer
     count+1
-    print("combined aangeroepen")
+    #print("combined aangeroepen")
     currentH = house.connection
 
     # check every battery for randomdistrict.houses to move
