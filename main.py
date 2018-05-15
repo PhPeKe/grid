@@ -1,7 +1,6 @@
 # load classes and functions
 from classes.classes import House, Battery, Cable, District
 from functions.loadData import loadData
-from functions.calculateCosts import calculateCosts
 from functions.visualize import visualize
 from functions.prompt import prompt
 from functions.switch import switch

@@ -1,8 +1,6 @@
 from functions.manhattan import manhattan
-from functions.calculateCosts import calculateCosts
 from functions.hillclimber import hillclimber
 from functions.connectUnconnected import connectUnconnected
-from functions.calculateCosts import calculateCosts
 from functions.switch import switch
 from random import randint, shuffle
 
@@ -97,7 +95,7 @@ class Battery:
     def totalDistance(self):
         self.totalDistance = 0
         for house in self.connectedHouses:
-            self.totalDistance += house.distance
+            self.totalDistance += house.distanc
 
     def showConnections(self):
         print("Battery",self.id,"is connected to:")
@@ -189,27 +187,27 @@ class District:
                 self.costs += house.distance * 9
         for battery in self.batteries:
             self.costs += battery.costs
+        return self.costs
 
     def connectUnconnected(self):
-        print("This Configuration costs", calculateCosts(self.houses, self.batteries), "€")
         for disconnectedHouse in self.disconnectedHouses:
             connectUnconnected(disconnectedHouse, self.batteries)
 
     def hillClimber(self):
-        firstcosts = calculateCosts(self.houses, self.batteries)
+        firstcosts =  self.calculateCosts()
 
         for nthChoiceHouse in self.nthChoiceHouses:
-            oldcosts = calculateCosts(self.houses, self.batteries)
+            oldcosts = self.calculateCosts()
 
             if nthChoiceHouse.connection != "NOT CONNECTED!":
                 hillclimber(nthChoiceHouse, self, 0, [], oldcosts)
 
         for house in self.houses:
-            oldcosts = calculateCosts(self.houses, self.batteries)
+            oldcosts = district.calculateCosts()
             if house.connection != "NOT CONNECTED!":
                 hillclimber(house, self, 1, [], oldcosts)
 
-        newcosts = calculateCosts(self.houses, self.batteries)
+        newcosts = district.calculateCosts()
         print("This Configuration costs", newcosts, "€")
 
         if (newcosts < firstcosts):
@@ -217,5 +215,5 @@ class District:
             self.hillClimber()
         else:
             print("hillclimber finished")
-            #self.save("hillclimberresults")
+            self.save("hillclimberresults")
             return
