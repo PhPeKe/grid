@@ -98,7 +98,7 @@ class Battery:
         for connection in self.connectedHouses:
             print("House",connection.id)
 
-    # Different methods to change location, dont know yet which is most useful
+    # Changing location
     def changeLocation(self, location):
         self.location = location
 
