@@ -1,11 +1,8 @@
 from functions.manhattan import manhattan
 from functions.hillclimber import hillclimber
-from functions.connectUnconnected import connectUnconnected
-from functions.switch import switch
-from random import randint, shuffle
 
 import csv
-from random import shuffle
+
 
 class House:
 
@@ -197,12 +194,12 @@ class District:
             self.costs += battery.costs
         return self.costs
 
-    def connectUnconnected(self):
-        for disconnectedHouse in self.disconnectedHouses:
-            connectUnconnected(disconnectedHouse, self.batteries)
 
     def hillClimber(self):
         firstcosts =  self.calculateCosts()
+
+        for disconnectedHouse in self.disconnectedHouses:
+            hillclimber(disconnectedHouse, self, 0, [])
 
         for nthChoiceHouse in self.nthChoiceHouses:
             if nthChoiceHouse.connection != "NOT CONNECTED!":
@@ -214,7 +211,6 @@ class District:
 
         newcosts = self.costs
         print("This Configuration costs", newcosts, "€")
-        print("prev: ", firstcosts)
 
         if (newcosts < firstcosts):
             print("new hillclimber iteration")

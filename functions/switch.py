@@ -4,9 +4,10 @@ def switch(house, battery):
     # Check if capacity fits output:
     #if battery.capacity - house.output >= 0:
     # 1. Update capacity of old battery
-    house.connection.capacity += house.output
+    if house.connection != "NOT CONNECTED!":
+        house.connection.capacity += house.output
     # 2. Remove house from list of connected houses in battery object
-    house.connection.connectedHouses.remove(house)
+        house.connection.connectedHouses.remove(house)
     # 3. Change connection
     house.connection = battery
     # 4. Append house to battery list of connected houses

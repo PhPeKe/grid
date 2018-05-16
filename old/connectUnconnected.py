@@ -18,10 +18,3 @@ def connectUnconnected(house, batteries):
                         return
 
     print("no possible switches found for house: ", house)
-
-    # score maken dat unconnected ook kut is
-    # twee huizen met 1 huis gaan kijken
-
-    # random combinaties maken
-
-    # connectunconnect en hillblimber modulair maken

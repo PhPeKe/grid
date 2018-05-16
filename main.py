@@ -50,8 +50,7 @@ def main(argv):
         # Connect all houses to random battery
         district.connectRandom()
 
-    district.connectUnconnected()
-    #district.hillClimber()
+    district.hillClimber()
     # Calculate costs for this configuration
     district.calculateCosts()
 
