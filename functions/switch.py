@@ -1,8 +1,6 @@
 from functions.manhattan import manhattan
 
 def switch(house, battery):
-    # Check if capacity fits output:
-    #if battery.capacity - house.output >= 0:
     # 1. Update capacity of old battery
     if house.connection != "NOT CONNECTED!":
         house.connection.capacity += house.output
@@ -16,6 +14,3 @@ def switch(house, battery):
     house.connection.capacity -= house.output
     # 6. Recalculate distance
     house.distance = manhattan(house, house.connection)
-    # else:
-    #     print("false")
-    #     return False

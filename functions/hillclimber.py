@@ -32,7 +32,7 @@ def hillclimber(house, district, i, triedhouses):
                         newCosts = district.calculateCosts()
 
                         if newCosts < currentCosts:
-                            print("NORMAL SWITCH")
+                            #print("NORMAL SWITCH")
                             if i == 0:
                                 district.nthChoiceHouses.remove(house)
                             return
@@ -114,7 +114,7 @@ def combined(house, district, count, bcursor, currentCosts, howmany):
                                 multipleSwitchBack(house, currentH, randomh, currentbats, howmany)
 
                         if district.calculateCosts() < currentCosts:
-                            print("COMBINED SWITCH")
+                            #print("COMBINED SWITCH")
                             return
 
                         else:
