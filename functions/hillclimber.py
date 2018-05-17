@@ -2,7 +2,6 @@ from random import randint
 from functions.switch import switch
 from functions.simultaneousSwitch import simultaneousSwitch
 
-
 def hillclimber(house, district, i, triedhouses):
     currentCosts = district.calculateCosts()  # kijken of dit ook in district kan en verschil old en first costs
     #print("CURRENT COSTS:", currentCosts, "HOUSE: ", house.id)
@@ -12,6 +11,7 @@ def hillclimber(house, district, i, triedhouses):
 
         # sort possible houses to switch with on furthest distance first
         # kijken of dit in district zelf kan
+        # ZOU MEER RANDOM KUNNEN
         batteryConnections = battery.connectedHouses
         batteryConnections.sort(key=lambda x: x.distance, reverse=True)
 
@@ -63,6 +63,7 @@ def singleConnectUnconnected(house, district):
                         print(house.connection)
                         switch(house, b[0])
                         print("CONNECT UNCONNECTED of house ", house.id)
+                        district.disconnectedHouses.remove(house)
                         return
 
 #---------------------------------------------------------------------------------------------------------------

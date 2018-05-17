@@ -212,7 +212,7 @@ class District:
         newcosts = self.costs
         print("This Configuration costs", newcosts, "€")
 
-        if (newcosts < firstcosts):
+        if (newcosts < firstcosts and len(self.disconnectedHouses) == 0):
             print("new hillclimber iteration")
             self.hillClimber()
         else:
