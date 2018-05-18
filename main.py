@@ -5,10 +5,13 @@ from functions.visualize import visualize
 from functions.prompt import prompt
 from functions.switch import switch
 from functions.algorithms.kmeans import kmeans
+from functions.helpers.arguments import parseArgs
 import sys
 from random import shuffle
 
 def main(argv):
+
+    args = parseArgs()
 
     if not argv:
         districtNumber, plot, sort = prompt()
@@ -50,11 +53,9 @@ def main(argv):
         # Connect all houses to random battery
         district.connectRandom()
 
-    district.hillClimber()
+    # district.hillClimber()
     # Calculate costs for this configuration
     district.calculateCosts()
-
-    kmeans(district)
 
     print("Costs: ",district.costs)
     if plot == "y":
@@ -62,7 +63,7 @@ def main(argv):
 
     district.save("District" + districtNumber)
 
-    return district
+    return district, args
 
 if __name__ == "__main__":
-    district = main(sys.argv[1:])
+    district, args = main(sys.argv[1:])
