@@ -15,5 +15,7 @@ Random: Each house is connected to a random battery
 - Given an optimized district batteries are moved to the center of all houses that they are connected to to further minimize cable length
 
 To run this program flags can be used. To run it on district 1 with random sorting houses and a greedy way of connecting them while producing a plot and saving the district to a csv file the user would have to run
+
 "main.py -d 1 -s ascending -m greedy -sv csv -p"
+
 for more info on flags use "--help"
