@@ -17,4 +17,17 @@ def parseArgs():
     parser.add_argument("-sv","--save",
                         help = "Specify if and how districts should be saved",
                         choices = ["csv","verbose"])
-    return parser.parse_args()
+    args = parser.parse_args()
+
+    # Force valid input of required arguments
+    if args.district == None:
+        args.district = input("Choose district: ")
+        while args.district not in ["1","2","3"]:
+            args.district = input("Choose district(1, 2 or 3): ")
+
+    if args.method == None:
+        args.method = input("Choose method: ")
+        while args.method not in ["greedy","random"]:
+            args.method = input("Choose method(\"greedy\" or \"random\"): ")
+
+    return args
