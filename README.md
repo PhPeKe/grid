@@ -19,5 +19,7 @@ Here a step-for-step overview of what we did with the project:
 
 ## Program usage
 To run this program flags can be used. To run it on district 1 with random sorting houses and a greedy way of connecting them while producing a plot and saving the district to a csv file the user would have to run
+
 *"main.py -d 1 -s random -m greedy -sv csv -p"*
-for more info on flags use **"--help"**
+
+for more info on flags use **"main.py --help"**
