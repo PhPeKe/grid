@@ -5,7 +5,6 @@ from classes.cable import Cable
 from classes.district import District
 from functions.helpers.loadData import loadData
 from functions.visualize import visualize
-from functions.helpers.prompt import prompt
 from functions.switch import switch
 from functions.algorithms.kmeans import kmeans
 from functions.helpers.arguments import parseArgs

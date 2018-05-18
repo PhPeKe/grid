@@ -23,7 +23,7 @@ class Battery:
 
     # Changing location
     def changeLocation(self, location):
-        self.location = location
+        self.location = (location[0],location[1])
 
         # Change distance when battery is moved
         for house in self.connectedHouses:
