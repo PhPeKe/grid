@@ -3,9 +3,9 @@ This project explores the possible cable connections between houses and batterie
 
 Here a step-for-step overview of what we did with the project:
 1. Loading the data from csv/txt files into classes Battery and house, then adding all batteries and houses to clas district
-2. Connecting all houses to a battery:
-- Sorting houses by output (ascending, descending, random) to influence the order of which house is connected first/last
-- Connection options: greedy or random
+# 2. Connecting all houses to a battery:
+  1. Sorting houses by output (ascending, descending, random) to influence the order of which house is connected first/last
+  2. Connection options: greedy or random
 Greedy: Each house is connected to its nearest battery (if there is enough capacity left)
 Random: Each house is connected to a random battery
 - If not all houses could be connected a Hill-climbing algorithm switches houses around to make room for unconnected houses until every house is connected
