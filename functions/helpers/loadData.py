@@ -1,5 +1,7 @@
-from classes.classes import House, Battery
+from classes.house import House
+from classes.battery import Battery
 import csv
+
 def loadData(houses, batteries):
 
     # Open csv and txt file
