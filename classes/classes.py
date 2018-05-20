@@ -1,3 +1,5 @@
+from random import randint
+
 from functions.manhattan import manhattan
 from functions.hillclimber import hillclimber
 
@@ -63,7 +65,7 @@ class House:
             # Append reference to houses connected to battery
             self.connection.connectedHouses.append(self)
         else:
-            print("Error: House",str(self.id),"COULD NOT BE CONNECTED!")
+            #print("Error: House",str(self.id),"COULD NOT BE CONNECTED!")
             self.connection = "NOT CONNECTED!"
             district.disconnectedHouses.append(self) # even in district zelf laten maken.
 
@@ -205,17 +207,17 @@ class District:
             if nthChoiceHouse.connection != "NOT CONNECTED!":
                 hillclimber(nthChoiceHouse, self, 0, [])
 
-        for house in self.houses:
-            if house.connection != "NOT CONNECTED!":
-                hillclimber(house, self, 1, [])
+        for i in range(len(self.houses)):
+            if self.houses[i].connection != "NOT CONNECTED!":
+                hillclimber(self.houses[randint(0, len(self.houses)-1)], self, 1, [])
 
         newcosts = self.costs
-        print("This Configuration costs", newcosts, "€")
+        #print("This Configuration costs", newcosts, "€")
 
-        if (newcosts < firstcosts and len(self.disconnectedHouses) == 0):
+        if (newcosts < firstcosts or len(self.disconnectedHouses) != 0):
             print("new hillclimber iteration")
             self.hillClimber()
         else:
-            print("hillclimber finished")
+            #print("hillclimber finished")
             #self.save("hillclimberresults")
             return

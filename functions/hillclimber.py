@@ -42,6 +42,7 @@ def hillclimber(house, district, i, triedhouses):
                             triedhouses.append(chosenHouse)
         # try each battery
         if 0 <= i < 4:
+            #print("new")
             hillclimber(house, district, i + 1, triedhouses)
     else:
         singleConnectUnconnected(house, district)
@@ -56,15 +57,12 @@ def singleConnectUnconnected(house, district):
         for connectedHouse in battery.connectedHouses:
             # then check if the house's output combined with its battery's leftover capacity could facilitate the other
             if (connectedHouse.output + connectedHouse.connection.capacity) <= capacity_d:
-
                 for b in connectedHouse.possible_connections:
-                    print(b)
-                    if b[0].capacity >= connectedHouse.output and b != "NOT CONNECTED!":
-                        print(house.connection)
-                        switch(house, b[0])
-                        print("CONNECT UNCONNECTED of house ", house.id)
-                        district.disconnectedHouses.remove(house)
-                        return
+                        if b[0].capacity >= connectedHouse.output and b != "NOT CONNECTED!":
+                            switch(house, b[0])
+                            #print("CONNECT UNCONNECTED of house ", house.id)
+                            district.disconnectedHouses.remove(house)
+                            return
 
 #---------------------------------------------------------------------------------------------------------------
 
@@ -141,7 +139,6 @@ def multipleSwitch(randomhouse):
     randombatteries.sort(key=lambda x: x[1])
     for randombattery in randombatteries:
         rb = randombattery[0]
-
         # if so, moves house there
         if rb != randomhouse.connection:
             switch(randomhouse, rb)
@@ -158,3 +155,8 @@ def multipleSwitchBack(house, currentH, randomh, currentbats, howmany):
 
     for i in range(0, howmany):
         switch(randomh[i], currentbats[i])
+
+
+        #nog doen: bug hieruit (iets met update capacity)
+        #kleur visualisatie
+        #simulated annealing
