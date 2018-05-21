@@ -23,3 +23,5 @@ To run this program flags can be used. To run it on district 1 with random sorti
     "main.py -d 1 -s random -m greedy -sv csv -p"
 
 for more info on flags use **"main.py --help"**
+
+:fire:
