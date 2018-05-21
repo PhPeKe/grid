@@ -1,3 +1,5 @@
+from functions.switch import switch
+
 def connectUnconnected(house, batteries):
 
     batteries.sort(key=lambda x: x.capacity, reverse=True)
@@ -11,9 +13,7 @@ def connectUnconnected(house, batteries):
 
                 for b in connectedHouse.possible_connections:
                     if b[0].capacity >= connectedHouse.output:
-                        oldconnection = connectedHouse.connection
-                        connectedHouse.connection = b[0]
-                        house.connection = oldconnection
+                        switch(house, b)
                         print("SWITCH of house ", house.id, " and house ", connectedHouse.id)
                         return
 
