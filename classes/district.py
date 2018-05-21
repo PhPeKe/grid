@@ -1,5 +1,8 @@
 import csv
 from functions.hillclimber import hillclimber
+from functions.visualize import visualize
+from random import randint, shuffle
+
 
 class District:
 
@@ -75,7 +78,7 @@ class District:
 
 
     def hillClimber(self):
-        firstcosts =  self.calculateCosts()
+        firstcosts = self.calculateCosts()
 
         for disconnectedHouse in self.disconnectedHouses:
             hillclimber(disconnectedHouse, self, 0, [])
@@ -84,14 +87,18 @@ class District:
             if nthChoiceHouse.connection != "NOT CONNECTED!":
                 hillclimber(nthChoiceHouse, self, 0, [])
 
-        for house in self.houses:
+        hillclimberHouses = self.houses
+        shuffle(hillclimberHouses)
+
+        for house in hillclimberHouses:
             if house.connection != "NOT CONNECTED!":
                 hillclimber(house, self, 1, [])
 
         newcosts = self.costs
         print("This Configuration costs", newcosts, "€")
 
-        if (newcosts < firstcosts and len(self.disconnectedHouses) == 0):
+        if (newcosts < firstcosts or len(self.disconnectedHouses) != 0):
+            # add simulated annealing?
             print("new hillclimber iteration")
             self.hillClimber()
         else:

@@ -9,7 +9,8 @@ def visualize(district):
 
     fig, ax = plt.subplots()
     numBat = len(batteries)
-    colors = ["xkcd:reddish pink", "xkcd:bright yellow", "xkcd:light neon green", "xkcd:light royal blue", "xkcd:off white"]
+    colors = ["xkcd:reddish pink", "xkcd:bright yellow", "xkcd:light neon green", \
+              "xkcd:light royal blue", "xkcd:off white"]
 
     connections = [[] for _ in range(numBat * 2)]
 
@@ -42,7 +43,7 @@ def visualize(district):
 
     # display links between houses and their batteries
     for i in range(0, numBat):
-        ax.plot(connections[i], connections[i+numBat], 'wo')
+        ax.plot(connections[i], connections[i+numBat], color = colors[i], marker = 'o', linestyle = 'None')
 
         for j in range (0, len(connections[i])):
 
@@ -58,7 +59,7 @@ def visualize(district):
             ax.add_line(lines.Line2D(linex1, liney1, color=colors[i], alpha=0.5))
             ax.add_line(lines.Line2D(linex2, liney2, color=colors[i], alpha=0.5))
 
-    ax.plot(x, y, 'ro')
+    ax.plot(x, y, 'r*', markersize=15)
     ax.grid()
     ax.set_facecolor('xkcd:charcoal')
     ax.axis('equal')

@@ -43,8 +43,8 @@ def main():
     if args.method == "random":
         # Connect all houses to random battery
         district.connectRandom()
-
-    # district.hillClimber()
+    print("Initial costs: ",district.calculateCosts())
+    district.hillClimber()
     # Calculate costs for this configuration
     district.calculateCosts()
 
