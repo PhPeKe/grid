@@ -1,68 +1,62 @@
 # load classes and functions
-from classes.classes import House, Battery, Cable, District
-from functions.loadData import loadData
+from classes.house import House
+from classes.battery import Battery
+from classes.cable import Cable
+from classes.district import District
+from functions.helpers.loadData import loadData
 from functions.visualize import visualize
-from functions.prompt import prompt
 from functions.switch import switch
 from functions.algorithms.kmeans import kmeans
+from functions.helpers.arguments import parseArgs
 import sys
 from random import shuffle
 
-def main(argv):
+def main():
 
-    if not argv:
-        districtNumber, plot, sort = prompt()
-
-    elif not len(argv) == 3:
-        sys.exit("You must enter none or 3 arguments")
-
-    else:
-        districtNumber, plot, sort = argv
-
-    # Connection method executed by district, not implemented in prompt (yet)
-    # --> Use random or greedy!
-    method = "greedy"
+    # Get arguments
+    args = parseArgs()
 
     # Specify paths for data to load
-    housePath = "data/wijk" + districtNumber + "_huizen.csv"
-    batteryPath = "data/wijk" + districtNumber + "_batterijen.txt"
+    housePath = "data/wijk" + args.district + "_huizen.csv"
+    batteryPath = "data/wijk" + args.district + "_batterijen.txt"
 
     # Load in data
     district = District(loadData(housePath, batteryPath))
 
     # Sort houses by output (ascending)
-    if sort == "ya":
+    if args.sort == "ascending":
         district.houses.sort(key = lambda x: x.output)
 
     # Sort houses by output (descending)
-    if sort == "yd":
+    if args.sort == "descending":
         district.houses.sort(key = lambda x: x.output, reverse = True)
 
     # Sort houses random
-    if sort == "yr":
+    if args.sort == "random":
         shuffle(district.houses)
 
-    if method == "greedy":
+    if args.method == "greedy":
         # Connect all houses to nearest battery
         district.connectGreedy()
 
-    elif method == "random":
+    if args.method == "random":
         # Connect all houses to random battery
         district.connectRandom()
 
-    district.hillClimber()
+    # district.hillClimber()
     # Calculate costs for this configuration
     district.calculateCosts()
 
-    kmeans(district)
-
     print("Costs: ",district.costs)
-    if plot == "y":
+    if args.plot:
         visualize(district)
 
-    district.save("District" + districtNumber)
+    if args.save =="csv":
+        district.save("District" + args.district)
+    if args.save =="verbose":
+        district.saveVerbose("District" + args.district)
 
-    return district
+    return district, args
 
 if __name__ == "__main__":
-    district = main(sys.argv[1:])
+    district, args = main()
