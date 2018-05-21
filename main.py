@@ -31,6 +31,7 @@ def main():
     if args.sort == "descending":
         district.houses.sort(key = lambda x: x.output, reverse = True)
 
+
     # Sort houses random
     if args.sort == "random":
         shuffle(district.houses)

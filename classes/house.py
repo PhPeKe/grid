@@ -1,4 +1,5 @@
 from functions.manhattan import manhattan
+from random import shuffle
 
 class House:
 
@@ -37,7 +38,7 @@ class House:
 
 
     def connectRandomBattery(self, batteries, district):
-        #shuffle(batteries)
+        shuffle(batteries)
         for battery in batteries:
             distance = manhattan(self, battery)
             # Save all possible connections
