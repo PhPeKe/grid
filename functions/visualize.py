@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import matplotlib.lines as lines
 
 '''' visualisation method using matplotlib and location data from house/battery objects '''
-def visualize(district):
+def visualize(district, save):
 
     houses = district.houses
     batteries = district.batteries
@@ -59,8 +59,12 @@ def visualize(district):
             ax.add_line(lines.Line2D(linex1, liney1, color=colors[i], alpha=0.5))
             ax.add_line(lines.Line2D(linex2, liney2, color=colors[i], alpha=0.5))
 
-    ax.plot(x, y, 'r*', markersize=15)
+    for i in range(len(x)):
+        ax.plot(x[i], y[i], color = colors[i], marker = '*', markersize=15)
+
     ax.grid()
     ax.set_facecolor('xkcd:charcoal')
     ax.axis('equal')
+    if save == True:
+        plt.savefig("plotDistrict.png", dpi=250)
     plt.show()

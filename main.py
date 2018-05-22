@@ -52,7 +52,7 @@ def main():
 
     print("Costs: ",district.costs)
     if args.plot:
-        visualize(district)
+        visualize(district, True)
 
     if args.save =="csv":
         district.save("District" + args.district)

@@ -109,9 +109,9 @@ class District:
             self.calculateCosts()
             costdifference = firstcosts - self.costs
 
-            print("This Configuration costs", self.costs, "€")
+            print("This Configuration costs", self.costs, "euro")
 
         print("hillclimber finished")
         self.save("hillclimberresults")
-        visualize(self)
+        visualize(self, False)
         return
