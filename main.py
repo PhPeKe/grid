@@ -55,6 +55,16 @@ def main():
     if args.plot:
         visualize(district, True)
 
+    i = 0
+    while (i < 10):
+        kmeans(district)
+        district.disconnect()
+        district.connectGreedy()
+        district.hillClimber()
+        kmeans(district)
+        visualize(district, True, numIt = str(i))
+        i += 1
+
     if args.save =="csv":
         district.save("District" + args.district)
     if args.save =="verbose":
