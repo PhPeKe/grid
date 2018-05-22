@@ -45,6 +45,7 @@ def main():
         # Connect all houses to random battery
         district.connectRandom()
     print("Initial costs: ",district.calculateCosts())
+    visualize(district, False)
     district.hillClimber()
     district = deepcopy(district.compare)
     # Calculate costs for this configuration

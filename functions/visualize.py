@@ -11,7 +11,7 @@ def visualize(district, save):
     numBat = len(batteries)
     colors = ["xkcd:reddish pink", "xkcd:bright yellow", "xkcd:light neon green", \
               "xkcd:light royal blue", "xkcd:off white"]
-
+    batterymarkers = ['$0$', '$1$', '$2$', '$3$', '$4$']
     connections = [[] for _ in range(numBat * 2)]
 
     unconnectedx = []
@@ -60,7 +60,7 @@ def visualize(district, save):
             ax.add_line(lines.Line2D(linex2, liney2, color=colors[i], alpha=0.5))
 
     for i in range(len(x)):
-        ax.plot(x[i], y[i], color = colors[i], marker = '*', markersize=15)
+        ax.plot(x[i], y[i], color = colors[i], marker = batterymarkers[i], markersize=15)
 
     ax.grid()
     ax.set_facecolor('xkcd:charcoal')
