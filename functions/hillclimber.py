@@ -158,8 +158,8 @@ def lookForMultiSwitch(count, b, howmany, house, district, currentCosts, tempera
             if newcosts < currentCosts:
                 # print("new", newcosts, "current", currentCosts)
                 # print(house.id, randomh[0].id, randomh[1].id)
-                print("COMBINED SWITCH, house:", house.id, house.connection.id, "combi1", randomh[0].id,
-                      randomh[0].connection.id)
+                #print("COMBINED SWITCH, house:", house.id, house.connection.id, "combi1", randomh[0].id,
+                      #randomh[0].connection.id)
                 return
             elif newcosts < currentCosts + temperature:
                 # print("combined annealing")

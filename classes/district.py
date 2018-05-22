@@ -83,7 +83,6 @@ class District:
         if self.compare == set():
             self.compare = deepcopy(self)
         costdifference = 1
-        firstcosts = self.calculateCosts()
         while costdifference > 0 or len(self.disconnectedHouses) != 0:
             firstcosts = self.calculateCosts()
 
