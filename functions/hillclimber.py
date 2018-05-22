@@ -5,7 +5,7 @@ from functions.simultaneousSwitch import simultaneousSwitch
 from copy import deepcopy
 
 
-def hillclimber(house, district, i, triedhouses):
+def hillclimbSwitcher(house, district, i, triedhouses):
     temperature = 250
 
     currentCosts = district.calculateCosts()  # kijken of dit ook in district kan en verschil old en first costs
@@ -163,7 +163,7 @@ def lookForMultiSwitch(count, b, howmany, house, district, currentCosts, tempera
                 return
             elif newcosts < currentCosts + temperature:
                 # print("combined annealing")
-                temperature * 0.95
+                temperature = temperature * 0.95
                 return
             else:
                 # print("PRE COST LOOP", "new", newcosts, "current", currentCosts)
