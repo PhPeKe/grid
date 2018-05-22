@@ -53,7 +53,7 @@ def main():
 
     print("Costs: ",district.costs)
     if args.plot:
-        visualize(district, True)
+        visualize(district, True, 1)
 
     i = 0
     while (i < 10):
