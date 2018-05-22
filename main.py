@@ -10,6 +10,7 @@ from functions.algorithms.kmeans import kmeans
 from functions.helpers.arguments import parseArgs
 import sys
 from random import shuffle
+from copy import deepcopy
 
 def main():
 
@@ -45,6 +46,7 @@ def main():
         district.connectRandom()
     print("Initial costs: ",district.calculateCosts())
     district.hillClimber()
+    district = deepcopy(district.compare)
     # Calculate costs for this configuration
     district.calculateCosts()
 

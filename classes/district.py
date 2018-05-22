@@ -2,6 +2,7 @@ import csv
 from functions.hillclimber import hillclimber
 from functions.visualize import visualize
 from random import randint, shuffle
+from copy import deepcopy
 
 
 class District:
@@ -13,6 +14,7 @@ class District:
         self.costs = set()
         self.disconnectedHouses = []
         self.nthChoiceHouses = []
+        self.compare = set()
 
     def connectGreedy(self):
         for house in self.houses:
@@ -78,6 +80,9 @@ class District:
 
 
     def hillClimber(self):
+        if self.compare == set():
+            self.compare = deepcopy(self)
+
         firstcosts = self.calculateCosts()
 
         for disconnectedHouse in self.disconnectedHouses:
@@ -94,14 +99,21 @@ class District:
             if house.connection != "NOT CONNECTED!":
                 hillclimber(house, self, 1, [])
 
-        newcosts = self.costs
-        print("This Configuration costs", newcosts, "€")
-
-        if (newcosts < firstcosts or len(self.disconnectedHouses) != 0):
+        self.calculateCosts()
+        print("This Configuration costs", self.costs, "€")
+        print("compare: ", self.compare.costs)
+        if len(self.disconnectedHouses) != 0:
             # add simulated annealing?
             print("new hillclimber iteration")
             self.hillClimber()
+
+        if self.costs < firstcosts:
+            print("new hillclimber iteration")
+            if self.costs < self.compare.costs and len(self.disconnectedHouses)==0:
+                self.compare = deepcopy(self)
+                print("compare costs:", self.compare.costs, "self c: ", self.costs)
+            self.hillClimber()
+
         else:
             print("hillclimber finished")
-            #self.save("hillclimberresults")
             return
