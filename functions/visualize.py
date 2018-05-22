@@ -63,10 +63,9 @@ def visualize(district, save = False, numIt = False):
         ax.plot(x[i], y[i], color = colors[i], marker = batterymarkers[i], markersize=15)
 
     # Dynamically name plots from a loop
+    savenamve = "plotDistrict.png"
     if numIt:
         saveName = "plotDistrict" + numIt + ".png"
-    else:
-        savenamve = "plotDistrict.png"
 
     ax.grid()
     ax.set_facecolor('xkcd:charcoal')

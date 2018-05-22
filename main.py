@@ -32,7 +32,6 @@ def main():
     if args.sort == "descending":
         district.houses.sort(key = lambda x: x.output, reverse = True)
 
-
     # Sort houses random
     if args.sort == "random":
         shuffle(district.houses)
@@ -45,7 +44,6 @@ def main():
         # Connect all houses to random battery
         district.connectRandom()
     print("Initial costs: ",district.calculateCosts())
-    visualize(district, False)
     district.hillClimber()
     district = deepcopy(district.compare)
     # Calculate costs for this configuration
@@ -53,24 +51,17 @@ def main():
 
     print("Costs: ",district.costs)
     if args.plot:
-        visualize(district, True)
+        visualize(district, True, "initial")
 
-    i = 0
-    while (i < 10):
-        kmeans(district)
-        district.disconnect()
-        district.connectGreedy()
-        district.hillClimber()
-        kmeans(district)
-        visualize(district, True, numIt = str(i))
-        i += 1
+    kmeans(district)
+
 
     if args.save =="csv":
         district.save("District" + args.district)
     if args.save =="verbose":
         district.saveVerbose("District" + args.district)
 
-    return district, args
+    return district
 
 if __name__ == "__main__":
-    district, args = main()
+    d = main()

@@ -26,6 +26,9 @@ class House:
                 # Connect to battery
                 self.connection = battery
 
+        if self.connection != possible_connection[0]:
+            district.nthChoiceHouses.append(self)
+
         # Catch error if no connection could be made
         if not self.connection == set():
             self.connection.capacity -= self.output
@@ -35,6 +38,7 @@ class House:
             print("Error: House", str(self.id), "COULD NOT BE CONNECTED!")
             self.connection = "NOT CONNECTED!"
             district.disconnectedHouses.append(self)
+            district.allConnected = False
 
 
     def connectRandomBattery(self, batteries, district):
@@ -63,6 +67,7 @@ class House:
             print("Error: House",str(self.id),"COULD NOT BE CONNECTED!")
             self.connection = "NOT CONNECTED!"
             district.disconnectedHouses.append(self) # even in district zelf laten maken.
+            district.allConnected = False
 
         # Sort list with possible connections
         self.possible_connections.sort(key = lambda x: x[1])

@@ -2,7 +2,7 @@ from functions.switch import switch
 
 def connectUnconnected(house, batteries):
 
-    batteries.sort(key=lambda x: x.capacity, reverse=True)
+    #batteries.sort(key=lambda x: x.capacity, reverse=True)
     for battery in batteries:
         capacity_d = house.output - battery.capacity
 
