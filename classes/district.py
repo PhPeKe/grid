@@ -96,9 +96,10 @@ class District:
         unconnectCount = 0
         temperature = 500
         firstcosts = self.calculateCosts()
+        iterationCount = 0
 
-        while costdifference > 0 or unconnectedFINISH == False:
-
+        while iterationCount < 100 and (costdifference > 0 or unconnectedFINISH == False):
+            iterationCount += 1
             for disconnectedHouse in self.disconnectedHouses:
                 unconnectCount += 1
                 hillclimbSwitcher(disconnectedHouse, self, 0, [])
