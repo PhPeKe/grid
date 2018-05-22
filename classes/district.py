@@ -1,5 +1,5 @@
 import csv
-from functions.hillclimber import hillclimber
+from functions.hillclimber import hillclimbSwitcher
 from functions.visualize import visualize
 from random import shuffle
 from copy import deepcopy
@@ -85,33 +85,40 @@ class District:
         costdifference = 1
         unconnectedFINISH = False
         unconnectCount = 0
+        temperature = 500
+        firstcosts = self.calculateCosts()
+
         while costdifference > 0 or unconnectedFINISH == False:
-            firstcosts = self.calculateCosts()
 
             for disconnectedHouse in self.disconnectedHouses:
                 unconnectCount += 1
-                hillclimber(disconnectedHouse, self, 0, [])
+                hillclimbSwitcher(disconnectedHouse, self, 0, [])
 
             if len(self.disconnectedHouses) == 0 or unconnectCount == 1000:
                 unconnectedFINISH = True
 
             for nthChoiceHouse in self.nthChoiceHouses:
                 if nthChoiceHouse.connection != "NOT CONNECTED!":
-                    hillclimber(nthChoiceHouse, self, 0, [])
+                    hillclimbSwitcher(nthChoiceHouse, self, 0, [])
 
             hillclimberHouses = self.houses
             shuffle(hillclimberHouses)
 
             for house in hillclimberHouses:
                 if house.connection != "NOT CONNECTED!":
-                    hillclimber(house, self, 1, [])
+                    hillclimbSwitcher(house, self, 1, [])
 
             self.calculateCosts()
-            costdifference = firstcosts - self.costs
 
+            if self.costs > firstcosts and self.costs < firstcosts + temperature:
+                costdifference = firstcosts + temperature - self.costs
+                temperature = temperature * 0.95
+
+            else:
+                costdifference = firstcosts - self.costs
             print("This Configuration costs", self.costs, "euro")
+            firstcosts = self.costs
 
         print("hillclimber finished")
         self.save("hillclimberresults")
-        visualize(self, False)
         return
