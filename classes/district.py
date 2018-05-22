@@ -1,7 +1,7 @@
 import csv
 from functions.hillclimber import hillclimber
 from functions.visualize import visualize
-from random import randint, shuffle
+from random import shuffle
 from copy import deepcopy
 
 
@@ -82,38 +82,30 @@ class District:
     def hillClimber(self):
         if self.compare == set():
             self.compare = deepcopy(self)
-
+        costdifference = 1
         firstcosts = self.calculateCosts()
+        while costdifference > 0 or len(self.disconnectedHouses) != 0:
+            firstcosts = self.calculateCosts()
 
-        for disconnectedHouse in self.disconnectedHouses:
-            hillclimber(disconnectedHouse, self, 0, [])
+            for disconnectedHouse in self.disconnectedHouses:
+                hillclimber(disconnectedHouse, self, 0, [])
 
-        for nthChoiceHouse in self.nthChoiceHouses:
-            if nthChoiceHouse.connection != "NOT CONNECTED!":
-                hillclimber(nthChoiceHouse, self, 0, [])
+            for nthChoiceHouse in self.nthChoiceHouses:
+                if nthChoiceHouse.connection != "NOT CONNECTED!":
+                    hillclimber(nthChoiceHouse, self, 0, [])
 
-        hillclimberHouses = self.houses
-        shuffle(hillclimberHouses)
+            hillclimberHouses = self.houses
+            shuffle(hillclimberHouses)
 
-        for house in hillclimberHouses:
-            if house.connection != "NOT CONNECTED!":
-                hillclimber(house, self, 1, [])
+            for house in hillclimberHouses:
+                if house.connection != "NOT CONNECTED!":
+                    hillclimber(house, self, 1, [])
 
-        self.calculateCosts()
-        print("This Configuration costs", self.costs, "€")
-        print("compare: ", self.compare.costs)
-        if len(self.disconnectedHouses) != 0:
-            # add simulated annealing?
-            print("new hillclimber iteration")
-            self.hillClimber()
+            self.calculateCosts()
+            costdifference = firstcosts - self.costs
 
-        if self.costs < firstcosts:
-            print("new hillclimber iteration")
-            if self.costs < self.compare.costs and len(self.disconnectedHouses)==0:
-                self.compare = deepcopy(self)
-                print("compare costs:", self.compare.costs, "self c: ", self.costs)
-            self.hillClimber()
+            print("This Configuration costs", self.costs, "€")
 
-        else:
-            print("hillclimber finished")
-            return
+        print("hillclimber finished")
+        visualize(self)
+        return

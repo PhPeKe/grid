@@ -2,6 +2,7 @@ from random import randint
 from functions import visualize
 from functions.switch import switch
 from functions.simultaneousSwitch import simultaneousSwitch
+from copy import deepcopy
 
 
 def hillclimber(house, district, i, triedhouses):
@@ -39,12 +40,14 @@ def hillclimber(house, district, i, triedhouses):
 
                             if newCosts < currentCosts:
                                 # # print("NORMAL SWITCH")
-
-                                if i == 0:
+                                if house in district.nthChoiceHouses:
                                     district.nthChoiceHouses.remove(house)
+
+                                if district.costs < district.compare.costs and len(district.disconnectedHouses) == 0:
+                                    district.compare = deepcopy(district)
                                 return
                             elif newCosts < currentCosts + temperature:
-                                if i == 0:
+                                if house in district.nthChoiceHouses:
                                     district.nthChoiceHouses.remove(house)
                                 temperature * 0.95
                                 # print("normal annealing")
@@ -103,7 +106,7 @@ def combined(house, district, count, bcursor, temperature, howmany):
         while bcursor < len(district.batteries)-1:
             b = district.batteries[bcursor]
             if b != house.connection:
-                while count < 100:
+                while count < 10:
                     lookForMultiSwitch(count, b, howmany, house, district, currentCosts, temperature)
                     count += 1
             bcursor += 1
@@ -138,8 +141,8 @@ def lookForMultiSwitch(count, b, howmany, house, district, currentCosts, tempera
             for i in range(howmany):
                 # save current connection
                 multipleSwitch(randomh[i])
-                if randomh[i].connection == b:
-                    return
+                #if randomh[i].connection == b:
+                    #return
 
             # print("found different bats?")
             # move the house
@@ -155,8 +158,8 @@ def lookForMultiSwitch(count, b, howmany, house, district, currentCosts, tempera
             if newcosts < currentCosts:
                 # print("new", newcosts, "current", currentCosts)
                 # print(house.id, randomh[0].id, randomh[1].id)
-                # print("COMBINED SWITCH, house:", house.id, house.connection.id, "combi1", randomh[0].id,
-                      #randomh[0].connection.id)
+                print("COMBINED SWITCH, house:", house.id, house.connection.id, "combi1", randomh[0].id,
+                      randomh[0].connection.id)
                 return
             elif newcosts < currentCosts + temperature:
                 # print("combined annealing")
