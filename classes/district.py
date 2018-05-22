@@ -83,11 +83,17 @@ class District:
         if self.compare == set():
             self.compare = deepcopy(self)
         costdifference = 1
-        while costdifference > 0 or len(self.disconnectedHouses) != 0:
+        unconnectedFINISH = False
+        unconnectCount = 0
+        while costdifference > 0 or unconnectedFINISH == False:
             firstcosts = self.calculateCosts()
 
             for disconnectedHouse in self.disconnectedHouses:
+                unconnectCount += 1
                 hillclimber(disconnectedHouse, self, 0, [])
+
+            if len(self.disconnectedHouses) == 0 or unconnectCount == 1000:
+                unconnectedFINISH = True
 
             for nthChoiceHouse in self.nthChoiceHouses:
                 if nthChoiceHouse.connection != "NOT CONNECTED!":
@@ -106,5 +112,6 @@ class District:
             print("This Configuration costs", self.costs, "€")
 
         print("hillclimber finished")
+        self.save("hillclimberresults")
         visualize(self)
         return

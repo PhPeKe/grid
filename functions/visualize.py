@@ -24,8 +24,8 @@ def visualize(district):
     for house in houses:
         if house.connection != "NOT CONNECTED!": # NOTE: the
 
-            i = house.connection.id - 1
-            j = house.connection.id + numBat - 1
+            i = house.connection.id
+            j = house.connection.id + numBat
 
             connections[i].append(house.location[0])
             connections[j].append(house.location[1])
@@ -50,7 +50,7 @@ def visualize(district):
             edgeX = x[i]
             edgeY = connections[i+numBat][j]
 
-            linex1 = [connections[i][j],edgeX]
+            linex1 = [connections[i][j], edgeX]
             liney1 = [connections[i+numBat][j], edgeY]
 
             linex2 = [edgeX, x[i]]
