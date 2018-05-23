@@ -1,6 +1,6 @@
 import csv
 from functions.hillclimber import hillclimbSwitcher
-from functions.visualize import visualize
+from functions.ultimate import ultimate
 from random import shuffle
 from copy import deepcopy
 
@@ -123,3 +123,6 @@ class District:
         print("hillclimber finished")
         self.save("hillclimberresults")
         return
+
+    def ulti(self):
+        ultimate(self)
