@@ -1,2 +1,4 @@
-*pyc
+*.pyc
+/configurations/
+/old/
 ideas.txt

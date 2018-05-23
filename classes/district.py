@@ -15,14 +15,19 @@ class District:
         self.disconnectedHouses = []
         self.nthChoiceHouses = []
         self.compare = set()
+        self.allConnected = True
 
-    def connectGreedy(self):
+    def connectGreedy(self, random = False):
+        if random:
+            shuffle(self.houses)
         for house in self.houses:
             house.connectNearestBattery(self.batteries, self)
+        self.calculateCosts()
 
     def connectRandom(self):
         for house in self.houses:
             house.connectRandomBattery(self.batteries, self)
+        self.calculateCosts()
 
     def saveVerbose(self,name):
         with open("configurations/" + name + ".txt", "w", newline="") as file:
@@ -62,12 +67,18 @@ class District:
                 self.batteries.append(Battery())
 
     def disconnect(self):
+        self.costs = set()
+        self.disconnectedHouses = []
+        self.nthChoiceHouses = []
+        self.allConnected = True
         for house in self.houses:
             house.connection = set()
             house.distance = 1000
+            house.possible_connections = []
         for battery in self.batteries:
             battery.connectedHouses = []
             battery.capacity = battery.maxCapacity
+            battery.totalDistance = set()
 
     def calculateCosts(self):
         self.costs = 0
