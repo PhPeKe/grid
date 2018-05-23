@@ -1,6 +1,7 @@
 from copy import copy, deepcopy
 from functions.visualize import visualize
-def kmeans(district, numIt = 10, count = 0, contestants = []):
+from random import shuffle
+def kmeans(district, numIt = 10, count = 0, contestants = [], miss = 0):
 
 
     print("      Price before", district.costs)
@@ -12,6 +13,7 @@ def kmeans(district, numIt = 10, count = 0, contestants = []):
             district.disconnect()
             district.connectGreedy(True)
 
+    # Set battery to mean location
     for b in district.batteries:
         meanLocation = [0,0]
         for h in b.connectedHouses:
@@ -28,14 +30,28 @@ def kmeans(district, numIt = 10, count = 0, contestants = []):
     # Only the best
     contestants.append(deepcopy(district))
     contestants.sort(key = lambda x: x.costs)
-
+    visualize(district, True, count)
     if district.costs <= contestants[0].costs:
-        visualize(district, True, count)
-        
+        a = 0
+        #visualize(district, True, count)
+    else:
+        miss += 1
+        if miss > numIt / 20:
+            shuffle(contestants)
+            if miss > numIt / 10:
+                miss = 0
+                district.disconnect()
+                district.connectRandom()
+
+
     district = copy(contestants[0])
 
     if count < numIt:
         count += 1
-        return kmeans(district, count = count, contestants = contestants, numIt = numIt)
+        return kmeans(district,
+                      count = count,
+                      contestants = contestants,
+                      numIt = numIt,
+                      miss = miss)
     else:
         return district

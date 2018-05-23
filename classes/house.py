@@ -55,6 +55,10 @@ class House:
                 self.distance = distance
                 # Connect to battery
                 self.connection = battery
+
+        # Sort back to fix plotting bug
+        batteries.sort(key = lambda x: x.id)
+
         if self.connection != possible_connection[0]:
             district.nthChoiceHouses.append(self)
 

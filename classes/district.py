@@ -27,6 +27,7 @@ class District:
     def connectRandom(self):
         for house in self.houses:
             house.connectRandomBattery(self.batteries, self)
+        self.calculateCosts()
 
     def saveVerbose(self,name):
         with open("configurations/" + name + ".txt", "w", newline="") as file:

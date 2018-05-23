@@ -64,7 +64,7 @@ def visualize(district, save = False, numIt = False):
 
     # Dynamically name plots from a loop
     if numIt:
-        saveName = "plotDistrict" + str(numIt) + ".png"
+        saveName = "plots/plotDistrict" + str(numIt) + ".png"
     else:
         saveName = "plotDistrict.png"
     costs = district.costs
