@@ -1,4 +1,17 @@
-def kmeans(district, index = 0):
+from copy import copy, deepcopy
+from functions.visualize import visualize
+def kmeans(district, numIt = 10, count = 0, contestants = []):
+
+
+    print("      Price before", district.costs)
+    if count > 0:
+        district.disconnect()
+        district.connectGreedy(True)
+
+        while (district.allConnected == False):
+            district.disconnect()
+            district.connectGreedy(True)
+
     for b in district.batteries:
         meanLocation = [0,0]
         for h in b.connectedHouses:
@@ -7,18 +20,22 @@ def kmeans(district, index = 0):
         meanLocation[0] = round(meanLocation[0] / len(b.connectedHouses))
         meanLocation[1] = round(meanLocation[1] / len(b.connectedHouses))
         b.changeLocation(meanLocation)
-    district.calculateCosts()
-    district.disconnect
-    district.connectGreedy(True)
-    i = 0
-    while (district.allConnected == False):
-        district.disconnect()
-        district.connectGreedy()
-        i += 1
-        if i > 100:
-            print("NO SOLUTION WITHIN 100 ITERATIONS")
+        district.calculateCosts()
 
-    district.calculateCosts()
+    print("kmeans iteration",count, str(district.costs))
 
-    if index < 100:
-        kmeans(district, index + 1)
+
+    # Only the best
+    contestants.append(deepcopy(district))
+    contestants.sort(key = lambda x: x.costs)
+
+    if district.costs <= contestants[0].costs:
+        visualize(district, True, count)
+        
+    district = copy(contestants[0])
+
+    if count < numIt:
+        count += 1
+        return kmeans(district, count = count, contestants = contestants, numIt = numIt)
+    else:
+        return district

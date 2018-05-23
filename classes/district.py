@@ -22,6 +22,7 @@ class District:
             shuffle(self.houses)
         for house in self.houses:
             house.connectNearestBattery(self.batteries, self)
+        self.calculateCosts()
 
     def connectRandom(self):
         for house in self.houses:

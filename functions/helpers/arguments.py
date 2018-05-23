@@ -17,6 +17,9 @@ def parseArgs():
     parser.add_argument("-sv","--save",
                         help = "Specify if and how districts should be saved",
                         choices = ["csv","verbose"])
+    parser.add_argument("-k","--kmeansIt",
+                        help = "Number of iterations for kmeans",
+                        type = int)
     args = parser.parse_args()
 
     # Force valid input of required arguments
@@ -24,6 +27,9 @@ def parseArgs():
         args.district = input("Choose district: ")
         while args.district not in ["1","2","3"]:
             args.district = input("Choose district(1, 2 or 3): ")
+
+    if args.kmeansIt == None:
+        args.kmeansIt = 10
 
     if args.method == None:
         args.method = input("Choose method: ")

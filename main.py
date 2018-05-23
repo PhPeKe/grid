@@ -53,7 +53,7 @@ def main():
     if args.plot:
         visualize(district, True, "initial")
 
-    kmeans(district)
+    district = kmeans(district, numIt = args.kmeansIt)
 
 
     if args.save =="csv":

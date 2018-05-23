@@ -63,11 +63,10 @@ def visualize(district, save = False, numIt = False):
         ax.plot(x[i], y[i], color = colors[i], marker = batterymarkers[i], markersize=15)
 
     # Dynamically name plots from a loop
-    savenamve = "plotDistrict.png"
     if numIt:
-        saveName = "plotDistrict" + numIt + ".png"
+        saveName = "plotDistrict" + str(numIt) + ".png"
     else:
-        savenamve = "plotDistrict.png"
+        saveName = "plotDistrict.png"
     costs = district.costs
     ax.grid()
     ax.set_title(costs)

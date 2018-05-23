@@ -35,7 +35,7 @@ class House:
             # Append reference to houses connected to battery
             self.connection.connectedHouses.append(self)
         else:
-            print("Error: House", str(self.id), "COULD NOT BE CONNECTED!")
+            #print("Error: House", str(self.id), "COULD NOT BE CONNECTED!")
             self.connection = "NOT CONNECTED!"
             district.disconnectedHouses.append(self)
             district.allConnected = False
