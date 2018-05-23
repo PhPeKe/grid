@@ -66,7 +66,7 @@ def visualize(district, save = False, numIt = False):
     if numIt:
         saveName = "plots/plotDistrict" + str(numIt) + ".png"
     else:
-        saveName = "plotDistrict.png"
+        saveName = "plots/plotDistrict.png"
     costs = district.costs
     ax.grid()
     ax.set_title(costs)

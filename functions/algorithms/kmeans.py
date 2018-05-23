@@ -1,10 +1,10 @@
 from copy import copy, deepcopy
 from functions.visualize import visualize
 from random import shuffle
-def kmeans(district, numIt = 10, count = 0, contestants = [], miss = 0):
+def kmeans(district, numIt = 10, count = 0, contestants = [], miss = 0, plotIndex = None):
 
 
-    print("      Price before", district.costs)
+    print("       Price before: ", district.costs)
     if count > 0:
         district.disconnect()
         district.connectGreedy(True)
@@ -24,21 +24,25 @@ def kmeans(district, numIt = 10, count = 0, contestants = [], miss = 0):
         b.changeLocation(meanLocation)
         district.calculateCosts()
 
-    print("kmeans iteration",count, str(district.costs))
+    print("kmeans iteration: ",count, str(district.costs))
 
 
     # Only the best
     contestants.append(deepcopy(district))
     contestants.sort(key = lambda x: x.costs)
-    visualize(district, True, count)
+    #visualize(district, True, count)
     if district.costs <= contestants[0].costs:
         a = 0
-        #visualize(district, True, count)
+        visualize(district, True, plotIndex)
     else:
         miss += 1
-        if miss > numIt / 20:
+        # RESEARCH:
+        # /10 and /5 works better than /20 and /10:
+        # Finds (local) optimum pretty fast:
+        # +- 200 iterations
+        if miss > numIt /10:
             shuffle(contestants)
-            if miss > numIt / 10:
+            if miss > numIt / 5:
                 miss = 0
                 district.disconnect()
                 district.connectRandom()
@@ -47,11 +51,14 @@ def kmeans(district, numIt = 10, count = 0, contestants = [], miss = 0):
     district = copy(contestants[0])
 
     if count < numIt:
+        plotIndex += 1
         count += 1
         return kmeans(district,
                       count = count,
                       contestants = contestants,
                       numIt = numIt,
-                      miss = miss)
+                      miss = miss,
+                      plotIndex = plotIndex)
     else:
-        return district
+        contestants.sort(key = lambda x: x.costs)
+        return district, plotIndex
