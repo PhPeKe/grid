@@ -90,7 +90,7 @@ class District:
         return self.costs
 
 
-    def hillClimber(self):
+    def hillClimber(self, sa):
         if self.compare == set():
             self.compare = deepcopy(self)
         costdifference = 1
@@ -104,21 +104,21 @@ class District:
             iterationCount += 1
             for disconnectedHouse in self.disconnectedHouses:
                 unconnectCount += 1
-                hillclimbSwitcher(disconnectedHouse, self, 0, [])
+                hillclimbSwitcher(disconnectedHouse, self, 0, [], sa)
 
             if len(self.disconnectedHouses) == 0 or unconnectCount == 1000:
                 unconnectedFINISH = True
 
             for nthChoiceHouse in self.nthChoiceHouses:
                 if nthChoiceHouse.connection != "NOT CONNECTED!":
-                    hillclimbSwitcher(nthChoiceHouse, self, 0, [])
+                    hillclimbSwitcher(nthChoiceHouse, self, 0, [], sa)
 
             hillclimberHouses = self.houses
             shuffle(hillclimberHouses)
 
             for house in hillclimberHouses:
                 if house.connection != "NOT CONNECTED!":
-                    hillclimbSwitcher(house, self, 1, [])
+                    hillclimbSwitcher(house, self, 1, [], sa)
 
             self.calculateCosts()
 
@@ -133,7 +133,14 @@ class District:
 
         print("hillclimber finished")
         self.save("hillclimberresults")
+        if len(self.disconnectedHouses) != 0:
+            for house in self.disconnectedHouses:
+                print("Could not connect house", house.id)
         return
 
     def ulti(self):
         ultimate(self)
+
+    def compare(self):
+        if self.costs < self.compare.costs and len(self.disconnectedHouses) == 0:
+            self.compare = deepcopy(self)

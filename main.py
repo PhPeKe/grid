@@ -45,12 +45,13 @@ def main():
         # Connect all houses to random battery
         district.connectRandom()
     print("Initial costs: ",district.calculateCosts())
-    district.hillClimber()
+    #district.hillClimber(True)
     ultimate(district)
-    district = deepcopy(district.compare)
 
-    # Calculate costs for this configuration
+    district = deepcopy(district.compare)
     district.calculateCosts()
+    print(district.costs)
+    # Calculate costs for this configuration
 
     print("Costs: ",district.costs)
     if args.plot:

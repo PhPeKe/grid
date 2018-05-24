@@ -53,28 +53,8 @@ def ultimate(district):
                 district.compare = deepcopy(district)
             return
 
-        # choose fullest battery to upgrade
-        bats = district.batteries
-        bats.sort(key=lambda x: x.capacity)
-        district.disconnect()
+        batteryUpgrade(district, capacities, batCosts, oldCosts, costDifference)
 
-        for b in bats:
-            if b.capacity != capacities[len(capacities)-1]:
-                index = capacities.index(b.capacity)
-                b.capacity = capacities[index]
-                b.costs = batCosts[index]
-                break
-        district.connectGreedy()
-
-        for uc in district.disconnectedHouses:
-            connectUnconnected(uc, district.batteries)
-        kmeans(district)
-        costDifference = oldCosts - district.calculateCosts()
-        visualize(district)
-
-        if district.costs < district.compare.costs and len(district.disconnectedHouses) == 0:
-            district.compare = deepcopy(district)
-        return
 
 
     district.calculateCosts()
@@ -84,3 +64,30 @@ def ultimate(district):
 
 
 
+def batteryUpgrade(district, capacities, batCosts, oldCosts, costDifference):
+    # choose fullest battery to upgrade
+    bats = district.batteries
+    bats.sort(key=lambda x: x.capacity)
+    district.disconnect()
+
+    for b in bats:
+        if b.capacity != capacities[len(capacities) - 1]:
+            index = capacities.index(b.capacity)
+            b.capacity = capacities[index]
+            b.costs = batCosts[index]
+            break
+        #random combinaties maken vak een batterij om te upgraden en een batterij om weg te hale
+        # en dan kijken of dat beter wordt
+        # nog met simulated annealing
+    district.connectGreedy()
+
+    for uc in district.disconnectedHouses:
+        connectUnconnected(uc, district.batteries)
+    district = kmeans(district)
+    costDifference = oldCosts - district.calculateCosts()
+    visualize(district)
+    district.compare
+
+
+
+    return

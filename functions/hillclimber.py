@@ -1,13 +1,13 @@
-from random import randint
+from random import randint, random
 from functions import visualize
 from functions.switch import switch
 from functions.simultaneousSwitch import simultaneousSwitch
 from copy import deepcopy
 from math import exp
 
-def hillclimbSwitcher(house, district, i, triedhouses):
+def hillclimbSwitcher(house, district, i, triedhouses, sa):
     temperature = 250
-
+    coolingRate = 0.95
     currentCosts = district.calculateCosts()  # kijken of dit ook in district kan en verschil old en first costs
 
     if house.connection != "NOT CONNECTED!":
@@ -37,32 +37,37 @@ def hillclimbSwitcher(house, district, i, triedhouses):
 
                         else:
                             newCosts = district.calculateCosts()
+                            if sa == True:
+
+                                if acceptanceprobability(newCosts, currentCosts, temperature) > random():
+                                    # # print("NORMAL SWITCH")
+                                    if house in district.nthChoiceHouses:
+                                        district.nthChoiceHouses.remove(house)
+
+                                    district.compare()
+                                    temperature *= coolingRate
+
+                                    return
+
+                                else:
+                                    simultaneousSwitch(chosenHouse, house)
+                                    triedhouses.append(chosenHouse)
+                                    temperature *= coolingRate
 
                             if newCosts < currentCosts:
-                                # # print("NORMAL SWITCH")
                                 if house in district.nthChoiceHouses:
                                     district.nthChoiceHouses.remove(house)
-
-                                if district.costs < district.compare.costs and len(district.disconnectedHouses) == 0:
-                                    district.compare = deepcopy(district)
                                 return
-                            elif newCosts < currentCosts + temperature:
-                                if house in district.nthChoiceHouses:
-                                    district.nthChoiceHouses.remove(house)
-                                temperature * 0.95
-                                # print("normal annealing")
-
-                                return
-
                             else:
                                 simultaneousSwitch(chosenHouse, house)
                                 triedhouses.append(chosenHouse)
+
             i += 1
 
     else:
         singleConnectUnconnected(house, district)
 
-    combined(house, district, 0, 0, temperature, 2)
+    combined(house, district, 0, 0, temperature, 2, coolingRate)
     return
 
 
@@ -96,7 +101,7 @@ def singleConnectUnconnected(house, district):
 
 #---------------------------------------------------------------------------------------------------------------
 
-def combined(house, district, count, bcursor, temperature, howmany):
+def combined(house, district, count, bcursor, temperature, howmany, coolingRate):
     currentCosts = district.calculateCosts()
     #geef nummer van batterij mee en increase dat na 100 keer
     # check every battery for randomdistrict.houses to move
@@ -107,7 +112,7 @@ def combined(house, district, count, bcursor, temperature, howmany):
             b = district.batteries[bcursor]
             if b != house.connection:
                 while count < 10:
-                    lookForMultiSwitch(count, b, howmany, house, district, currentCosts, temperature)
+                    lookForMultiSwitch(count, b, howmany, house, district, currentCosts, temperature, coolingRate)
                     count += 1
             bcursor += 1
         howmany += 1
@@ -119,7 +124,7 @@ def combined(house, district, count, bcursor, temperature, howmany):
 
     return
 
-def lookForMultiSwitch(count, b, howmany, house, district, currentCosts, temperature):
+def lookForMultiSwitch(count, b, howmany, house, district, currentCosts, temperature, coolingRate):
     randomh = []
     # choose "howmany"-amount of houses randomly from 1 battery,
     bhouses = b.connectedHouses
@@ -141,10 +146,7 @@ def lookForMultiSwitch(count, b, howmany, house, district, currentCosts, tempera
             for i in range(howmany):
                 # save current connection
                 multipleSwitch(randomh[i])
-                #if randomh[i].connection == b:
-                    #return
 
-            # print("found different bats?")
             # move the house
             currentH = house.connection
             switch(house, b)
@@ -154,21 +156,19 @@ def lookForMultiSwitch(count, b, howmany, house, district, currentCosts, tempera
                     multipleSwitchBack(house, currentH, randomh, b, howmany)
                     return
 
-            newcosts = district.calculateCosts()
-            if newcosts < currentCosts:
-                # print("new", newcosts, "current", currentCosts)
-                # print(house.id, randomh[0].id, randomh[1].id)
-                #print("COMBINED SWITCH, house:", house.id, house.connection.id, "combi1", randomh[0].id,
-                      #randomh[0].connection.id)
-                return
-            elif newcosts < currentCosts + temperature:
-                # print("combined annealing")
-                temperature = temperature * 0.95
+            newCosts = district.calculateCosts()
+            if acceptanceprobability(newCosts, currentCosts, temperature) > random():
+                # # print("NORMAL SWITCH")
+                if house in district.nthChoiceHouses:
+                    district.nthChoiceHouses.remove(house)
+
+                district.compare()
                 return
             else:
                 # print("PRE COST LOOP", "new", newcosts, "current", currentCosts)
                 multipleSwitchBack(house, currentH, randomh, b, howmany)
                 # print("POST", "new", district.calculateCosts(), "current", currentCosts)
+            temperature *= coolingRate
 
 
 def multipleSwitch(randomhouse):
@@ -201,8 +201,23 @@ def multipleSwitchBack(house, currentH, randomh, b, howmany):
         switch(randomh[i], b)
         # print("POST", randomh[i].id,"con", randomh[i].connection.id)
 
-def acceptanceprobability(newCosts, currentCosts, temperature):
+def acceptanceprobability(newCosts, currentCosts, temperature): # naar helpers
     if newCosts < currentCosts:
         return 1.0
     else:
         return exp((currentCosts - newCosts) / temperature)
+
+def hillSimulatedAnnealing(district, currenCosts, temperature, house, coolingRate, ):
+    newCosts = district.calculateCosts()
+    if acceptanceprobability(newCosts, currentCosts, temperature) > random():
+        # # print("NORMAL SWITCH")
+        if house in district.nthChoiceHouses:
+            district.nthChoiceHouses.remove(house)
+
+        district.compare()
+        return
+    else:
+        # print("PRE COST LOOP", "new", newcosts, "current", currentCosts)
+        multipleSwitchBack(house, currentH, randomh, b, howmany)
+        # print("POST", "new", district.calculateCosts(), "current", currentCosts)
+    temperature *= coolingRate

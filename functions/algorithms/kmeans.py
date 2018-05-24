@@ -1,7 +1,7 @@
 from copy import copy, deepcopy
 from functions.visualize import visualize
 from random import shuffle
-def kmeans(district, numIt = 10, count = 0, contestants = [], miss = 0, plotIndex = None):
+def kmeans(district, numIt = 10, count = 0, contestants = [], miss = 0, plotIndex = 0):
 
 
     print("       Price before: ", district.costs)
