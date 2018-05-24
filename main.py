@@ -46,8 +46,8 @@ def main():
         district.connectRandom()
     print("Initial costs: ",district.calculateCosts())
     district.hillClimber()
-    ultimate(district)
-    district = deepcopy(district.compare)
+    #ultimate(district)
+    #district = deepcopy(district.compare)
 
     # Calculate costs for this configuration
     district.calculateCosts()
@@ -56,16 +56,8 @@ def main():
     if args.plot:
         visualize(district, True, "initial")
 
-    plotIndex = 0
-
-    district, plotIndex = kmeans(district, numIt = 50, plotIndex = plotIndex)
-    district, plotIndex = kmeans(district, numIt = 50, plotIndex = plotIndex)
-
-    district, plotIndex = kmeans(district, numIt = 50, plotIndex = plotIndex)
-    district, plotIndex = kmeans(district, numIt = 50, plotIndex = plotIndex)
-
-    district, plotIndex = kmeans(district, numIt = 50, plotIndex = plotIndex)
-    district, plotIndex = kmeans(district, numIt = 50, plotIndex = plotIndex)
+    kmeansIt = args.kmeansIt
+    district = kmeans(district, numIt = kmeansIt)
 
     if args.save =="csv":
         district.save("District" + args.district)

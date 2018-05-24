@@ -1,0 +1,19 @@
+usage: main.py [-h] [-d {1,2,3}] [-p] [-s {ascending,descending,random}]
+               [-m {greedy,random}] [-sv {csv,verbose}] [-k KMEANSIT]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -d {1,2,3}, --district {1,2,3}
+                        Specify the number of the district (1, 2, 3)
+  -p, --plot            Flag if plots should be made
+  -s {ascending,descending,random}, --sort {ascending,descending,random}
+                        Sort houses before connecting to specify which house
+                        should be connected first (ascending, descending,
+                        random)
+  -m {greedy,random}, --method {greedy,random}
+                        Specify the method of initially assigning houses to
+                        batteries (greedy, random)
+  -sv {csv,verbose}, --save {csv,verbose}
+                        Specify if and how districts should be saved
+  -k KMEANSIT, --kmeansIt KMEANSIT
+                        Number of iterations for kmeans
