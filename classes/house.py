@@ -30,8 +30,14 @@ class House:
             district.nthChoiceHouses.append(self)
 
         # Catch error if no connection could be made
-        if not self.connection == set():
+        if self.connection == "NOT CONNECTED!":
+            district.disconnectedHouses.append(self)
+            district.allConnected = False
+
+        elif not self.connection == set():
             #print("connection: ", self.connection)
+            if type(self.connection) is str:
+                print("!!",self.id, self.connection)
             self.connection.capacity -= self.output
             # Append reference to houses connected to battery
             self.connection.connectedHouses.append(self)
