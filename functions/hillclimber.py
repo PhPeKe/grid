@@ -207,17 +207,17 @@ def acceptanceprobability(newCosts, currentCosts, temperature): # naar helpers
     else:
         return exp((currentCosts - newCosts) / temperature)
 
-def hillSimulatedAnnealing(district, currenCosts, temperature, house, coolingRate, ):
-    newCosts = district.calculateCosts()
-    if acceptanceprobability(newCosts, currentCosts, temperature) > random():
-        # # print("NORMAL SWITCH")
-        if house in district.nthChoiceHouses:
-            district.nthChoiceHouses.remove(house)
-
-        district.compare()
-        return
-    else:
-        # print("PRE COST LOOP", "new", newcosts, "current", currentCosts)
-        multipleSwitchBack(house, currentH, randomh, b, howmany)
-        # print("POST", "new", district.calculateCosts(), "current", currentCosts)
-    temperature *= coolingRate
+# def hillSimulatedAnnealing(district, currentCosts, temperature, house, coolingRate, ):
+#     newCosts = district.calculateCosts()
+#     if acceptanceprobability(newCosts, currentCosts, temperature) > random():
+#         # # print("NORMAL SWITCH")
+#         if house in district.nthChoiceHouses:
+#             district.nthChoiceHouses.remove(house)
+#
+#         district.compare()
+#         return
+#     else:
+#         # print("PRE COST LOOP", "new", newcosts, "current", currentCosts)
+#         multipleSwitchBack(house, currentH, randomh, b, howmany)
+#         # print("POST", "new", district.calculateCosts(), "current", currentCosts)
+#     temperature *= coolingRate

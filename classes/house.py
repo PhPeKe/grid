@@ -31,6 +31,7 @@ class House:
 
         # Catch error if no connection could be made
         if not self.connection == set():
+            #print("connection: ", self.connection)
             self.connection.capacity -= self.output
             # Append reference to houses connected to battery
             self.connection.connectedHouses.append(self)

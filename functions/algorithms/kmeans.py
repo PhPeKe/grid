@@ -1,15 +1,15 @@
 from copy import copy, deepcopy
 from functions.visualize import visualize
 from random import shuffle
+from functions.compare import compare
 def kmeans(district, numIt = 10, count = 0, contestants = [], miss = 0):
 
     while (count < numIt):
 
         print("       Price before: ", district.costs)
-
         checkConnections(district, count)
         batteriesToMean(district)
-
+        compare(district)
         print("kmeans iteration: ",count, str(district.costs))
 
 
@@ -39,6 +39,8 @@ def kmeans(district, numIt = 10, count = 0, contestants = [], miss = 0):
 
     contestants.sort(key = lambda x: x.costs)
     district = contestants[0]
+
+
     return district
 
 

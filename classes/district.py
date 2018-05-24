@@ -144,5 +144,7 @@ class District:
         ultimate(self)
 
     def compare(self):
+        print(self.costs, self.compare.costs)
         if self.costs < self.compare.costs and len(self.disconnectedHouses) == 0:
             self.compare = deepcopy(self)
+            visualize(self)

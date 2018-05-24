@@ -8,15 +8,16 @@ from functions.algorithms.kmeans import kmeans
 from functions.connectUnconnected import connectUnconnected
 from functions.visualize import visualize
 
-from copy import deepcopy
 
 def ultimate(district):
+    print("ULTIMATE")
 
     capacities = [450, 900, 1800]
     batCosts = [900, 1350, 1800]
     totalOutput = 0
     for house in district.houses:
         totalOutput = totalOutput + house.output
+
 
 
     # initialize with set of low capacity batteries
@@ -40,28 +41,16 @@ def ultimate(district):
     while costDifference > 0:
         oldCosts = district.calculateCosts()
         while costDKmeans > 0:
-            oldKCosts = district.calculateCosts()
-            district.disconnect()
-            district.connectGreedy()
-            for uc in district.disconnectedHouses:
-                connectUnconnected(uc, district.batteries)
+            print(" while it")
             kmeans(district)
-            print(district.costs, costDifference)
-            costDKmeans = oldKCosts - district.calculateCosts()
             visualize(district)
-            if district.costs < district.compare.costs and len(district.disconnectedHouses) == 0:
-                district.compare = deepcopy(district)
-            return
+            district.calculateCosts()
+            costDKmeans = oldCosts - district.costs
 
         batteryUpgrade(district, capacities, batCosts, oldCosts, costDifference)
 
-
-
     district.calculateCosts()
     print("post ultimate costs:", district.costs)
-
-
-
 
 
 def batteryUpgrade(district, capacities, batCosts, oldCosts, costDifference):
@@ -81,13 +70,18 @@ def batteryUpgrade(district, capacities, batCosts, oldCosts, costDifference):
         # nog met simulated annealing
     district.connectGreedy()
 
+    preRemoveCosts = district.calculateCosts()
+    toBeRemoved = bats[len(bats)-1]
+    district.batteries.remove(bats[len(bats)-1])
+
+    district.connectGreedy()
     for uc in district.disconnectedHouses:
         connectUnconnected(uc, district.batteries)
-    district = kmeans(district)
-    costDifference = oldCosts - district.calculateCosts()
+    kmeans(district)
+
+    if len(district.disconnectedHouses) != 0 or preRemoveCosts < district.calculateCosts():
+        district.batteries.append(toBeRemoved)
+
     visualize(district)
     district.compare
-
-
-
     return
