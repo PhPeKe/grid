@@ -2,3 +2,5 @@
 /configurations/
 /old/
 ideas.txt
+*.png
+/plots/

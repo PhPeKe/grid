@@ -8,10 +8,16 @@ def kmeans(district, numIt = 10, count = 0, contestants = [], miss = 0, plotInde
     if count > 0:
         district.disconnect()
         district.connectGreedy(True)
-
+        c = 0
         while (district.allConnected == False):
             district.disconnect()
-            district.connectGreedy(True)
+            if c > 100:
+                print("Connecting random")
+                district.connectRandom()
+                c = 0
+            else:
+                district.connectGreedy(True)
+                c += 1
 
     # Set battery to mean location
     for b in district.batteries:
@@ -30,10 +36,11 @@ def kmeans(district, numIt = 10, count = 0, contestants = [], miss = 0, plotInde
     # Only the best
     contestants.append(deepcopy(district))
     contestants.sort(key = lambda x: x.costs)
+    visualize(district, True, plotIndex)
     #visualize(district, True, count)
     if district.costs <= contestants[0].costs:
+        #visualize(district, True, plotIndex)
         a = 0
-        visualize(district, True, plotIndex)
     else:
         miss += 1
         # RESEARCH:
