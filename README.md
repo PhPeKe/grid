@@ -1,13 +1,10 @@
 # grid
 In a future world houses all have solar panels that produce energy. This energy has to be stored in batteries and for this batteries have to be placed and connected to houses.
+
 http://heuristieken.nl/wiki/index.php?title=SmartGrid
 
 ## Program usage
-To run this program flags can be used. To run it on district 1 with random sorting houses and a greedy way of connecting them while producing a plot and saving the district to a csv file the user would have to run
-
-    "main.py -d 1 -s random -m greedy -sv csv -p"
-
-for more info on flags use **"main.py --help"**
+To run this program flags can be used.
 
     usage: main.py [-h] [-d {1,2,3}] [-p] [-s {ascending,descending,random}]
                    [-m {greedy,random}] [-sv {csv,verbose}] [-k KMEANSIT]
@@ -26,8 +23,11 @@ for more info on flags use **"main.py --help"**
                             batteries (greedy, random)
       -sv {csv,verbose}, --save {csv,verbose}
                             Specify if and how districts should be saved
-      -k KMEANSIT, --kmeansIt KMEANSIT
-                            Number of iterations for kmeans
+      -k, --kmeansIt        Number of iterations for kmeans
+
+To run it on district 1 with random sorting houses and a greedy way of connecting them while producing a plot and saving the district to a csv file the user would have to run
+
+    "main.py -d 1 -s random -m greedy -sv csv -p"
 
 
 Here a step-for-step overview of what we did with the project:
