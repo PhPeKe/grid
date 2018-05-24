@@ -1,4 +1,4 @@
-from functions.manhattan import manhattan
+from helpers.manhattan import manhattan
 
 def switch(house, battery):
     # 1. Update capacity of old battery

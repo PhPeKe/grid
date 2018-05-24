@@ -4,9 +4,9 @@
 # meest volle batterij upgraden
 # etc
 from classes.battery import Battery
-from functions.algorithms.kmeans import kmeans
-from functions.connectUnconnected import connectUnconnected
-from functions.visualize import visualize
+from algorithms.kmeans import kmeans
+from helpers.connectUnconnected import connectUnconnected
+from helpers.visualize import visualize
 
 
 def ultimate(district):

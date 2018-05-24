@@ -1,4 +1,4 @@
-from functions.switch import switch
+from helpers.switch import switch
 
 def connectUnconnected(house, batteries):
 

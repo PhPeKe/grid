@@ -1,5 +1,5 @@
 from copy import copy, deepcopy
-from functions.visualize import visualize
+from helpers.visualize import visualize
 from random import shuffle
 from functions.compare import compare
 def kmeans(district, numIt = 10, count = 0, contestants = [], miss = 0):
@@ -32,8 +32,6 @@ def kmeans(district, numIt = 10, count = 0, contestants = [], miss = 0):
                     miss = 0
                     district.disconnect()
                     district.connectRandom()
-
-
         district = copy(contestants[0])
         count += 1
 

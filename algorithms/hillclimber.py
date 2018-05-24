@@ -1,7 +1,7 @@
 from random import randint, random
 from functions import visualize
-from functions.switch import switch
-from functions.simultaneousSwitch import simultaneousSwitch
+from helpers.switch import switch
+from helpers.simultaneousSwitch import simultaneousSwitch
 from copy import deepcopy
 from math import exp
 

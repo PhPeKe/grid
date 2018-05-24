@@ -1,4 +1,4 @@
-from functions.manhattan import manhattan
+from helpers.manhattan import manhattan
 
 def simultaneousSwitch(house1, house2):
   # 1. Remove house from list of connected houses in battery object

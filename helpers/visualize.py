@@ -6,6 +6,7 @@ def visualize(district, save = False, numIt = False):
 
     houses = district.houses
     batteries = district.batteries
+    batteries.sort(key = lambda x: x.id)
 
     fig, ax = plt.subplots()
     numBat = len(batteries)
