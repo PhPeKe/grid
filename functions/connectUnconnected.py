@@ -10,10 +10,10 @@ def connectUnconnected(house, batteries):
         for connectedHouse in battery.connectedHouses:
             # then check if the house's output combined with its battery's leftover capacity could facilitate the other
             if (connectedHouse.output + connectedHouse.connection.capacity) <= capacity_d:
-
                 for b in connectedHouse.possible_connections:
                     if b[0].capacity >= connectedHouse.output:
-                        switch(house, b)
+                        print(house, b)
+                        switch(house, b[0])
                         print("SWITCH of house ", house.id, " and house ", connectedHouse.id)
                         return
 

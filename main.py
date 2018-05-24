@@ -7,6 +7,7 @@ from functions.helpers.loadData import loadData
 from functions.visualize import visualize
 from functions.switch import switch
 from functions.algorithms.kmeans import kmeans
+from functions.ultimate import ultimate
 from functions.helpers.arguments import parseArgs
 import sys
 from random import shuffle
@@ -45,6 +46,7 @@ def main():
         district.connectRandom()
     print("Initial costs: ",district.calculateCosts())
     district.hillClimber()
+    ultimate(district)
     district = deepcopy(district.compare)
     # Calculate costs for this configuration
     district.calculateCosts()

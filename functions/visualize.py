@@ -10,8 +10,14 @@ def visualize(district, save = False, numIt = False):
     fig, ax = plt.subplots()
     numBat = len(batteries)
     colors = ["xkcd:reddish pink", "xkcd:bright yellow", "xkcd:light neon green", \
-              "xkcd:light royal blue", "xkcd:off white"]
-    batterymarkers = ['$0$', '$1$', '$2$', '$3$', '$4$']
+              "xkcd:light royal blue", "xkcd:off white", "xkcd:silver", "xkcd:melon", \
+              "xkcd:ocean green", "xkcd:poo", "xkcd:gunmetal", "xkcd:red wine", "xkcd:blood orange", \
+              "xkcd:reddish pink","xkcd:bright yellow", "xkcd:light neon green", \
+              "xkcd:light royal blue", "xkcd:off white", "xkcd:silver", "xkcd:melon", \
+              "xkcd:ocean green", "xkcd:poo", "xkcd:gunmetal","xkcd:red wine", "xkcd:blood orange"
+              ]
+    batterymarkers = ['$0$', '$1$', '$2$', '$3$', '$4$', '$4$', '$5$', '$6$', '$7$', '$8$', '$9$', '$10$' \
+        , '$11$', '$12$', '$13$', '$14$', '$15$', '$16$', '$17$', '$18$', '$19$', '$20$', '$21$', '$22$', '$23$','$24$']
     connections = [[] for _ in range(numBat * 2)]
 
     unconnectedx = []
