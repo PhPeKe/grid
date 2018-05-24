@@ -8,6 +8,8 @@ from functions.algorithms.kmeans import kmeans
 from functions.connectUnconnected import connectUnconnected
 from functions.visualize import visualize
 
+from copy import deepcopy
+
 def ultimate(district):
 
     capacities = [450, 900, 1800]
@@ -16,6 +18,8 @@ def ultimate(district):
     for house in district.houses:
         totalOutput = totalOutput + house.output
 
+
+    # initialize with set of low capacity batteries
     minNumBatteries = int(totalOutput / 450) + 1
     del district.batteries[:]
     distance = 50/minNumBatteries
@@ -45,11 +49,15 @@ def ultimate(district):
             print(district.costs, costDifference)
             costDKmeans = oldKCosts - district.calculateCosts()
             visualize(district)
+            if district.costs < district.compare.costs and len(district.disconnectedHouses) == 0:
+                district.compare = deepcopy(district)
+            return
 
         # choose fullest battery to upgrade
         bats = district.batteries
         bats.sort(key=lambda x: x.capacity)
         district.disconnect()
+
         for b in bats:
             if b.capacity != capacities[len(capacities)-1]:
                 index = capacities.index(b.capacity)
@@ -57,11 +65,17 @@ def ultimate(district):
                 b.costs = batCosts[index]
                 break
         district.connectGreedy()
+
         for uc in district.disconnectedHouses:
             connectUnconnected(uc, district.batteries)
         kmeans(district)
         costDifference = oldCosts - district.calculateCosts()
         visualize(district)
+
+        if district.costs < district.compare.costs and len(district.disconnectedHouses) == 0:
+            district.compare = deepcopy(district)
+        return
+
 
     district.calculateCosts()
     print("post ultimate costs:", district.costs)

@@ -48,6 +48,7 @@ def main():
     district.hillClimber()
     ultimate(district)
     district = deepcopy(district.compare)
+
     # Calculate costs for this configuration
     district.calculateCosts()
 

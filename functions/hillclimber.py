@@ -3,7 +3,7 @@ from functions import visualize
 from functions.switch import switch
 from functions.simultaneousSwitch import simultaneousSwitch
 from copy import deepcopy
-
+from math import exp
 
 def hillclimbSwitcher(house, district, i, triedhouses):
     temperature = 250
@@ -200,3 +200,9 @@ def multipleSwitchBack(house, currentH, randomh, b, howmany):
         # print("PRE COST LOOP", randomh[i].id,"con", randomh[i].connection.id, "to: ", b.id)
         switch(randomh[i], b)
         # print("POST", randomh[i].id,"con", randomh[i].connection.id)
+
+def acceptanceprobability(newCosts, currentCosts, temperature):
+    if newCosts < currentCosts:
+        return 1.0
+    else:
+        return exp((currentCosts - newCosts) / temperature)
