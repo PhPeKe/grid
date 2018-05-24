@@ -45,28 +45,19 @@ def main():
         # Connect all houses to random battery
         district.connectRandom()
     print("Initial costs: ",district.calculateCosts())
-    #district.hillClimber(True)
-    ultimate(district)
+    district.hillClimber()
+    #ultimate(district)
+    #district = deepcopy(district.compare)
 
-    district = deepcopy(district.compare)
-    district.calculateCosts()
-    print(district.costs)
     # Calculate costs for this configuration
+    district.calculateCosts()
 
     print("Costs: ",district.costs)
     if args.plot:
         visualize(district, True, "initial")
 
-    plotIndex = 0
-
-    district, plotIndex = kmeans(district, numIt = 50, plotIndex = plotIndex)
-    district, plotIndex = kmeans(district, numIt = 50, plotIndex = plotIndex)
-
-    district, plotIndex = kmeans(district, numIt = 50, plotIndex = plotIndex)
-    district, plotIndex = kmeans(district, numIt = 50, plotIndex = plotIndex)
-
-    district, plotIndex = kmeans(district, numIt = 50, plotIndex = plotIndex)
-    district, plotIndex = kmeans(district, numIt = 50, plotIndex = plotIndex)
+    kmeansIt = args.kmeansIt
+    district = kmeans(district, numIt = kmeansIt)
 
     if args.save =="csv":
         district.save("District" + args.district)

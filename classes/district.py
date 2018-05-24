@@ -3,6 +3,8 @@ from functions.hillclimber import hillclimbSwitcher
 from functions.ultimate import ultimate
 from random import shuffle
 from copy import deepcopy
+from copy import copy
+from functions.visualize import visualize
 
 
 class District:
