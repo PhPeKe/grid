@@ -40,7 +40,7 @@ def kmeans(district, numIt = 10, count = 0, contestants = [], miss = 0, plotInde
     #visualize(district, True, count)
     if district.costs <= contestants[0].costs:
         #visualize(district, True, plotIndex)
-         a = 0
+        a = 0
     else:
         miss += 1
         # RESEARCH:
