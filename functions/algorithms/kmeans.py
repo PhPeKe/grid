@@ -68,4 +68,5 @@ def kmeans(district, numIt = 10, count = 0, contestants = [], miss = 0, plotInde
                       plotIndex = plotIndex)
     else:
         contestants.sort(key = lambda x: x.costs)
+        district = contestants[0]
         return district, plotIndex
