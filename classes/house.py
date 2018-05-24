@@ -1,4 +1,4 @@
-from functions.manhattan import manhattan
+from helpers.manhattan import manhattan
 from random import shuffle
 
 class House:

@@ -3,12 +3,12 @@ from classes.house import House
 from classes.battery import Battery
 from classes.cable import Cable
 from classes.district import District
-from functions.helpers.loadData import loadData
-from functions.visualize import visualize
-from functions.switch import switch
-from functions.algorithms.kmeans import kmeans
-from functions.ultimate import ultimate
-from functions.helpers.arguments import parseArgs
+from helpers.loadData import loadData
+from helpers.visualize import visualize
+from helpers.switch import switch
+from algorithms.kmeans import kmeans
+from algorithms.ultimate import ultimate
+from helpers.arguments import parseArgs
 import sys
 from random import shuffle
 from copy import deepcopy
@@ -46,8 +46,8 @@ def main():
         district.connectRandom()
     print("Initial costs: ",district.calculateCosts())
     district.hillClimber()
-    #ultimate(district)
-    #district = deepcopy(district.compare)
+    ultimate(district)
+    district = deepcopy(district.compare)
 
     # Calculate costs for this configuration
     district.calculateCosts()
