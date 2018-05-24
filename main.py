@@ -58,6 +58,12 @@ def main():
     district, plotIndex = kmeans(district, numIt = 50, plotIndex = plotIndex)
     district, plotIndex = kmeans(district, numIt = 50, plotIndex = plotIndex)
 
+    district, plotIndex = kmeans(district, numIt = 50, plotIndex = plotIndex)
+    district, plotIndex = kmeans(district, numIt = 50, plotIndex = plotIndex)
+
+    district, plotIndex = kmeans(district, numIt = 50, plotIndex = plotIndex)
+    district, plotIndex = kmeans(district, numIt = 50, plotIndex = plotIndex)
+
     if args.save =="csv":
         district.save("District" + args.district)
     if args.save =="verbose":
