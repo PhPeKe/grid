@@ -3,19 +3,16 @@ from random import shuffle
 from helpers.compare import compare
 from algorithms.hillclimber import hillclimbSwitcher
 from helpers.visualize import visualize
-from helpers.acceptanceProbability import acceptanceprobability
-from random import random
-
 def kmeans(district, numIt = 10, count = 0, contestants = [], miss = 0, plot = False):
     temp = district.mode
-    district.mode += ":kmeans"
+    district.mode += "kmeans"
+    temperature = 1
     while (count < numIt):
-        if contestants:
-            print("       Price before: ", district.costs, contestants[0].costs)
-        if count > 0:
-            checkConnections(district, contestants)
+
+        print("       Price before: ", district.costs)
+        checkConnections(district, count, contestants)
         batteriesToMean(district)
-        district.calculateCosts()
+        #compare(district)
         print("kmeans iteration: ",count, str(district.costs))
 
 

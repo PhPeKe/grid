@@ -5,53 +5,52 @@ from helpers.compare import compare
 from helpers.acceptanceProbability import acceptanceprobability
 
 
-def hillclimbSwitcher(house, district, justUnconnected = False, sa = True, triedHouses = []):
+def hillclimbSwitcher(house, district, justUnconnected = False, justSingle = False, sa = True,\
+                      temperature = 250, coolingRate = 0.95 ):
     """ Iterates towards a connection for every house and a cheaper cable configuration
 
        Keyword arguments:
-       house -- the House object for which the method searches an alternative cable connection.
-       district -- the
+       house - House object for which the method searches an alternative cable connection
+       district - current district in which the houses, batteries and cables exist
        """
     
-    temperature = 250
-    coolingRate = 0.95
-    currentCosts = district.calculateCosts()
-
-    if justUnconnected == True:
+    if justUnconnected:
         if house in district.disconnectedHouses:
             singleConnectUnconnected(house, district)
         return
 
     else:
         i = 1
+        triedHouses = []
+        currentCosts = district.calculateCosts()
         while i < len(district.batteries):
             singleSwitch(house, district, i, triedHouses, currentCosts, sa, temperature, coolingRate)
             i += 1
 
-    combinedSwitch(house, district, 0, 0, temperature, 2, coolingRate)
+    if not justSingle:
+        combinedSwitch(house, district, 0, 0, temperature, 2, coolingRate, sa)
+
     return
+
 
 def singleSwitch(house, district, i, triedHouses, currentCosts, sa, temperature, coolingRate):
     """Optimizes cable configuration by switching 2 houses.
 
        Keyword arguments:
-       real -- the real part (default 0.0)
-       imag -- the imaginary part (default 0.0)
+       chosenHouse - House object that's being considered for a switch with house
+       triedHouses - houses which have already been considered
        """
 
     battery = house.possible_connections[i][0]
-    capacity_d = house.output
 
-    # sort possible houses to switch with on furthest distance first
+    # first attempts to switch with houses who are far from their battery
+    # considers every house of every battery until a switch is found
     batteryConnections = battery.connectedHouses
     batteryConnections.sort(key=lambda x: x.distance, reverse=True)
 
-    # per battery, see if a switch can be made with one of its houses
     for chosenHouse in batteryConnections:
         if chosenHouse not in triedHouses and chosenHouse != house:
-
-            # Try switching two houses when enough capacity space available
-            if ((chosenHouse.output + battery.capacity) >= capacity_d) and \
+            if ((chosenHouse.output + battery.capacity) >= house.output) and \
                     (chosenHouse.output < (house.connection.capacity + house.output)):
                 simultaneousSwitch(house, chosenHouse)
 
@@ -62,12 +61,12 @@ def singleSwitch(house, district, i, triedHouses, currentCosts, sa, temperature,
                 else:
                     newCosts = district.calculateCosts()
 
-                    if sa == True:
-
+                    # simulated annealing
+                    if sa:
                         if acceptanceprobability(newCosts, currentCosts, temperature) > random():
-                            # # print("NORMAL SWITCH")
                             if house in district.nthChoiceHouses:
                                 district.nthChoiceHouses.remove(house)
+
                             compare(district)
                             temperature *= coolingRate
                             return
@@ -87,17 +86,22 @@ def singleSwitch(house, district, i, triedHouses, currentCosts, sa, temperature,
 
 
 def singleConnectUnconnected(house, district):
+    """Finds a connection for an unconnected house,
+
+       Keyword arguments:
+       house - the House object without which must be connected
+       connectedHouse - House object that's being considered to make space for 'house'
+       """
     district.batteries.sort(key=lambda x: x.capacity, reverse=True)
 
     for battery in district.batteries:
-        # Find a house which is already connected
+        # Finds a house which can move elsewhere, the unconnected house takes its place
         for connectedHouse in battery.connectedHouses:
             oldConnection = connectedHouse.connection
-            # then check if the house's output combined with its battery's leftover capacity could facilitate the other
+
             if (connectedHouse.output + connectedHouse.connection.capacity) > house.output:
                 for b in connectedHouse.possible_connections:
-                    #print("connect?",b[0].id, b[0].capacity, "connected house cap", connectedHouse.output)
-                    if b[0].capacity >= connectedHouse.output:
+                     if b[0].capacity >= connectedHouse.output:
                         switch(connectedHouse, b[0])
                         switch(house, oldConnection)
 
@@ -113,54 +117,59 @@ def singleConnectUnconnected(house, district):
                         district.disconnectedHouses.remove(house)
                         print("switch! to prev location of: ", connectedHouse.id,"to", oldConnection.id)
                         return
-    #print("no possible switches found for house: ", house.id)
 
-#---------------------------------------------------------------------------------------------------------------
 
-def combinedSwitch(house, district, count, bcursor, temperature, howmany, coolingRate):
+def combinedSwitch(house, district, count, bCursor, temperature, howMany, coolingRate, sa, combiSize = 4):
+    """Optimizes cable configuration by replacing multiple houses, another house takes their place
+
+       Keyword arguments:
+       combiSize - determines how large the group of houses will be to make the combined switch
+       howMany - keeps track of how large the group of houses currently is
+       connectedHouse - House object that's being considered to make space for 'house'
+
+       """
     currentCosts = district.calculateCosts()
-    #geef nummer van batterij mee en increase dat na 100 keer
-    # check every battery for randomdistrict.houses to move
 
     # probeer 10 keer een random combinatie van huizen van dezelfde batterij te vinden
-    while howmany < 4:
-        while bcursor < len(district.batteries)-1:
-            b = district.batteries[bcursor]
+    while howMany < combiSize:
+        while bCursor < len(district.batteries)-1:
+            b = district.batteries[bCursor]
             if b != house.connection:
                 while count < 10:
-                    lookForMultiSwitch(count, b, howmany, house, district, currentCosts, temperature, coolingRate)
+                    lookForMultiSwitch(sa, b, howMany, house, district, currentCosts, temperature, coolingRate)
                     count += 1
-            bcursor += 1
-        howmany += 1
+            bCursor += 1
+        howMany += 1
 
     # repeat the previous, but now with larger combination sets, over all batteries
-    if howmany < 4:
-        howmany += 1
-        combinedSwitch(house, district, count, 0, currentCosts, howmany)
+    if howMany < 4:
+        howMany += 1
+        combinedSwitch(house, district, count, 0, currentCosts, howMany)
 
     return
 
-def lookForMultiSwitch(count, b, howmany, house, district, currentCosts, temperature, coolingRate):
-    randomh = []
-    # choose "howmany"-amount of houses randomly from 1 battery,
+
+def lookForMultiSwitch(sa, b, howMany, house, district, currentCosts, temperature, coolingRate):
+    randomH = []
+    # choose "howMany"-amount of houses randomly from 1 battery,
     bhouses = b.connectedHouses
     c = 0
-    while c < howmany and len(b.connectedHouses) >= 1:
-        randomh.append(bhouses[randint(0, len(b.connectedHouses) - 1)])
+    while c < howMany and len(b.connectedHouses) >= 1:
+        randomH.append(bhouses[randint(0, len(b.connectedHouses) - 1)])
         c += 1
 
     # check if no doubles in selected houses
-    if len(randomh) == len(set(randomh)):
+    if len(randomH) == len(set(randomH)):
         # calculate selected houses combined output
         sum = 0
-        for i in range(howmany):
-            sum = randomh[i].output + sum
+        for i in range(howMany):
+            sum = randomH[i].output + sum
 
         # attempt switch if it would free enough capacity in b
         if (sum + b.capacity >= house.output):
-            for i in range(howmany):
+            for i in range(howMany):
                 # save current connection
-                multipleSwitch(randomh[i])
+                multipleSwitch(randomH[i])
 
             # move the house
             currentH = house.connection
@@ -168,18 +177,27 @@ def lookForMultiSwitch(count, b, howmany, house, district, currentCosts, tempera
 
             for bats in district.batteries:
                 if bats.capacity < 0 or b.capacity < 0:
-                    multipleSwitchBack(house, currentH, randomh, b, howmany)
+                    multipleSwitchBack(house, currentH, randomH, b, howMany)
                     return
 
             newCosts = district.calculateCosts()
-            if acceptanceprobability(newCosts, currentCosts, temperature) > random():
-                if house in district.nthChoiceHouses:
-                    district.nthChoiceHouses.remove(house)
-                compare(district)
-                return
+            if sa:
+                if acceptanceprobability(newCosts, currentCosts, temperature) > random():
+                    if house in district.nthChoiceHouses:
+                        district.nthChoiceHouses.remove(house)
+                    compare(district)
+                    return
+                else:
+                    multipleSwitchBack(house, currentH, randomH, b, howMany)
+                temperature *= coolingRate
             else:
-                multipleSwitchBack(house, currentH, randomh, b, howmany)
-            temperature *= coolingRate
+                if newCosts < currentCosts:
+                    if house in district.nthChoiceHouses:
+                        district.nthChoiceHouses.remove(house)
+                    return
+                else:
+                    multipleSwitchBack(house, currentH, randomH, b , howMany)
+
 
 
 def multipleSwitch(randomhouse):
@@ -195,7 +213,8 @@ def multipleSwitch(randomhouse):
                 switch(randomhouse, rb)
                 return
 
-def multipleSwitchBack(house, currentH, randomh, b, howmany):
+
+def multipleSwitchBack(house, currentH, randomH, b, howMany):
     if currentH != "NOT CONNECTED!":
         switch(house, currentH)
 
@@ -205,6 +224,5 @@ def multipleSwitchBack(house, currentH, randomh, b, howmany):
         house.connection.connectedHouses.remove(house)
         house.connection = "NOT CONNECTED!"
 
-    for i in range(howmany):
-        switch(randomh[i], b)
-
+    for i in range(howMany):
+        switch(randomH[i], b)

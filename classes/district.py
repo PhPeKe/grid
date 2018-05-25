@@ -115,7 +115,7 @@ class District:
         unconnectCount = 0
         temperature = 500
         coolingRate = 0.9
-        firstcosts = self.calculateCosts()
+        firstCosts = self.calculateCosts()
         iterationCount = 0
 
         while temperature > 1:
