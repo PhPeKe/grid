@@ -42,7 +42,7 @@ def ultimate(district):
 
     costDifference = 1
     costDKmeans = 1
-    temperatute = 250
+    temperature = 250
     coolingRate = 0.95
     count = 0
     numIt = 10
@@ -51,16 +51,16 @@ def ultimate(district):
         while costDKmeans > 0:
             oldCosts = copy(district.calculateCosts())
             print(" while it")
-            district = kmeans(district, numIt = 3)
+            district = kmeans(district, numIt = 10)
            ##visualize(district, True, district.mode + str(x))
             x += 1
             district.calculateCosts()
             costDKmeans = oldCosts - district.costs
         count += 1
         batteryUpgrade(district, capacities, batCosts, oldCosts, costDifference)
-        if acceptanceprobability(district.calculateCosts(), oldCosts, temperatute) < random():
+        if acceptanceprobability(district.calculateCosts(), oldCosts, temperature) < random():
             break
-        temperatute *= coolingRate
+        temperature *= coolingRate
         costDKmeans = 1
 
     district.calculateCosts()
@@ -84,7 +84,7 @@ def joinClosestBatteries(district, batCosts):
 
     if closestBatteries[0].batteryType != 2 and closestBatteries[1].batteryType != 2:
         usedCapacity0 = closestBatteries[0].maxCapacity - closestBatteries[0].capacity
-        usedCapacity1 = closestBatteries[1].maxCapacity-closestBatteries[1].capacity
+        usedCapacity1 = closestBatteries[1].maxCapacity - closestBatteries[1].capacity
         print(usedCapacity1, usedCapacity0, closestBatteries[0].maxCapacity * 2)
 
 
@@ -98,6 +98,8 @@ def joinClosestBatteries(district, batCosts):
                 closestBatteries[0].connectedHouses.append(house)
                 house.connection = closestBatteries[0]
             district.batteries.remove(closestBatteries[1])
+
+            # Update Battery-id's
             for i in range(len(district.batteries)):
                 district.batteries[i].id = i
 
