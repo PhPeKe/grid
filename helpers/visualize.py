@@ -80,7 +80,7 @@ def visualize(district, save = False, numIt = False):
     costs = district.costs
     title = "Iteration: "+ str(numIt) + "Costs: " + str(costs)
     ax.grid()
-    ax.set_title(costs)
+    ax.set_title(title)
     ax.set_facecolor('xkcd:charcoal')
     ax.axis('equal')
     if save == True:

@@ -138,7 +138,6 @@ class District:
 
         while temperature > 1:
             iterationCount += 1
-            visualize(self, True)
             for disconnectedHouse in self.disconnectedHouses:
                 hillclimbSwitcher(disconnectedHouse, self, True)
 
@@ -175,6 +174,5 @@ class District:
         ultimate(self)
 
     def compare(self):
-        print(self.costs, self.compare.costs)
         if self.costs < self.compare.costs and len(self.disconnectedHouses) == 0:
             self.compare = deepcopy(self)

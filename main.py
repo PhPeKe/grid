@@ -14,6 +14,7 @@ def main():
     """ Smart Grid by Groep 1
 
         Please refer to the README for more information.
+
     """
 
     # Get arguments
@@ -45,35 +46,28 @@ def main():
         # Connect all houses to random battery
         district.connectRandom()
     print("Initial costs: ",district.calculateCosts())
-
-    if args.part == "b":
-        district.mode = "hillclimber-"
-        district.hillClimber(False)
-        district.mode = ""
-        district = deepcopy(district.compare)
-        district.calculateCosts()
-
-    if args.part in ["b","c"]:
-        district = kmeans(district, numIt = args.kmeansIt)
-
-    if args.part in ["b","c","d"]:
-        district = ultimate(district)
-
-    print("Copy Costs: ",district.costs)
     if args.plot:
-       visualize(district, True, "initial")
+       visualize(district, True, "Initial")
+    district.hillClimber()
+    
+    if args.plot:
+       visualize(district, True, "After hillclimber")
 
     kmeansIt = args.kmeansIt
-    district = kmeans(district, numIt = kmeansIt)
+    district = kmeans(district, numIt = args.kmeansIt)
 
-    district = deepcopy(district.compare)
+    if args.plot:
+       visualize(district, True, "After kmeans")
 
     district = ultimate(district)
 
+    print("Costs: ",district.costs)
+
+    if args.plot:
+       visualize(district, True, "Final")
+
     if args.save =="csv":
         district.save("District" + args.district)
-    if args.save =="verbose":
-        district.saveVerbose("District" + args.district)
 
     return district
 

@@ -22,12 +22,14 @@ def ultimate(district):
 
     """
     print("ULTIMATE")
-    district.mode = "ultimate-"
     x = 0
     batCosts = [900, 1350, 1800]
     totalOutput = 0
     for house in district.houses:
         totalOutput = totalOutput + house.output
+
+    if district.compare == set():
+        district.compare = deepcopy(self)
 
     minNumBatteries = int(totalOutput / 450) + 1
     del district.batteries[:]
@@ -56,7 +58,7 @@ def ultimate(district):
         while costDKmeans > 0:
             print("new kmeans iteration")
             oldCosts = copy(district.calculateCosts())
-            district = kmeans(district, numIt = 10)
+            district = kmeans(district, numIt = 3)
             x += 1
             district.calculateCosts()
             costDKmeans = oldCosts - district.costs
@@ -97,7 +99,6 @@ def joinClosestBatteries(district, batCosts):
     if closestBatteries[0].batteryType != 2 and closestBatteries[1].batteryType != 2:
         usedCapacity0 = closestBatteries[0].maxCapacity - closestBatteries[0].capacity
         usedCapacity1 = closestBatteries[1].maxCapacity - closestBatteries[1].capacity
-        print(usedCapacity1, usedCapacity0, closestBatteries[0].maxCapacity * 2)
 
         if (usedCapacity0 + usedCapacity1) <= (closestBatteries[0].maxCapacity * 2):
             closestBatteries[0].maxCapacity *= 2
