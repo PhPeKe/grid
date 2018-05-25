@@ -94,7 +94,7 @@ def joinClosestBatteries(district):
             district.batteries[i].id = i
     return district
 
-def batteryUpgrade(district, capacities, batCosts):
+def oldbatteryUpgrade(district, capacities, batCosts):
     # choose fullest battery to upgrade
     bats = district.batteries
     bats.sort(key=lambda x: x.capacity)
