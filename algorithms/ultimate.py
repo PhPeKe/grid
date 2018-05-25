@@ -5,8 +5,12 @@
 # etc
 from classes.battery import Battery
 from algorithms.kmeans import kmeans
-from helpers.connectUnconnected import connectUnconnected
+from algorithms.hillclimber import hillclimbSwitcher
 from helpers.visualize import visualize
+from copy import deepcopy
+from helpers.acceptanceProbability import acceptanceprobability
+from random import random
+
 from copy import copy
 
 
@@ -19,8 +23,6 @@ def ultimate(district):
     totalOutput = 0
     for house in district.houses:
         totalOutput = totalOutput + house.output
-
-
 
     # initialize with set of low capacity batteries
     minNumBatteries = int(totalOutput / 450) + 1
@@ -40,6 +42,8 @@ def ultimate(district):
 
     costDifference = 1
     costDKmeans = 1
+    temperatute = 250
+    coolingRate = 0.95
     count = 0
     numIt = 10
     while count < numIt:#costDifference > 0:
@@ -72,24 +76,31 @@ def batteryUpgrade(district, capacities, batCosts, oldCosts, costDifference):
             b.costs = batCosts[index]
             b.batteryType = index
             break
-        #random combinaties maken vak een batterij om te upgraden en een batterij om weg te hale
-        # en dan kijken of dat beter wordt
-        # nog met simulated annealing
     district.connectGreedy()
 
-    preRemoveCosts = district.calculateCosts()
     toBeRemoved = bats[len(bats)-1]
+    print(toBeRemoved.id)
     district.batteries.remove(bats[len(bats)-1])
+    for b in bats:
+        print(b.id, b.location)
+    print("len ultimate",len(district.batteries))
+
+    for i in range(len(district.batteries)):
+        district.batteries[i].id = i
+    visualize(district)
 
     district.connectGreedy()
-    for uc in district.disconnectedHouses:
-        connectUnconnected(uc, district.batteries)
-    district = kmeans(district)
 
-    if len(district.disconnectedHouses) != 0 or preRemoveCosts < district.calculateCosts():
+    for uc in district.disconnectedHouses:
+        hillclimbSwitcher(uc, district, True)
+    print("new number of batteries: ", len(district.batteries))
+
+
+    if len(district.disconnectedHouses) != 0:
         district.batteries.append(toBeRemoved)
 
-   #visualize(district, True, district.mode + "Ultimate Winner")
+    district = kmeans(district)
+    visualize(district)
     district.compare
     return district
 

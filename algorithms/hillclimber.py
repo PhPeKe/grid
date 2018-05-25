@@ -1,74 +1,73 @@
 from random import randint, random
-from helpers import visualize
 from helpers.switch import switch
 from helpers.simultaneousSwitch import simultaneousSwitch
-from copy import deepcopy
-from math import exp
-
-def hillclimbSwitcher(house, district, i, triedhouses, sa):
+from helpers.compare import compare
+from helpers.acceptanceProbability import acceptanceprobability
+def hillclimbSwitcher(house, district, justUnconnected = False, sa = True, triedhouses = []):
     temperature = 250
     coolingRate = 0.95
-    currentCosts = district.calculateCosts()  # kijken of dit ook in district kan en verschil old en first costs
+    currentCosts = district.calculateCosts()
 
-    if house.connection != "NOT CONNECTED!":
-        while i < len(district.batteries):
-            # print("CURRENT COSTS:", currentCosts, "HOUSE: ", house.id)
-
-            battery = house.possible_connections[i][0]
-            capacity_d = house.output
-
-            # sort possible houses to switch with on furthest distance first
-            # kijken of dit in district zelf kan
-            batteryConnections = battery.connectedHouses
-            batteryConnections.sort(key=lambda x: x.distance, reverse=True)
-
-            # per battery, see if a switch can be made with one of its houses
-            for chosenHouse in batteryConnections:
-                if chosenHouse not in triedhouses and chosenHouse != house:
-
-                    # Try switching two houses when enough capacity space available
-                    if ((chosenHouse.output + battery.capacity) >= capacity_d) and \
-                            (chosenHouse.output < (house.connection.capacity + house.output)):
-                        simultaneousSwitch(house, chosenHouse)
-
-                        if house.connection.capacity < 0 or chosenHouse.connection.capacity < 0:
-                            simultaneousSwitch(chosenHouse, house)
-                            triedhouses.append(chosenHouse)
-
-                        else:
-                            newCosts = district.calculateCosts()
-                            if sa == True:
-
-                                if acceptanceprobability(newCosts, currentCosts, temperature) > random():
-                                    # # print("NORMAL SWITCH")
-                                    if house in district.nthChoiceHouses:
-                                        district.nthChoiceHouses.remove(house)
-
-                                    district.compare()
-                                    temperature *= coolingRate
-
-                                    return
-
-                                else:
-                                    simultaneousSwitch(chosenHouse, house)
-                                    triedhouses.append(chosenHouse)
-                                    temperature *= coolingRate
-
-                            if newCosts < currentCosts:
-                                if house in district.nthChoiceHouses:
-                                    district.nthChoiceHouses.remove(house)
-                                return
-                            else:
-                                simultaneousSwitch(chosenHouse, house)
-                                triedhouses.append(chosenHouse)
-
-            i += 1
+    if justUnconnected == True:
+        singleConnectUnconnected(house, district)
+        return
 
     else:
-        singleConnectUnconnected(house, district)
+        i = 1
+        while i < len(district.batteries):
+            singleSwitch(house, district, i, triedhouses, currentCosts, sa, temperature, coolingRate)
+            i += 1
 
-    combined(house, district, 0, 0, temperature, 2, coolingRate)
+    combinedSwitch(house, district, 0, 0, temperature, 2, coolingRate)
     return
+
+def singleSwitch(house, district, i, triedhouses, currentCosts, sa, temperature, coolingRate):
+
+    battery = house.possible_connections[i][0]
+    capacity_d = house.output
+
+    # sort possible houses to switch with on furthest distance first
+    batteryConnections = battery.connectedHouses
+    batteryConnections.sort(key=lambda x: x.distance, reverse=True)
+
+    # per battery, see if a switch can be made with one of its houses
+    for chosenHouse in batteryConnections:
+        if chosenHouse not in triedhouses and chosenHouse != house:
+
+            # Try switching two houses when enough capacity space available
+            if ((chosenHouse.output + battery.capacity) >= capacity_d) and \
+                    (chosenHouse.output < (house.connection.capacity + house.output)):
+                simultaneousSwitch(house, chosenHouse)
+
+                if house.connection.capacity < 0 or chosenHouse.connection.capacity < 0:
+                    simultaneousSwitch(chosenHouse, house)
+                    triedhouses.append(chosenHouse)
+
+                else:
+                    newCosts = district.calculateCosts()
+
+                    if sa == True:
+
+                        if acceptanceprobability(newCosts, currentCosts, temperature) > random():
+                            # # print("NORMAL SWITCH")
+                            if house in district.nthChoiceHouses:
+                                district.nthChoiceHouses.remove(house)
+                            compare(district)
+                            temperature *= coolingRate
+                            return
+
+                        else:
+                            simultaneousSwitch(chosenHouse, house)
+                            triedhouses.append(chosenHouse)
+                            temperature *= coolingRate
+
+                    if newCosts < currentCosts:
+                        if house in district.nthChoiceHouses:
+                            district.nthChoiceHouses.remove(house)
+                        return
+                    else:
+                        simultaneousSwitch(chosenHouse, house)
+                        triedhouses.append(chosenHouse)
 
 
 def singleConnectUnconnected(house, district):
@@ -87,21 +86,18 @@ def singleConnectUnconnected(house, district):
                         switch(house, b[0])
 
                         if house.connection.capacity < 0:
-                            # # print("yo")
                             house.distance = 0
                             house.connection.capacity += house.output
-                            # # # print(house.id)
                             house.connection.connectedHouses.remove(house)
                             house.connection = "NOT CONNECTED!"
                             break
 
-                        # # print("CONNECT UNCONNECTED of house ", house.id, "to", house.connection.id, house.connection.capacity)
                         district.disconnectedHouses.remove(house)
                         return
 
 #---------------------------------------------------------------------------------------------------------------
 
-def combined(house, district, count, bcursor, temperature, howmany, coolingRate):
+def combinedSwitch(house, district, count, bcursor, temperature, howmany, coolingRate):
     currentCosts = district.calculateCosts()
     #geef nummer van batterij mee en increase dat na 100 keer
     # check every battery for randomdistrict.houses to move
@@ -120,7 +116,7 @@ def combined(house, district, count, bcursor, temperature, howmany, coolingRate)
     # repeat the previous, but now with larger combination sets, over all batteries
     if howmany < 4:
         howmany += 1
-        combined(house, district, count, 0, currentCosts, howmany)
+        combinedSwitch(house, district, count, 0, currentCosts, howmany)
 
     return
 
@@ -142,7 +138,6 @@ def lookForMultiSwitch(count, b, howmany, house, district, currentCosts, tempera
 
         # attempt switch if it would free enough capacity in b
         if (sum + b.capacity >= house.output):
-
             for i in range(howmany):
                 # save current connection
                 multipleSwitch(randomh[i])
@@ -158,16 +153,13 @@ def lookForMultiSwitch(count, b, howmany, house, district, currentCosts, tempera
 
             newCosts = district.calculateCosts()
             if acceptanceprobability(newCosts, currentCosts, temperature) > random():
-                # # print("NORMAL SWITCH")
                 if house in district.nthChoiceHouses:
                     district.nthChoiceHouses.remove(house)
 
-                district.compare()
+                compare(district)
                 return
             else:
-                # print("PRE COST LOOP", "new", newcosts, "current", currentCosts)
                 multipleSwitchBack(house, currentH, randomh, b, howmany)
-                # print("POST", "new", district.calculateCosts(), "current", currentCosts)
             temperature *= coolingRate
 
 
@@ -186,9 +178,7 @@ def multipleSwitch(randomhouse):
 
 def multipleSwitchBack(house, currentH, randomh, b, howmany):
     if currentH != "NOT CONNECTED!":
-        # print("HOUSE pre switch back: ", house.id, "con", house.connection.id, "currentH: ", currentH)
         switch(house, currentH)
-        # print("HOuSE post: ", house.id, "con", house.connection.id)
 
     else:
         house.distance = 0
@@ -201,23 +191,3 @@ def multipleSwitchBack(house, currentH, randomh, b, howmany):
         switch(randomh[i], b)
         # print("POST", randomh[i].id,"con", randomh[i].connection.id)
 
-def acceptanceprobability(newCosts, currentCosts, temperature): # naar helpers
-    if newCosts < currentCosts:
-        return 1.0
-    else:
-        return exp((currentCosts - newCosts) / temperature)
-
-# def hillSimulatedAnnealing(district, currentCosts, temperature, house, coolingRate, ):
-#     newCosts = district.calculateCosts()
-#     if acceptanceprobability(newCosts, currentCosts, temperature) > random():
-#         # # print("NORMAL SWITCH")
-#         if house in district.nthChoiceHouses:
-#             district.nthChoiceHouses.remove(house)
-#
-#         district.compare()
-#         return
-#     else:
-#         # print("PRE COST LOOP", "new", newcosts, "current", currentCosts)
-#         multipleSwitchBack(house, currentH, randomh, b, howmany)
-#         # print("POST", "new", district.calculateCosts(), "current", currentCosts)
-#     temperature *= coolingRate

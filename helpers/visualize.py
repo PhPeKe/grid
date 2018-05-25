@@ -17,8 +17,11 @@ def visualize(district, save = False, numIt = False):
               "xkcd:light royal blue", "xkcd:off white", "xkcd:silver", "xkcd:melon", \
               "xkcd:ocean green", "xkcd:poo", "xkcd:gunmetal","xkcd:red wine", "xkcd:blood orange"
               ]
-    batterymarkers = ['$0$', '$1$', '$2$', '$3$', '$4$', '$4$', '$5$', '$6$', '$7$', '$8$', '$9$', '$10$' \
-        , '$11$', '$12$', '$13$', '$14$', '$15$', '$16$', '$17$', '$18$', '$19$', '$20$', '$21$', '$22$', '$23$','$24$']
+    batterymarkers = []
+    for i in range(len(colors)):
+        batteryNum = '$' + str(i) + '$'
+        batterymarkers.append(batteryNum)
+
     connections = [[] for _ in range(numBat * 2)]
 
     unconnectedx = []
@@ -29,7 +32,7 @@ def visualize(district, save = False, numIt = False):
 
     # display houses (with or without connection)
     for house in houses:
-        if house.connection != "NOT CONNECTED!": # NOTE: the
+        if house.connection != "NOT CONNECTED!":
 
             i = house.connection.id
             j = house.connection.id + numBat
@@ -75,7 +78,7 @@ def visualize(district, save = False, numIt = False):
     else:
         saveName = "plots/plotDistrict.png"
     costs = district.costs
-    title = "Iteration: "+ str(numIt) + "Costs: " + str(costs) 
+    title = "Iteration: "+ str(numIt) + "Costs: " + str(costs)
     ax.grid()
     ax.set_title(costs)
     ax.set_facecolor('xkcd:charcoal')

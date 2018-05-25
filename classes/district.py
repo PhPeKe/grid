@@ -57,8 +57,9 @@ class District:
             for battery in self.batteries:
                 writer.writerow([battery.id,battery.capacity,battery.location[0],battery.location[1]])
             for house in self.houses:
-                if not house.connection == set():
-                    writer.writerow([house.id,house.connection.id,house.output, house.location[0],house.location[1]])
+                if house.connection != "NOT CONNECTED!":
+                    if not house.connection == set():
+                        writer.writerow([house.id,house.connection.id,house.output, house.location[0],house.location[1]])
 
     def load(self,name):
         infile = open("configurations/District1.csv")
@@ -106,6 +107,7 @@ class District:
                     b.closestBatteryDistance = manhattan(b,b2)
 
     def hillClimber(self, sa):
+
         if self.compare == set():
             self.compare = deepcopy(self)
         costdifference = 1
@@ -117,23 +119,24 @@ class District:
 
         while iterationCount < 100 and (costdifference > 0 or unconnectedFINISH == False):
             iterationCount += 1
+            visualize(self, True)
             for disconnectedHouse in self.disconnectedHouses:
                 unconnectCount += 1
-                hillclimbSwitcher(disconnectedHouse, self, 0, [], sa)
+                hillclimbSwitcher(disconnectedHouse, self, True)
 
             if len(self.disconnectedHouses) == 0 or unconnectCount == 1000:
                 unconnectedFINISH = True
 
             for nthChoiceHouse in self.nthChoiceHouses:
                 if nthChoiceHouse.connection != "NOT CONNECTED!":
-                    hillclimbSwitcher(nthChoiceHouse, self, 0, [], sa)
+                    hillclimbSwitcher(nthChoiceHouse, self)
 
             hillclimberHouses = self.houses
             shuffle(hillclimberHouses)
 
             for house in hillclimberHouses:
                 if house.connection != "NOT CONNECTED!":
-                    hillclimbSwitcher(house, self, 1, [], sa)
+                    hillclimbSwitcher(house, self, 1)
 
             self.calculateCosts()
 
@@ -143,7 +146,8 @@ class District:
 
             else:
                 costdifference = firstcosts - self.costs
-            print("This Configuration costs", self.costs, "euro")
+
+            print("This Configuration's minimum costs:", self.compare.costs, "euro")
             firstcosts = self.costs
 
            #visualize(self, True, self.mode + str(iterationCount))
