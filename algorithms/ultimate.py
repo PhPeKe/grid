@@ -46,18 +46,22 @@ def ultimate(district):
     coolingRate = 0.95
     count = 0
     numIt = 10
-    while count < numIt:#costDifference > 0:
+    while True:#costDifference > 0:
         oldCosts = copy(district.calculateCosts())
         while costDKmeans > 0:
             oldCosts = copy(district.calculateCosts())
             print(" while it")
             district = kmeans(district, numIt = 3)
-           #visualize(district, True, district.mode + str(x))
+           ##visualize(district, True, district.mode + str(x))
             x += 1
             district.calculateCosts()
             costDKmeans = oldCosts - district.costs
         count += 1
         batteryUpgrade(district, capacities, batCosts, oldCosts, costDifference)
+        if acceptanceprobability(district.calculateCosts(), oldCosts, temperatute) < random():
+            break
+        temperatute *= coolingRate
+        costDKmeans = 1
 
     district.calculateCosts()
     print("post ultimate costs:", district.costs)
@@ -65,36 +69,42 @@ def ultimate(district):
 
 def batteryUpgrade(district, capacities, batCosts, oldCosts, costDifference):
 
-    visualize(district, False, "Before joining")
-
+    #visualize(district, False, "Before joining")
     #district.disconnect()
     upgradeBattery = None
-    joinClosestBatteries(district)
-    visualize(district)
+    joinClosestBatteries(district, batCosts)
+    #visualize(district)
     return
 
 
-def joinClosestBatteries(district):
+def joinClosestBatteries(district, batCosts):
     district.setClosestBattery()
     district.batteries.sort(key = lambda x: x.closestBatteryDistance)
     closestBatteries = [district.batteries[0], district.batteries[0].closestBattery]
 
     if closestBatteries[0].batteryType != 2 and closestBatteries[1].batteryType != 2:
+        usedCapacity0 = closestBatteries[0].maxCapacity - closestBatteries[0].capacity
+        usedCapacity1 = closestBatteries[1].maxCapacity-closestBatteries[1].capacity
+        print(usedCapacity1, usedCapacity0, closestBatteries[0].maxCapacity * 2)
 
-        #closestBatteries[1].maxCapacity-closestBatteries[1].capacity +
-        closestBatteries[0].maxCapacity *= 2
-        closestBatteries[0].batteryType += 1
-        closestBatteries[0].capacity += closestBatteries[1].capacity
 
-        for house in closestBatteries[1].connectedHouses:
-            closestBatteries[0].connectedHouses.append(house)
-            house.connection = closestBatteries[0]
-        district.batteries.remove(closestBatteries[1])
-        for i in range(len(district.batteries)):
-            district.batteries[i].id = i
+        if (usedCapacity0 + usedCapacity1) <= (closestBatteries[0].maxCapacity * 2):
+            closestBatteries[0].maxCapacity *= 2
+            closestBatteries[0].batteryType += 1
+            closestBatteries[0].costs = batCosts[closestBatteries[0].batteryType]
+            closestBatteries[0].capacity += closestBatteries[1].capacity
+
+            for house in closestBatteries[1].connectedHouses:
+                closestBatteries[0].connectedHouses.append(house)
+                house.connection = closestBatteries[0]
+            district.batteries.remove(closestBatteries[1])
+            for i in range(len(district.batteries)):
+                district.batteries[i].id = i
+
+            kmeans(district, numIt=1)
     return district
 
-def oldbatteryUpgrade(district, capacities, batCosts):
+def OLDbatteryUpgrade(district, capacities, batCosts):
     # choose fullest battery to upgrade
     bats = district.batteries
     bats.sort(key=lambda x: x.capacity)
@@ -126,13 +136,13 @@ def oldbatteryUpgrade(district, capacities, batCosts):
     for uc in district.disconnectedHouses:
         hillclimbSwitcher(uc, district, True)
 
-    # visualize(district)
+    # #visualize(district)
     if len(district.disconnectedHouses) != 0:
         print("removal failed")
         district.batteries.append(toBeRemoved)
     print("new number of batteries: ", len(district.batteries))
 
     district = kmeans(district)
-    visualize(district)
+    #visualize(district)
     district.compare
     return district
