@@ -90,5 +90,4 @@ def batteryUpgrade(district, capacities, batCosts, oldCosts, costDifference):
     district.compare
     return district
 
-def joinBatteries(district):
-    
+#def joinBatteries(district):

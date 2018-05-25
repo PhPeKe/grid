@@ -1,19 +1,28 @@
-usage: main.py [-h] [-d {1,2,3}] [-p] [-s {ascending,descending,random}]
-               [-m {greedy,random}] [-sv {csv,verbose}] [-k KMEANSIT]
-
-optional arguments:
-  -h, --help            show this help message and exit
-  -d {1,2,3}, --district {1,2,3}
-                        Specify the number of the district (1, 2, 3)
-  -p, --plot            Flag if plots should be made
-  -s {ascending,descending,random}, --sort {ascending,descending,random}
-                        Sort houses before connecting to specify which house
-                        should be connected first (ascending, descending,
-                        random)
-  -m {greedy,random}, --method {greedy,random}
-                        Specify the method of initially assigning houses to
-                        batteries (greedy, random)
-  -sv {csv,verbose}, --save {csv,verbose}
-                        Specify if and how districts should be saved
-  -k KMEANSIT, --kmeansIt KMEANSIT
-                        Number of iterations for kmeans
+Initial costs:  59884
+This Configuration costs 59461 euro
+This Configuration costs 60037 euro
+hillclimber finished
+Copy Costs:  59884
+       Price before:  59884
+kmeans iteration:  0 49048
+       Price before:  49048
+kmeans iteration:  1 43414
+       Price before:  43414
+kmeans iteration:  2 42271
+       Price before:  42271
+kmeans iteration:  3 43243
+       Price before:  42271
+kmeans iteration:  4 42208
+       Price before:  42208
+kmeans iteration:  5 42316
+       Price before:  49048
+kmeans iteration:  6 43423
+Error: House 87 COULD NOT BE CONNECTED!
+       Price before:  43414
+kmeans iteration:  7 42253
+       Price before:  42208
+kmeans iteration:  8 42334
+       Price before:  43243
+kmeans iteration:  9 42082
+<classes.district.District object at 0x000000000921E4E0>
+42082

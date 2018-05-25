@@ -47,7 +47,7 @@ def main():
     district.mode = "hillclimber-"
     district.hillClimber(False)
     district.mode = ""
-    ultimate(district)
+    #ultimate(district)
     district = deepcopy(district.compare)
 
     # Calculate costs for this configuration
@@ -62,7 +62,7 @@ def main():
 
     #district = deepcopy(district.compare)
 
-    district = ultimate(district)
+    #district = ultimate(district)
 
     if args.save =="csv":
         district.save("District" + args.district)

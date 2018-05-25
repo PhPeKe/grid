@@ -2,6 +2,7 @@ import csv
 from algorithms.hillclimber import hillclimbSwitcher
 from algorithms.ultimate import ultimate
 from random import shuffle
+from helpers.manhattan import manhattan
 from copy import deepcopy
 from copy import copy
 from helpers.visualize import visualize
@@ -79,9 +80,12 @@ class District:
         return self.costs
 
     def setClosestBattery(self):
-        distance = 1000
         for b in self.batteries:
-            if manhattan(b,)
+            b.closestBatteryDistance = 10000
+            for b2 in self.batteries:
+                if not manhattan(b,b2) == 0 and manhattan(b,b2) < b.closestBatteryDistance:
+                    b.closestBattery = b2
+                    b.closestBatteryDistance = manhattan(b,b2)
 
     def hillClimber(self, sa):
         if self.compare == set():
