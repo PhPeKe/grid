@@ -66,4 +66,4 @@ Here a step-for-step overview of what we did with the project:
 ### 4. Moving batteries:
 - Given an optimized district batteries are moved to the center of all houses that they are connected to to further minimize cable length
 ### 5. Placing different kind of batteries
-- Starting point is a set of the smallest kind of batteries possible. These are then connected to the grid, kmeans is used to center the batteries and if the closest batteries of the same type are joined
+- Starting point is a set of the smallest kind of batteries possible. These are then connected to the grid, kmeans is used to minimize the costs of the battery configurations. Then the two batteries who are closest together join in one larger battery. This repeats in several iterations.
