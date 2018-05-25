@@ -49,6 +49,7 @@ def ultimate(district):
     while count < numIt:#costDifference > 0:
         oldCosts = copy(district.calculateCosts())
         while costDKmeans > 0:
+            oldCosts = copy(district.calculateCosts())
             print(" while it")
             district = kmeans(district, numIt = 3)
            #visualize(district, True, district.mode + str(x))
@@ -67,37 +68,41 @@ def batteryUpgrade(district, capacities, batCosts, oldCosts, costDifference):
     bats = district.batteries
     bats.sort(key=lambda x: x.capacity)
     district.disconnect()
+    upgradeBattery = None
 
     for b in bats:
         if b.capacity != capacities[len(capacities) - 1]:
-            index = capacities.index(b.capacity)
-            b.maxCapacity = capacities[index]
+            print(" pre upgrade", b.id, b.capacity)
+            index = capacities.index(b.capacity) + 1
+            print("capacity index value", capacities[index])
             b.capacity = capacities[index]
             b.costs = batCosts[index]
+            b.maxCapacity = capacities[index]
+            upgradeBattery = b
             b.batteryType = index
             break
+    print(" post upgrade", upgradeBattery.id, upgradeBattery.capacity)
     district.connectGreedy()
-
-    toBeRemoved = bats[len(bats)-1]
-    print(toBeRemoved.id)
+    district.setClosestBattery()
+    toBeRemoved = upgradeBattery.closestBattery
+    print("remove id",toBeRemoved.id)
     district.batteries.remove(bats[len(bats)-1])
-    for b in bats:
-        print(b.id, b.location)
+
     print("len ultimate",len(district.batteries))
 
     for i in range(len(district.batteries)):
         district.batteries[i].id = i
-    visualize(district)
 
     district.connectGreedy()
 
     for uc in district.disconnectedHouses:
         hillclimbSwitcher(uc, district, True)
-    print("new number of batteries: ", len(district.batteries))
 
-
+    #visualize(district)
     if len(district.disconnectedHouses) != 0:
+        print("removal failed")
         district.batteries.append(toBeRemoved)
+    print("new number of batteries: ", len(district.batteries))
 
     district = kmeans(district)
     visualize(district)

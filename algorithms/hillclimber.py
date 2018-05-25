@@ -3,13 +3,16 @@ from helpers.switch import switch
 from helpers.simultaneousSwitch import simultaneousSwitch
 from helpers.compare import compare
 from helpers.acceptanceProbability import acceptanceprobability
+
+
 def hillclimbSwitcher(house, district, justUnconnected = False, sa = True, triedhouses = []):
     temperature = 250
     coolingRate = 0.95
     currentCosts = district.calculateCosts()
 
     if justUnconnected == True:
-        singleConnectUnconnected(house, district)
+        if house in district.disconnectedHouses:
+            singleConnectUnconnected(house, district)
         return
 
     else:
@@ -72,28 +75,32 @@ def singleSwitch(house, district, i, triedhouses, currentCosts, sa, temperature,
 
 def singleConnectUnconnected(house, district):
     district.batteries.sort(key=lambda x: x.capacity, reverse=True)
+
     for battery in district.batteries:
-        capacity_d = house.output - battery.capacity
         # Find a house which is already connected
         for connectedHouse in battery.connectedHouses:
+            oldConnection = connectedHouse.connection
             # then check if the house's output combined with its battery's leftover capacity could facilitate the other
-            if (connectedHouse.output + connectedHouse.connection.capacity) <= capacity_d:
-
+            if (connectedHouse.output + connectedHouse.connection.capacity) > house.output:
                 for b in connectedHouse.possible_connections:
-                    # # print(b)
-                    if b[0].capacity >= connectedHouse.output and b != "NOT CONNECTED!":
-                        # # print(house.connection)
-                        switch(house, b[0])
+                    #print("connect?",b[0].id, b[0].capacity, "connected house cap", connectedHouse.output)
+                    if b[0].capacity >= connectedHouse.output:
+                        switch(connectedHouse, b[0])
+                        switch(house, oldConnection)
 
                         if house.connection.capacity < 0:
                             house.distance = 0
                             house.connection.capacity += house.output
                             house.connection.connectedHouses.remove(house)
                             house.connection = "NOT CONNECTED!"
+
+                            switch(connectedHouse, oldConnection)
                             break
 
                         district.disconnectedHouses.remove(house)
+                        print("switch! to prev location of: ", connectedHouse.id,"to", oldConnection.id)
                         return
+    #print("no possible switches found for house: ", house.id)
 
 #---------------------------------------------------------------------------------------------------------------
 
