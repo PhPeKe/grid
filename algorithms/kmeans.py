@@ -1,13 +1,14 @@
 from copy import copy, deepcopy
-from helpers.visualize import visualize
 from random import shuffle
-from functions.compare import compare
+from helpers.compare import compare
+from algorithms.hillclimber import hillclimbSwitcher
+from helpers.visualize import visualize
 def kmeans(district, numIt = 10, count = 0, contestants = [], miss = 0):
 
     while (count < numIt):
 
         print("       Price before: ", district.costs)
-        checkConnections(district, count)
+        checkConnections(district, count, contestants)
         batteriesToMean(district)
         compare(district)
         print("kmeans iteration: ",count, str(district.costs))
@@ -18,7 +19,8 @@ def kmeans(district, numIt = 10, count = 0, contestants = [], miss = 0):
         contestants.sort(key = lambda x: x.costs)
         #visualize(district, True, count)
         if district.costs <= contestants[0].costs:
-            #visualize(district, True, plotIndex)
+            print("kmeans num bats :", len(district.batteries))
+            visualize(district, True, count)
             a = 0
         else:
             miss += 1
@@ -55,7 +57,7 @@ def batteriesToMean(district):
         b.changeLocation(meanLocation)
         district.calculateCosts()
 
-def checkConnections(district, count):
+def checkConnections(district, count, contestants):
     # If Batteries already have been centered
     # the district is reconnected greedy
     if count > 0:
@@ -65,6 +67,11 @@ def checkConnections(district, count):
         # If the reconnection results in disconnected houses new tries are
         # made until all houses are connected
         while (district.allConnected == False):
+            for house in district.disconnectedHouses:
+                hillclimbSwitcher(house, district, True)
+                if len(district.disconnectedHouses) == 0:
+                    return
+
             district.disconnect()
             # the first hundred times a greedy connection is tried
             if c < 100:
@@ -75,4 +82,10 @@ def checkConnections(district, count):
             else:
                 print("Connecting random")
                 district.connectRandom()
-                c = 0
+                c += 1
+                if c > 200:
+                    print("random infinite")
+                    district = contestants[0]
+                    c = 0
+
+

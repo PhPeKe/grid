@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib.lines as lines
+import numpy as np
 
 '''' visualisation method using matplotlib and location data from house/battery objects '''
 def visualize(district, save = False, numIt = False):
@@ -7,7 +8,7 @@ def visualize(district, save = False, numIt = False):
     houses = district.houses
     batteries = district.batteries
     batteries.sort(key = lambda x: x.id)
-
+    print("vis len", len(district.batteries))
     fig, ax = plt.subplots()
     numBat = len(batteries)
     colors = ["xkcd:reddish pink", "xkcd:bright yellow", "xkcd:light neon green", \
@@ -17,8 +18,11 @@ def visualize(district, save = False, numIt = False):
               "xkcd:light royal blue", "xkcd:off white", "xkcd:silver", "xkcd:melon", \
               "xkcd:ocean green", "xkcd:poo", "xkcd:gunmetal","xkcd:red wine", "xkcd:blood orange"
               ]
-    batterymarkers = ['$0$', '$1$', '$2$', '$3$', '$4$', '$4$', '$5$', '$6$', '$7$', '$8$', '$9$', '$10$' \
-        , '$11$', '$12$', '$13$', '$14$', '$15$', '$16$', '$17$', '$18$', '$19$', '$20$', '$21$', '$22$', '$23$','$24$']
+    batterymarkers = []
+    for i in range(len(colors)):
+        batteryNum = '$' + str(i) + '$'
+        batterymarkers.append(batteryNum)
+
     connections = [[] for _ in range(numBat * 2)]
 
     unconnectedx = []
@@ -29,11 +33,10 @@ def visualize(district, save = False, numIt = False):
 
     # display houses (with or without connection)
     for house in houses:
-        if house.connection != "NOT CONNECTED!": # NOTE: the
+        if house.connection != "NOT CONNECTED!":
 
             i = house.connection.id
             j = house.connection.id + numBat
-
             connections[i].append(house.location[0])
             connections[j].append(house.location[1])
 
@@ -50,6 +53,7 @@ def visualize(district, save = False, numIt = False):
 
     # display links between houses and their batteries
     for i in range(0, numBat):
+        print(len(connections[i]), len(connections[i+numBat]))
         ax.plot(connections[i], connections[i+numBat], color = colors[i], marker = 'o', linestyle = 'None')
 
         for j in range (0, len(connections[i])):
@@ -75,6 +79,7 @@ def visualize(district, save = False, numIt = False):
     else:
         saveName = "plots/plotDistrict.png"
     costs = district.costs
+    #title = "Iteration: " = str(numIt) + "Costs: " = str(costs)
     ax.grid()
     ax.set_title(costs)
     ax.set_facecolor('xkcd:charcoal')
