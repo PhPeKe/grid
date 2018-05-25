@@ -20,6 +20,9 @@ def parseArgs():
     parser.add_argument("-k","--kmeansIt",
                         help = "Number of iterations for kmeans",
                         type = int)
+    parser.add_argument("-pt","--part",
+                        help = "Specifies until which part of the assignment the case should be solved",
+                        choices = ["a","b","c","d"])
     args = parser.parse_args()
 
     # Force valid input of required arguments

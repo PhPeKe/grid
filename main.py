@@ -44,14 +44,19 @@ def main():
         # Connect all houses to random battery
         district.connectRandom()
     print("Initial costs: ",district.calculateCosts())
-    district.mode = "hillclimber-"
-    district.hillClimber(False)
-    district.mode = ""
-    #ultimate(district)
-    district = deepcopy(district.compare)
 
-    # Calculate costs for this configuration
-    district.calculateCosts()
+    if args.part == "b":
+        district.mode = "hillclimber-"
+        district.hillClimber(False)
+        district.mode = ""
+        district = deepcopy(district.compare)
+        district.calculateCosts()
+
+    if args.part in ["b","c"]:
+        district = kmeans(district, numIt = args.kmeansIt)
+
+    if args.part in ["b","c","d"]:
+        district = ultimate(district)
 
     print("Copy Costs: ",district.costs)
     if args.plot:
