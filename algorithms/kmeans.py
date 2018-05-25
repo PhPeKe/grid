@@ -3,10 +3,10 @@ from random import shuffle
 from helpers.compare import compare
 from algorithms.hillclimber import hillclimbSwitcher
 from helpers.visualize import visualize
-def kmeans(district, numIt = 10, count = 0, contestants = [], miss = 0):
+def kmeans(district, numIt = 10, count = 0, contestants = [], miss = 0, plot = False):
     temp = district.mode
     district.mode += "kmeans"
-
+    temperature = 1
     while (count < numIt):
 
         print("       Price before: ", district.costs)
@@ -19,10 +19,11 @@ def kmeans(district, numIt = 10, count = 0, contestants = [], miss = 0):
         # Only the best
         contestants.append(deepcopy(district))
         contestants.sort(key = lambda x: x.costs)
-        #visualize(district, True, count)
+        if plot == "all":
+            visualize(district, True, count)
         if district.costs <= contestants[0].costs:
-           #visualize(district, True, count)
-            a = 0
+            if plot == "winner":
+                visualize(district, True, count)
         else:
             miss += 1
             # RESEARCH:
@@ -91,5 +92,3 @@ def checkConnections(district, count, contestants):
                     print("random infinite")
                     district = contestants[0]
                     c = 0
-
-
