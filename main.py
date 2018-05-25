@@ -1,19 +1,18 @@
 # load classes and functions
-from classes.house import House
-from classes.battery import Battery
-from classes.cable import Cable
 from classes.district import District
 from helpers.loadData import loadData
 from helpers.visualize import visualize
-from helpers.switch import switch
 from algorithms.kmeans import kmeans
 from algorithms.ultimate import ultimate
 from helpers.arguments import parseArgs
-import sys
 from random import shuffle
 from copy import deepcopy
 
 def main():
+    """ Smart Grid by Groep 1
+
+        Please refer to the README for more information.
+    """
 
     # Get arguments
     args = parseArgs()
