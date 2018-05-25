@@ -5,7 +5,14 @@ from helpers.compare import compare
 from helpers.acceptanceProbability import acceptanceprobability
 
 
-def hillclimbSwitcher(house, district, justUnconnected = False, sa = True, triedhouses = []):
+def hillclimbSwitcher(house, district, justUnconnected = False, sa = True, triedHouses = []):
+    """ Iterates towards a connection for every house and a cheaper cable configuration
+
+       Keyword arguments:
+       house -- the House object for which the method searches an alternative cable connection.
+       district -- the
+       """
+    
     temperature = 250
     coolingRate = 0.95
     currentCosts = district.calculateCosts()
@@ -18,13 +25,19 @@ def hillclimbSwitcher(house, district, justUnconnected = False, sa = True, tried
     else:
         i = 1
         while i < len(district.batteries):
-            singleSwitch(house, district, i, triedhouses, currentCosts, sa, temperature, coolingRate)
+            singleSwitch(house, district, i, triedHouses, currentCosts, sa, temperature, coolingRate)
             i += 1
 
     combinedSwitch(house, district, 0, 0, temperature, 2, coolingRate)
     return
 
-def singleSwitch(house, district, i, triedhouses, currentCosts, sa, temperature, coolingRate):
+def singleSwitch(house, district, i, triedHouses, currentCosts, sa, temperature, coolingRate):
+    """Optimizes cable configuration by switching 2 houses.
+
+       Keyword arguments:
+       real -- the real part (default 0.0)
+       imag -- the imaginary part (default 0.0)
+       """
 
     battery = house.possible_connections[i][0]
     capacity_d = house.output
@@ -35,7 +48,7 @@ def singleSwitch(house, district, i, triedhouses, currentCosts, sa, temperature,
 
     # per battery, see if a switch can be made with one of its houses
     for chosenHouse in batteryConnections:
-        if chosenHouse not in triedhouses and chosenHouse != house:
+        if chosenHouse not in triedHouses and chosenHouse != house:
 
             # Try switching two houses when enough capacity space available
             if ((chosenHouse.output + battery.capacity) >= capacity_d) and \
@@ -44,7 +57,7 @@ def singleSwitch(house, district, i, triedhouses, currentCosts, sa, temperature,
 
                 if house.connection.capacity < 0 or chosenHouse.connection.capacity < 0:
                     simultaneousSwitch(chosenHouse, house)
-                    triedhouses.append(chosenHouse)
+                    triedHouses.append(chosenHouse)
 
                 else:
                     newCosts = district.calculateCosts()
@@ -61,7 +74,7 @@ def singleSwitch(house, district, i, triedhouses, currentCosts, sa, temperature,
 
                         else:
                             simultaneousSwitch(chosenHouse, house)
-                            triedhouses.append(chosenHouse)
+                            triedHouses.append(chosenHouse)
                             temperature *= coolingRate
 
                     if newCosts < currentCosts:
@@ -70,7 +83,7 @@ def singleSwitch(house, district, i, triedhouses, currentCosts, sa, temperature,
                         return
                     else:
                         simultaneousSwitch(chosenHouse, house)
-                        triedhouses.append(chosenHouse)
+                        triedHouses.append(chosenHouse)
 
 
 def singleConnectUnconnected(house, district):
@@ -162,7 +175,6 @@ def lookForMultiSwitch(count, b, howmany, house, district, currentCosts, tempera
             if acceptanceprobability(newCosts, currentCosts, temperature) > random():
                 if house in district.nthChoiceHouses:
                     district.nthChoiceHouses.remove(house)
-
                 compare(district)
                 return
             else:
@@ -172,6 +184,7 @@ def lookForMultiSwitch(count, b, howmany, house, district, currentCosts, tempera
 
 def multipleSwitch(randomhouse):
     randombatteries = randomhouse.possible_connections
+
     # check for every battery (starting with smallest distance) whether house could move there
     randombatteries.sort(key=lambda x: x[1])
     currentbattery = randomhouse.connection
@@ -179,7 +192,6 @@ def multipleSwitch(randomhouse):
         rb = randombattery[0]
         if rb != currentbattery:
             if rb.capacity >= randomhouse.output:
-                # print("batteries", rb.id, randomhouse.connection.id)
                 switch(randomhouse, rb)
                 return
 
@@ -194,7 +206,5 @@ def multipleSwitchBack(house, currentH, randomh, b, howmany):
         house.connection = "NOT CONNECTED!"
 
     for i in range(howmany):
-        # print("PRE COST LOOP", randomh[i].id,"con", randomh[i].connection.id, "to: ", b.id)
         switch(randomh[i], b)
-        # print("POST", randomh[i].id,"con", randomh[i].connection.id)
 

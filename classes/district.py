@@ -4,8 +4,9 @@ from algorithms.ultimate import ultimate
 from random import shuffle
 from helpers.manhattan import manhattan
 from copy import deepcopy
-from copy import copy
+from helpers.acceptanceProbability import acceptanceprobability
 from helpers.visualize import visualize
+from random import random
 
 
 class District:
@@ -110,22 +111,19 @@ class District:
 
         if self.compare == set():
             self.compare = deepcopy(self)
-        costdifference = 1
-        unconnectedFINISH = False
+
         unconnectCount = 0
         temperature = 500
+        coolingRate = 0.9
         firstcosts = self.calculateCosts()
         iterationCount = 0
 
-        while iterationCount < 100 and (costdifference > 0 or unconnectedFINISH == False):
+        while temperature > 1:
             iterationCount += 1
             visualize(self, True)
             for disconnectedHouse in self.disconnectedHouses:
                 unconnectCount += 1
                 hillclimbSwitcher(disconnectedHouse, self, True)
-
-            if len(self.disconnectedHouses) == 0 or unconnectCount == 1000:
-                unconnectedFINISH = True
 
             for nthChoiceHouse in self.nthChoiceHouses:
                 if nthChoiceHouse.connection != "NOT CONNECTED!":
@@ -140,20 +138,20 @@ class District:
 
             self.calculateCosts()
 
-            if self.costs > firstcosts and self.costs < firstcosts + temperature:
-                costdifference = firstcosts + temperature - self.costs
-                temperature = temperature * 0.95
+            print(self.costs, firstcosts, temperature)
+            print(acceptanceprobability(self.costs - 1, firstcosts, temperature))
+            if acceptanceprobability(self.costs - 1, firstcosts, temperature) <= random():
+                break
 
             else:
-                costdifference = firstcosts - self.costs
+                temperature *= coolingRate
 
             print("This Configuration's minimum costs:", self.compare.costs, "euro")
             firstcosts = self.costs
 
-           #visualize(self, True, self.mode + str(iterationCount))
 
         print("hillclimber finished")
-        self.save("hillclimberresults")
+        self = deepcopy(self.compare)
         if len(self.disconnectedHouses) != 0:
             for house in self.disconnectedHouses:
                 print("Could not connect house", house.id)
@@ -166,4 +164,3 @@ class District:
         print(self.costs, self.compare.costs)
         if self.costs < self.compare.costs and len(self.disconnectedHouses) == 0:
             self.compare = deepcopy(self)
-           #visualize(self)

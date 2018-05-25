@@ -42,25 +42,27 @@ def ultimate(district):
 
     costDifference = 1
     costDKmeans = 1
-    temperatute = 250
+    temperature = 500
     coolingRate = 0.95
     count = 0
     numIt = 10
-    while True:#costDifference > 0:
+    while temperature > 1:
+        print()
         oldCosts = copy(district.calculateCosts())
         while costDKmeans > 0:
             oldCosts = copy(district.calculateCosts())
             print(" while it")
-            district = kmeans(district, numIt = 3)
-           ##visualize(district, True, district.mode + str(x))
+            district = kmeans(district, numIt = 5)
             x += 1
             district.calculateCosts()
             costDKmeans = oldCosts - district.costs
         count += 1
         batteryUpgrade(district, capacities, batCosts, oldCosts, costDifference)
-        if acceptanceprobability(district.calculateCosts(), oldCosts, temperatute) < random():
+        
+        if acceptanceprobability(district.calculateCosts(), oldCosts, temperature) < random():
             break
-        temperatute *= coolingRate
+        
+        temperature *= coolingRate
         costDKmeans = 1
 
     district.calculateCosts()
