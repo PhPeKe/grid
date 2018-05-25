@@ -7,6 +7,7 @@ from classes.battery import Battery
 from algorithms.kmeans import kmeans
 from helpers.connectUnconnected import connectUnconnected
 from helpers.visualize import visualize
+from copy import copy
 
 
 def ultimate(district):
@@ -26,7 +27,7 @@ def ultimate(district):
     del district.batteries[:]
     distance = 50/minNumBatteries
 
-
+    district.disconnect()
     for i in range(minNumBatteries):
         battery = Battery(i * distance + distance / 2, 25, 450, i)
         battery.costs = 900
@@ -34,20 +35,22 @@ def ultimate(district):
     district.calculateCosts()
 
     district.connectGreedy()
-    kmeans(district)
+    district = kmeans(district)
 
     costDifference = 1
     costDKmeans = 1
-    while costDifference > 0:
-        oldCosts = district.calculateCosts()
+    count = 0
+    numIt = 10
+    while count < numIt:#costDifference > 0:
+        oldCosts = copy(district.calculateCosts())
         while costDKmeans > 0:
             print(" while it")
-            kmeans(district)
+            district = kmeans(district, numIt = 3)
            #visualize(district, True, district.mode + str(x))
             x += 1
             district.calculateCosts()
             costDKmeans = oldCosts - district.costs
-
+        count += 1
         batteryUpgrade(district, capacities, batCosts, oldCosts, costDifference)
 
     district.calculateCosts()
@@ -78,11 +81,14 @@ def batteryUpgrade(district, capacities, batCosts, oldCosts, costDifference):
     district.connectGreedy()
     for uc in district.disconnectedHouses:
         connectUnconnected(uc, district.batteries)
-    kmeans(district)
+    district = kmeans(district)
 
     if len(district.disconnectedHouses) != 0 or preRemoveCosts < district.calculateCosts():
         district.batteries.append(toBeRemoved)
 
    #visualize(district, True, district.mode + "Ultimate Winner")
     district.compare
-    return
+    return district
+
+def joinBatteries(district):
+    

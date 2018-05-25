@@ -32,20 +32,6 @@ class District:
             house.connectRandomBattery(self.batteries, self)
         self.calculateCosts()
 
-    def saveVerbose(self,name):
-        with open("configurations/" + name + ".txt", "w", newline="") as file:
-            writer = csv.writer(file, dialect = "excel")
-            writer.writerow(["configuration for " + name + " :"])
-            writer.writerow([self.costs])
-            writer.writerow(["\n"])
-            writer.writerow(["---Battery-Stats---"])
-            for battery in self.batteries:
-                writer.writerow([str(battery)])
-            writer.writerow(["\n"])
-            writer.writerow(["---House-Stats---"])
-            for house in self.houses:
-                writer.writerow([str(house)])
-
     def save(self,name):
         with open("configurations/" + name + ".csv", "w", newline="") as file:
             writer = csv.writer(file, dialect = "excel")
@@ -92,6 +78,10 @@ class District:
             self.costs += battery.costs
         return self.costs
 
+    def setClosestBattery(self):
+        distance = 1000
+        for b in self.batteries:
+            if manhattan(b,)
 
     def hillClimber(self, sa):
         if self.compare == set():

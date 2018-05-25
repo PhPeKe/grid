@@ -55,14 +55,14 @@ def main():
 
     print("Copy Costs: ",district.costs)
     if args.plot:
-       #visualize(district, True, "initial")
+       visualize(district, True, "initial")
 
     kmeansIt = args.kmeansIt
     district = kmeans(district, numIt = kmeansIt)
 
     #district = deepcopy(district.compare)
 
-    ultimate(district)
+    district = ultimate(district)
 
     if args.save =="csv":
         district.save("District" + args.district)
