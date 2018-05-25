@@ -118,4 +118,6 @@ def joinClosestBatteries(district):
             closestBatteries[0].connectedHouses.append(house)
             house.connection = closestBatteries[0]
         district.batteries.remove(closestBatteries[1])
+        for i in range(len(district.batteries)):
+            district.batteries[i].id = i
     return district
