@@ -71,6 +71,11 @@ def checkConnections(district, count, contestants):
         # If the reconnection results in disconnected houses new tries are
         # made until all houses are connected
         while (district.allConnected == False):
+            if len(district.disconnectedHouses) > 10:
+                print("geen hoop")
+                district = contestants[0]
+                break
+            print("number unconnected: ", len(district.disconnectedHouses))
             for house in district.disconnectedHouses:
                 hillclimbSwitcher(house, district, True)
                 if len(district.disconnectedHouses) == 0:
