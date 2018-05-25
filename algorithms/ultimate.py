@@ -1,3 +1,8 @@
+# minimale aantal kleinste batterijen berekenen
+# batterijen plaatsen
+# greedy + kmeans totdat t niet meer kan
+# meest volle batterij upgraden
+# etc
 from classes.battery import Battery
 from algorithms.kmeans import kmeans
 from algorithms.hillclimber import hillclimbSwitcher
@@ -6,11 +11,13 @@ from copy import deepcopy
 from helpers.acceptanceProbability import acceptanceprobability
 from random import random
 
+from copy import copy
 
 
 def ultimate(district):
     print("ULTIMATE")
-
+    district.mode = "ultimate-"
+    x = 0
     capacities = [450, 900, 1800]
     batCosts = [900, 1350, 1800]
     totalOutput = 0
@@ -22,6 +29,7 @@ def ultimate(district):
     del district.batteries[:]
     distance = 50/minNumBatteries
 
+    district.disconnect()
     for i in range(minNumBatteries):
         battery = Battery(i * distance + distance / 2, 25, 450, i)
         battery.costs = 900
@@ -29,27 +37,25 @@ def ultimate(district):
     district.calculateCosts()
 
     district.connectGreedy()
-    kmeans(district, 3)
+    district = kmeans(district)
 
     costDifference = 1
     costDKmeans = 1
-    temperature = 250
+    temperatute = 250
     coolingRate = 0.95
-
-    while costDifference > 0:
-        oldCosts = district.calculateCosts()
-        while costDKmeans> 0:
-            district = kmeans(district, 3)
-
+    count = 0
+    numIt = 10
+    while count < numIt:#costDifference > 0:
+        oldCosts = copy(district.calculateCosts())
+        while costDKmeans > 0:
+            print(" while it")
+            district = kmeans(district, numIt = 3)
+           #visualize(district, True, district.mode + str(x))
+            x += 1
             district.calculateCosts()
             costDKmeans = oldCosts - district.costs
-            oldCosts = district.calculateCosts()
-            district.save("ultimate.txt")
-            #if acceptanceprobability(district.calculateCosts(), oldCosts, temperature) > random()
-
-        print("-----BATTERY UPGRADE----")
+        count += 1
         batteryUpgrade(district, capacities, batCosts, oldCosts, costDifference)
-
 
     district.calculateCosts()
     print("post ultimate costs:", district.costs)
@@ -67,7 +73,6 @@ def batteryUpgrade(district, capacities, batCosts, oldCosts, costDifference):
             b.capacity = capacities[index]
             b.costs = batCosts[index]
             b.maxCapacity = capacities[index]
-            print(b.id, b.location)
             break
     district.connectGreedy()
 
@@ -88,9 +93,6 @@ def batteryUpgrade(district, capacities, batCosts, oldCosts, costDifference):
         hillclimbSwitcher(uc, district, True)
     print("new number of batteries: ", len(district.batteries))
 
-    for house in district.disconnectedHouses:
-        hillclimbSwitcher(house, district, True)
-
 
     if len(district.disconnectedHouses) != 0:
         district.batteries.append(toBeRemoved)
@@ -98,4 +100,6 @@ def batteryUpgrade(district, capacities, batCosts, oldCosts, costDifference):
     district = kmeans(district)
     visualize(district)
     district.compare
+    return district
 
+#def joinBatteries(district):

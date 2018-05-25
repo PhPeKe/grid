@@ -2,6 +2,7 @@ import csv
 from algorithms.hillclimber import hillclimbSwitcher
 from algorithms.ultimate import ultimate
 from random import shuffle
+from helpers.manhattan import manhattan
 from copy import deepcopy
 from copy import copy
 from helpers.visualize import visualize
@@ -18,6 +19,7 @@ class District:
         self.nthChoiceHouses = []
         self.compare = set()
         self.allConnected = True
+        self.mode = ""
 
     def connectGreedy(self, random = False):
         if random:
@@ -30,20 +32,6 @@ class District:
         for house in self.houses:
             house.connectRandomBattery(self.batteries, self)
         self.calculateCosts()
-
-    def saveVerbose(self,name):
-        with open("configurations/" + name + ".txt", "w", newline="") as file:
-            writer = csv.writer(file, dialect = "excel")
-            writer.writerow(["configuration for " + name + " :"])
-            writer.writerow([self.costs])
-            writer.writerow(["\n"])
-            writer.writerow(["---Battery-Stats---"])
-            for battery in self.batteries:
-                writer.writerow([str(battery)])
-            writer.writerow(["\n"])
-            writer.writerow(["---House-Stats---"])
-            for house in self.houses:
-                writer.writerow([str(house)])
 
     def save(self,name):
         with open("configurations/" + name + ".csv", "w", newline="") as file:
@@ -92,6 +80,13 @@ class District:
             self.costs += battery.costs
         return self.costs
 
+    def setClosestBattery(self):
+        for b in self.batteries:
+            b.closestBatteryDistance = 10000
+            for b2 in self.batteries:
+                if not manhattan(b,b2) == 0 and manhattan(b,b2) < b.closestBatteryDistance:
+                    b.closestBattery = b2
+                    b.closestBatteryDistance = manhattan(b,b2)
 
     def hillClimber(self, sa):
 
@@ -137,6 +132,8 @@ class District:
             print("This Configuration's minimum costs:", self.compare.costs, "euro")
             firstcosts = self.costs
 
+           #visualize(self, True, self.mode + str(iterationCount))
+
         print("hillclimber finished")
         self.save("hillclimberresults")
         if len(self.disconnectedHouses) != 0:
@@ -151,4 +148,4 @@ class District:
         print(self.costs, self.compare.costs)
         if self.costs < self.compare.costs and len(self.disconnectedHouses) == 0:
             self.compare = deepcopy(self)
-            visualize(self)
+           #visualize(self)

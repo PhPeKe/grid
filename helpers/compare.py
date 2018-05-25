@@ -1,5 +1,5 @@
 from copy import deepcopy
-from helpers.visualize import visualize
+from helpers import visualize
 
 def compare(district):
     if len(district.disconnectedHouses) == 0 and \

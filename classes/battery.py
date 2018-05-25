@@ -10,6 +10,8 @@ class Battery:
         self.connectedHouses = []
         self.costs = 5000
         self.totalDistance = set()
+        self.closestBattery = set()
+        self.closestBatteryDistance = set()
 
     def totalDistance(self):
         self.totalDistance = 0

@@ -4,13 +4,15 @@ from helpers.compare import compare
 from algorithms.hillclimber import hillclimbSwitcher
 from helpers.visualize import visualize
 def kmeans(district, numIt = 10, count = 0, contestants = [], miss = 0):
+    temp = district.mode
+    district.mode += "kmeans"
 
     while (count < numIt):
 
         print("       Price before: ", district.costs)
         checkConnections(district, count, contestants)
         batteriesToMean(district)
-        compare(district)
+        #compare(district)
         print("kmeans iteration: ",count, str(district.costs))
 
 
@@ -19,8 +21,7 @@ def kmeans(district, numIt = 10, count = 0, contestants = [], miss = 0):
         contestants.sort(key = lambda x: x.costs)
         #visualize(district, True, count)
         if district.costs <= contestants[0].costs:
-            print("kmeans num bats :", len(district.batteries))
-            visualize(district, True, count)
+           #visualize(district, True, count)
             a = 0
         else:
             miss += 1
@@ -34,13 +35,13 @@ def kmeans(district, numIt = 10, count = 0, contestants = [], miss = 0):
                     miss = 0
                     district.disconnect()
                     district.connectRandom()
-        district = copy(contestants[0])
+        district = deepcopy(contestants[0])
         count += 1
 
     contestants.sort(key = lambda x: x.costs)
     district = contestants[0]
 
-
+    district.mode = temp
     return district
 
 
@@ -52,8 +53,11 @@ def batteriesToMean(district):
         for h in b.connectedHouses:
             meanLocation[0] = meanLocation[0] + h.location[0]
             meanLocation[1] = meanLocation[1] + h.location[1]
-        meanLocation[0] = round(meanLocation[0] / len(b.connectedHouses))
-        meanLocation[1] = round(meanLocation[1] / len(b.connectedHouses))
+        if not len(b.connectedHouses) == 0:
+            meanLocation[0] = round(meanLocation[0] / len(b.connectedHouses))
+            meanLocation[1] = round(meanLocation[1] / len(b.connectedHouses))
+        else:
+            meanLocation = [0,0]
         b.changeLocation(meanLocation)
         district.calculateCosts()
 
