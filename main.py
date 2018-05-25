@@ -46,7 +46,7 @@ def main():
         district.connectRandom()
     print("Initial costs: ",district.calculateCosts())
     district.hillClimber(False)
-    #ultimate(district)
+    ultimate(district)
     district = deepcopy(district.compare)
 
     # Calculate costs for this configuration
