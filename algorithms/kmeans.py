@@ -6,16 +6,31 @@ from helpers.visualize import visualize
 from helpers.acceptanceProbability import acceptanceprobability
 from random import random
 
-def kmeans(district, numIt = 10, count = 0, contestants = [], miss = 0, plot = False):
-    temp = district.mode
-    district.mode += ":kmeans"
+def kmeans(district, numIt = 10, plot = False):
+    """kmeans.
+
+    Keyword arguments:
+    district -- district object to apply kmeans on
+    numIt    -- number of iterations to run
+    plot     -- should plots be made? Can be "all" or "winner". In the second
+                case only plots of the winning configurations (which are
+                better than the ones before are made
+
+    Flow:
+    1. Batteries are centered to the middle of the houses connected to it
+    2. The whole district is disconnected and reconnected in a random-greedy way
+    3. Batteries are centered again and everything is repeated
+
+    """
+    count = 0
+    miss = 0
+
+    contestants = []
     while (count < numIt):
-        if contestants:
-            print("       Price before: ", district.costs, contestants[0].costs)
-        if count > 0:
-            checkConnections(district, contestants)
+        print("       Price before: ", district.costs)
+        checkConnections(district, count, contestants)
         batteriesToMean(district)
-        district.calculateCosts()
+        #compare(district)
         print("kmeans iteration: ",count, str(district.costs))
 
 
@@ -51,6 +66,11 @@ def kmeans(district, numIt = 10, count = 0, contestants = [], miss = 0, plot = F
 
 
 def batteriesToMean(district):
+    """batteriesToMean.
+
+    
+
+    """
     # Set battery to mean location
     for b in district.batteries:
         meanLocation = [0,0]
@@ -65,30 +85,33 @@ def batteriesToMean(district):
         b.changeLocation(meanLocation)
         district.calculateCosts()
 
-def checkConnections(district, contestants):
+def checkConnections(district, count, contestants):
     # If Batteries already have been centered
     # the district is reconnected greedy
-    district.disconnect()
-    district.connectGreedy(True)
-    c = 0
-    temperature = 250
-    coolingRate = 0.95
-    # If the reconnection results in disconnected houses new attempts are
-    # made until all houses are connected
-    while (district.allConnected == False):
-        for house in district.disconnectedHouses:
-            hillclimbSwitcher(house, district, True)
-            if len(district.disconnectedHouses) == 0:
-                return
-        if acceptanceprobability(district.costs, contestants[0].costs, temperature) < random():
+    if count > 0:
+        district.disconnect()
+        district.connectGreedy(True)
+        c = 0
+        # If the reconnection results in disconnected houses new attempts are
+        # made until all houses are connected
+        while (district.allConnected == False):
+            for house in district.disconnectedHouses:
+                hillclimbSwitcher(house, district, True)
+                if len(district.disconnectedHouses) == 0:
+                    return
+
             district.disconnect()
-            district.connectGreedy(True)
-        else:
-            district.disconnect()
-            district.connectRandom()
-        temperature *= coolingRate
-        c += 1
-        if c > 1000:
-            print("Endless loop?")
-            district = deepcopy(contestants[0])
-            break
+            # the first hundred times a greedy connection is tried
+            if c < 100:
+                district.connectGreedy(True)
+                c += 1
+            # If that doesnt work the district is reconnected random
+            # to prevent an endless loop
+            else:
+                print("Connecting random")
+                district.connectRandom()
+                c += 1
+                if c > 200:
+                    print("random infinite")
+                    district = contestants[0]
+                    c = 0

@@ -57,25 +57,15 @@ def ultimate(district):
             district.calculateCosts()
             costDKmeans = oldCosts - district.costs
         count += 1
-        batteryUpgrade(district, capacities, batCosts, oldCosts, costDifference)
+        district = joinClosestBatteries(district, batCosts)
         if acceptanceprobability(district.calculateCosts(), oldCosts, temperature) < random():
             break
         temperature *= coolingRate
         costDKmeans = 1
-
+    district = kmeans(district)
     district.calculateCosts()
     print("post ultimate costs:", district.costs)
-
-
-def batteryUpgrade(district, capacities, batCosts, oldCosts, costDifference):
-
-    #visualize(district, False, "Before joining")
-    #district.disconnect()
-    upgradeBattery = None
-    joinClosestBatteries(district, batCosts)
-    #visualize(district)
-    return
-
+    return district
 
 def joinClosestBatteries(district, batCosts):
     district.setClosestBattery()
@@ -104,47 +94,4 @@ def joinClosestBatteries(district, batCosts):
                 district.batteries[i].id = i
 
             kmeans(district, numIt=1)
-    return district
-
-def OLDbatteryUpgrade(district, capacities, batCosts):
-    # choose fullest battery to upgrade
-    bats = district.batteries
-    bats.sort(key=lambda x: x.capacity)
-    for b in bats:
-        if b.capacity != capacities[len(capacities) - 1]:
-            print(" pre upgrade", b.id, b.capacity)
-            index = capacities.index(b.capacity) + 1
-            print("capacity index value", capacities[index])
-            b.capacity = capacities[index]
-            b.costs = batCosts[index]
-            b.maxCapacity = capacities[index]
-            upgradeBattery = b
-            b.batteryType = index
-            break
-    print(" post upgrade", upgradeBattery.id, upgradeBattery.capacity)
-    district.connectGreedy()
-    district.setClosestBattery()
-    toBeRemoved = upgradeBattery.closestBattery
-    print("remove id", toBeRemoved.id)
-    district.batteries.remove(bats[len(bats) - 1])
-
-    print("len ultimate", len(district.batteries))
-
-    for i in range(len(district.batteries)):
-        district.batteries[i].id = i
-
-    district.connectGreedy()
-
-    for uc in district.disconnectedHouses:
-        hillclimbSwitcher(uc, district, True)
-
-    # #visualize(district)
-    if len(district.disconnectedHouses) != 0:
-        print("removal failed")
-        district.batteries.append(toBeRemoved)
-    print("new number of batteries: ", len(district.batteries))
-
-    district = kmeans(district)
-    #visualize(district)
-    district.compare
     return district
