@@ -67,8 +67,13 @@ def batteryUpgrade(district, capacities, batCosts, oldCosts, costDifference):
     # choose fullest battery to upgrade
     bats = district.batteries
     bats.sort(key=lambda x: x.capacity)
-    district.disconnect()
+    visualize(district, False, "Before joining")
+
+    #district.disconnect()
     upgradeBattery = None
+    joinClosestBatteries(district)
+    visualize(district)
+    return
 
     for b in bats:
         if b.capacity != capacities[len(capacities) - 1]:
