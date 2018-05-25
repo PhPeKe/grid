@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import matplotlib.lines as lines
 
 '''' visualisation method using matplotlib and location data from house/battery objects '''
-def visualize(district, save = False, numIt = False):
+def#visualize(district, save = False, numIt = False):
 
     houses = district.houses
     batteries = district.batteries

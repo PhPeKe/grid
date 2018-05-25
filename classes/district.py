@@ -134,7 +134,7 @@ class District:
             print("This Configuration costs", self.costs, "euro")
             firstcosts = self.costs
 
-            visualize(self, True, self.mode + str(iterationCount))
+           #visualize(self, True, self.mode + str(iterationCount))
 
         print("hillclimber finished")
         self.save("hillclimberresults")
@@ -150,4 +150,4 @@ class District:
         print(self.costs, self.compare.costs)
         if self.costs < self.compare.costs and len(self.disconnectedHouses) == 0:
             self.compare = deepcopy(self)
-            visualize(self)
+           #visualize(self)

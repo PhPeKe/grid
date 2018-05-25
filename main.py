@@ -47,6 +47,7 @@ def main():
     district.mode = "hillclimber-"
     district.hillClimber(False)
     district.mode = ""
+    ultimate(district)
     district = deepcopy(district.compare)
 
     # Calculate costs for this configuration
@@ -54,7 +55,7 @@ def main():
 
     print("Copy Costs: ",district.costs)
     if args.plot:
-        visualize(district, True, "initial")
+       #visualize(district, True, "initial")
 
     kmeansIt = args.kmeansIt
     district = kmeans(district, numIt = kmeansIt)
