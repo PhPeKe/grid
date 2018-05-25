@@ -12,6 +12,7 @@ class Battery:
         self.totalDistance = set()
         self.closestBattery = set()
         self.closestBatteryDistance = set()
+        self.batteryType = -1
 
     def totalDistance(self):
         self.totalDistance = 0

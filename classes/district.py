@@ -9,7 +9,9 @@ from helpers.visualize import visualize
 
 
 class District:
-
+    """District.py
+        Class District
+    """
     def __init__(self, loadedData):
         self.houses = loadedData[0]
         self.batteries = loadedData[1]
@@ -22,6 +24,15 @@ class District:
         self.mode = ""
 
     def connectGreedy(self, random = False):
+
+        """Connect Greedy.
+
+        Calls the method connectNearestBattery() in class Houses
+        for all House-objectsin the House-list in District.
+
+        When True is added the list of houses is sorted randomly
+        before connections are made.
+        """
         if random:
             shuffle(self.houses)
         for house in self.houses:
@@ -29,6 +40,12 @@ class District:
         self.calculateCosts()
 
     def connectRandom(self):
+        """Connect Random.
+
+        Same Story as greedy but this time the connectRandomBattery()
+        method in class Houses is called.
+        """
+        shuffle(self.houses)
         for house in self.houses:
             house.connectRandomBattery(self.batteries, self)
         self.calculateCosts()
@@ -84,7 +101,8 @@ class District:
         for b in self.batteries:
             b.closestBatteryDistance = 10000
             for b2 in self.batteries:
-                if not manhattan(b,b2) == 0 and manhattan(b,b2) < b.closestBatteryDistance:
+                distance = manhattan(b,b2)
+                if b.maxCapacity == b2.maxCapacity and distance < b.closestBatteryDistance and not distance == 0:
                     b.closestBattery = b2
                     b.closestBatteryDistance = manhattan(b,b2)
 
