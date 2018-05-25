@@ -1,8 +1,8 @@
 import matplotlib.pyplot as plt
 import matplotlib.lines as lines
 
-'''' visualisation method using matplotlib and location data from house/battery objects '''
 def visualize(district, save = False, numIt = False):
+    """Creates visualization plots of the disctricts"""
 
     houses = district.houses
     batteries = district.batteries

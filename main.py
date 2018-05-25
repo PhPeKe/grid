@@ -4,15 +4,17 @@ from classes.battery import Battery
 from classes.district import District
 from helpers.loadData import loadData
 from helpers.visualize import visualize
-from helpers.switch import switch
 from algorithms.kmeans import kmeans
 from algorithms.ultimate import ultimate
 from helpers.arguments import parseArgs
-import sys
 from random import shuffle
 from copy import deepcopy
 
 def main():
+    """ Smart Grid by Groep 1
+
+        Please refer to the README for more information.
+    """
 
     # Get arguments
     args = parseArgs()
@@ -61,12 +63,12 @@ def main():
     if args.plot:
        visualize(district, True, "initial")
 
-    #kmeansIt = args.kmeansIt
-    #district = kmeans(district, numIt = kmeansIt)
+    kmeansIt = args.kmeansIt
+    district = kmeans(district, numIt = kmeansIt)
 
-    #district = deepcopy(district.compare)
+    district = deepcopy(district.compare)
 
-    #district = ultimate(district)
+    district = ultimate(district)
 
     if args.save =="csv":
         district.save("District" + args.district)
