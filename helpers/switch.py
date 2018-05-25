@@ -1,6 +1,7 @@
 from helpers.manhattan import manhattan
 
 def switch(house, battery):
+    """Moves one house to another battery"""
     # 1. Update capacity of old battery
     if house.connection != "NOT CONNECTED!":
         house.connection.capacity += house.output

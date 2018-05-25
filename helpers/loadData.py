@@ -3,6 +3,7 @@ from classes.battery import Battery
 import csv
 
 def loadData(houses, batteries):
+    """Loads the necesarry data on houses and batteries to create a district"""
 
     # Open csv and txt file
     with open(houses,"r") as f:
