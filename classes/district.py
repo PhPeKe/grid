@@ -17,13 +17,11 @@ class District:
     def __init__(self, loadedData):
         self.houses = loadedData[0]
         self.batteries = loadedData[1]
-        self.cables = set()
         self.costs = set()
         self.disconnectedHouses = []
         self.nthChoiceHouses = []
         self.compare = set()
         self.allConnected = True
-        self.mode = ""
 
     def connectGreedy(self, random = False):
 

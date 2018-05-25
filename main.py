@@ -1,7 +1,6 @@
 # load classes and functions
 from classes.house import House
 from classes.battery import Battery
-from classes.cable import Cable
 from classes.district import District
 from helpers.loadData import loadData
 from helpers.visualize import visualize

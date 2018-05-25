@@ -1,33 +1,53 @@
 # grid
-In a future world houses all have solar panels that produce energy. This energy has to be stored in batteries and for this batteries have to be placed and connected to houses.
+Renewable energy is getting more and more important. In a (hopefully) not too distant future most houses will have solar panels that produce energy. The abundant energy then is fed into the grid and saved in batteries so it can be used when the sun is not shining. But because we live in a world where everything costs money the length of the cables should be optimized to save money.
 
+For more inforamtion about the case visit:
 http://heuristieken.nl/wiki/index.php?title=SmartGrid
+
+### The assignment was split into four parts:
+1. Connecting all houses to a battery in all districts
+2. Optimizing the connections
+3. Moving the batteries to optimize costs
+4. Placing different kinds of batteries with different price/capacity ratios
+
 
 ## Program usage
 To run this program flags can be used.
 
-    usage: main.py [-h] [-d {1,2,3}] [-p] [-s {ascending,descending,random}]
-                   [-m {greedy,random}] [-sv {csv,verbose}] [-k KMEANSIT]
+usage: main.py [-h] [-d {1,2,3}] [-p] [-s {ascending,descending,random}]
+               [-m {greedy,random}] [-sv {csv,verbose}] [-k KMEANSIT]
+               [-pt {a,b,c,d}]
 
-    optional arguments:
-      -h, --help            show this help message and exit
-      -d {1,2,3}, --district {1,2,3}
-                            Specify the number of the district (1, 2, 3)
-      -p, --plot            Flag if plots should be made
-      -s {ascending,descending,random}, --sort {ascending,descending,random}
-                            Sort houses before connecting to specify which house
-                            should be connected first (ascending, descending,
-                            random)
-      -m {greedy,random}, --method {greedy,random}
-                            Specify the method of initially assigning houses to
-                            batteries (greedy, random)
-      -sv {csv,verbose}, --save {csv,verbose}
-                            Specify if and how districts should be saved
-      -k, --kmeansIt        Number of iterations for kmeans
+optional arguments:
+  -h, --help            show this help message and exit
 
-To run it on district 1 with random sorting houses and a greedy way of connecting them while producing a plot and saving the district to a csv file the user would have to run
+  -d {1,2,3}, --district {1,2,3}
+                        Specify the number of the district (1, 2, 3)
 
-    "main.py -d 1 -s random -m greedy -sv csv -p"
+  -p, --plot            Flag if plots should be made
+
+  -s {ascending,descending,random}, --sort {ascending,descending,random}
+                        Sort houses before connecting to specify which house
+                        should be connected first (ascending, descending,
+                        random)
+
+  -m {greedy,random}, --method {greedy,random}
+                        Specify the method of initially assigning houses to
+                        batteries (greedy, random)
+
+  -sv {csv,verbose}, --save {csv,verbose}
+                        Specify if and how districts should be saved
+
+  -k, --kmeansIt	Number of iterations for kmeans
+
+  -pt {a,b,c,d}, --part {a,b,c,d}
+                        Specifies until which part of the assignment the case
+                        should be solved
+
+
+To run it on district 1 completely with random sorting houses and a greedy way of connecting them while producing a plot and saving the district to a csv file the user would have to run
+
+    "main.py -d 1 -s random -m greedy -sv csv -p -pt d"
 
 
 Here a step-for-step overview of what we did with the project:
@@ -45,3 +65,5 @@ Here a step-for-step overview of what we did with the project:
 - Given a connected district a Hill-Climber is switching houses to minimize cable length
 ### 4. Moving batteries:
 - Given an optimized district batteries are moved to the center of all houses that they are connected to to further minimize cable length
+### 5. Placing different kind of batteries
+- Starting point is a set of the smallest kind of batteries possible. These are then connected to the grid, kmeans is used to center the batteries and if the closest batteries of the same type are joined.

@@ -1,114 +1,23 @@
-Initial costs:  59884
-This Configuration's minimum costs: 57580 euro
-hillclimber finished
-ULTIMATE
-       Price before:  36679.235294117665
-kmeans iteration:  0 35568
-       Price before:  35568
-switch! to prev location of:  114 to 11
-switch! to prev location of:  12 to 12
-switch! to prev location of:  57 to 3
-switch! to prev location of:  149 to 3
-switch! to prev location of:  41 to 9
-switch! to prev location of:  16 to 1
-switch! to prev location of:  16 to 2
-switch! to prev location of:  55 to 10
-switch! to prev location of:  58 to 15
-switch! to prev location of:  143 to 12
-switch! to prev location of:  128 to 5
-switch! to prev location of:  41 to 10
-switch! to prev location of:  111 to 5
-kmeans iteration:  1 28881
-       Price before:  28881
-switch! to prev location of:  60 to 10
-switch! to prev location of:  112 to 5
-switch! to prev location of:  54 to 1
-switch! to prev location of:  85 to 16
-switch! to prev location of:  135 to 13
-switch! to prev location of:  58 to 15
-kmeans iteration:  2 26226
-       Price before:  26226
-switch! to prev location of:  27 to 7
-switch! to prev location of:  135 to 13
-switch! to prev location of:  72 to 12
-switch! to prev location of:  107 to 13
-switch! to prev location of:  93 to 13
-switch! to prev location of:  41 to 6
-switch! to prev location of:  53 to 13
-switch! to prev location of:  55 to 11
-switch! to prev location of:  82 to 15
-switch! to prev location of:  91 to 7
-kmeans iteration:  3 27045
-       Price before:  26226
-switch! to prev location of:  149 to 0
-kmeans iteration:  4 25812
-       Price before:  25812
-switch! to prev location of:  104 to 5
-switch! to prev location of:  20 to 11
-switch! to prev location of:  66 to 14
-switch! to prev location of:  27 to 7
-kmeans iteration:  5 25560
-       Price before:  25560
-switch! to prev location of:  112 to 15
-switch! to prev location of:  127 to 2
-switch! to prev location of:  104 to 5
-switch! to prev location of:  149 to 0
-switch! to prev location of:  143 to 11
-switch! to prev location of:  41 to 6
-switch! to prev location of:  23 to 9
-switch! to prev location of:  85 to 14
-kmeans iteration:  6 25236
-       Price before:  25236
-switch! to prev location of:  42 to 5
-switch! to prev location of:  135 to 13
-switch! to prev location of:  97 to 8
-switch! to prev location of:  97 to 8
-switch! to prev location of:  41 to 6
-switch! to prev location of:  19 to 8
-switch! to prev location of:  19 to 10
-kmeans iteration:  7 26505
-       Price before:  28881
-switch! to prev location of:  114 to 12
-switch! to prev location of:  85 to 14
-switch! to prev location of:  63 to 0
-switch! to prev location of:  93 to 13
-switch! to prev location of:  26 to 5
-kmeans iteration:  8 26802
-Error: House 32 COULD NOT BE CONNECTED!
-Error: House 132 COULD NOT BE CONNECTED!
-Error: House 25 COULD NOT BE CONNECTED!
-       Price before:  26802
-switch! to prev location of:  54 to 2
-switch! to prev location of:  117 to 14
-switch! to prev location of:  67 to 16
-switch! to prev location of:  12 to 11
-switch! to prev location of:  16 to 1
-switch! to prev location of:  65 to 3
-switch! to prev location of:  85 to 14
-switch! to prev location of:  131 to 16
-switch! to prev location of:  44 to 6
-switch! to prev location of:  67 to 16
-switch! to prev location of:  85 to 14
-switch! to prev location of:  149 to 0
-switch! to prev location of:  16 to 1
-switch! to prev location of:  27 to 7
-switch! to prev location of:  41 to 6
-switch! to prev location of:  58 to 15
-switch! to prev location of:  135 to 13
-switch! to prev location of:  117 to 14
-switch! to prev location of:  73 to 1
-switch! to prev location of:  97 to 8
-switch! to prev location of:  66 to 15
-switch! to prev location of:  62 to 3
-switch! to prev location of:  133 to 1
-switch! to prev location of:  10 to 6
-switch! to prev location of:  19 to 10
-switch! to prev location of:  107 to 13
-kmeans iteration:  9 25038
- while it
-       Price before:  25038
-kmeans iteration:  0 25038
-       Price before:  25038
-switch! to prev location of:  115 to 8
-switch! to prev location of:  135 to 13
-kmeans iteration:  1 24939
+usage: main.py [-h] [-d {1,2,3}] [-p] [-s {ascending,descending,random}]
+               [-m {greedy,random}] [-sv {csv,verbose}] [-k KMEANSIT]
+               [-pt {a,b,c,d}]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -d {1,2,3}, --district {1,2,3}
+                        Specify the number of the district (1, 2, 3)
+  -p, --plot            Flag if plots should be made
+  -s {ascending,descending,random}, --sort {ascending,descending,random}
+                        Sort houses before connecting to specify which house
+                        should be connected first (ascending, descending,
+                        random)
+  -m {greedy,random}, --method {greedy,random}
+                        Specify the method of initially assigning houses to
+                        batteries (greedy, random)
+  -sv {csv,verbose}, --save {csv,verbose}
+                        Specify if and how districts should be saved
+  -k, --kmeansIt
+                        Number of iterations for kmeans
+  -pt {a,b,c,d}, --part {a,b,c,d}
+                        Specifies until which part of the assignment the case
+                        should be solved
