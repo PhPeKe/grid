@@ -3,7 +3,11 @@ from classes.battery import Battery
 import csv
 
 def loadData(houses, batteries):
+    """loadData.
 
+    Recieves paths to houses and batteries as arguments and returns lists
+    of house- and battery-objects
+    """
     # Open csv and txt file
     with open(houses,"r") as f:
         reader = csv.reader(f)
