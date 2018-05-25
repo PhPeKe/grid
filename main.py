@@ -62,12 +62,12 @@ def main():
     if args.plot:
        visualize(district, True, "initial")
 
-    #kmeansIt = args.kmeansIt
-    #district = kmeans(district, numIt = kmeansIt)
+    kmeansIt = args.kmeansIt
+    district = kmeans(district, numIt = kmeansIt)
 
-    #district = deepcopy(district.compare)
+    district = deepcopy(district.compare)
 
-    #district = ultimate(district)
+    district = ultimate(district)
 
     if args.save =="csv":
         district.save("District" + args.district)

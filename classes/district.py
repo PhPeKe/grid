@@ -107,12 +107,24 @@ class District:
                     b.closestBattery = b2
                     b.closestBatteryDistance = manhattan(b,b2)
 
-    def hillClimber(self, sa):
+    def hillClimber(self):
+        """ Optimizes cable configuration with a Hillclimber algorithm
 
+               Keyword arguments:
+               self.compare - is where the cheapest configuration is stored
+
+               Flow:
+            1. First the unconnected houses, then the houses which weren't connected to their
+               1st choice batteries, and then the others are switched around for different configurations
+            2. To prevent local minima with simulated annealing, slightly more expensive configurations
+               are accepted too
+            3. This is repeated until the the temperature constant "cools down"
+            4. The district is set to the overall cheapest configuration
+
+            """
         if self.compare == set():
             self.compare = deepcopy(self)
 
-        unconnectCount = 0
         temperature = 500
         coolingRate = 0.9
         firstCosts = self.calculateCosts()
@@ -122,7 +134,6 @@ class District:
             iterationCount += 1
             visualize(self, True)
             for disconnectedHouse in self.disconnectedHouses:
-                unconnectCount += 1
                 hillclimbSwitcher(disconnectedHouse, self, True)
 
             for nthChoiceHouse in self.nthChoiceHouses:
@@ -138,24 +149,21 @@ class District:
 
             self.calculateCosts()
 
-            print(self.costs, firstcosts, temperature)
-            print(acceptanceprobability(self.costs - 1, firstcosts, temperature))
-            if acceptanceprobability(self.costs - 1, firstcosts, temperature) <= random():
+            if acceptanceprobability(self.costs - 1, firstCosts, temperature) <= random():
                 break
-
             else:
                 temperature *= coolingRate
 
             print("This Configuration's minimum costs:", self.compare.costs, "euro")
-            firstcosts = self.costs
-
+            firstCosts = self.costs
 
         print("hillclimber finished")
         self = deepcopy(self.compare)
+
         if len(self.disconnectedHouses) != 0:
             for house in self.disconnectedHouses:
                 print("Could not connect house", house.id)
-        return
+
 
     def ulti(self):
         ultimate(self)

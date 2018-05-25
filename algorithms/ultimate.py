@@ -1,20 +1,16 @@
-# minimale aantal kleinste batterijen berekenen
-# batterijen plaatsen
-# greedy + kmeans totdat t niet meer kan
-# meest volle batterij upgraden
-# etc
 from classes.battery import Battery
 from algorithms.kmeans import kmeans
-from algorithms.hillclimber import hillclimbSwitcher
-from helpers.visualize import visualize
-from copy import deepcopy
 from helpers.acceptanceProbability import acceptanceprobability
 from random import random
-
 from copy import copy
 
 
 def ultimate(district):
+    """Optimizes the district's costs with placing different types of batteries
+batterijen plaatsen
+greedy + kmeans totdat t niet meer kan
+meest volle batterij upgraden
+etc"""
     print("ULTIMATE")
     district.mode = "ultimate-"
     x = 0
@@ -35,17 +31,16 @@ def ultimate(district):
         battery.costs = 900
         battery.batteryType = 0
         district.batteries.append(battery)
-    district.calculateCosts()
 
+    district.calculateCosts()
     district.connectGreedy()
     district = kmeans(district)
 
-    costDifference = 1
     costDKmeans = 1
     temperature = 500
     coolingRate = 0.95
     count = 0
-    numIt = 10
+
     while temperature > 1:
         print("temperature: ",temperature)
         oldCosts = copy(district.calculateCosts())
