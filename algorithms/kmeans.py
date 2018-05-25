@@ -22,10 +22,11 @@ def kmeans(district, numIt = 10, plot = False):
     3. Batteries are centered again and everything is repeated
 
     """
+    # Initialize counting variables and list with all attempts
     count = 0
     miss = 0
-
     contestants = []
+
     while (count < numIt):
         print("       Price before: ", district.costs)
         checkConnections(district, count, contestants)
@@ -34,33 +35,42 @@ def kmeans(district, numIt = 10, plot = False):
         print("kmeans iteration: ",count, str(district.costs))
 
 
-        # Only the best
+        # Keep all "contestants"
         contestants.append(deepcopy(district))
+
+        # Sort them to select the best later by default
         contestants.sort(key = lambda x: x.costs)
+
+        # Make plots if it is wished
         if plot == "all":
             visualize(district, True, count)
+
         if district.costs <= contestants[0].costs:
             if plot == "winner":
                 visualize(district, True, count)
+
+        # If the solutionis not better than the best so far its a miss
         else:
             miss += 1
-            # RESEARCH:
-            # /10 and /5 works better than /20 and /10:
-            # Finds (local) optimum pretty fast:
-            # +- 200 iterations
+            # If there are more misses in a row than 10% of the number of
+            # iterations the list is shuffled so that later a random contestant
+            # is chosen for the next iteration
             if miss > numIt /10:
                 shuffle(contestants)
+                # If this still does not yield better results in 20% of the
+                # number of iterations the district is randomly reconncted
                 if miss > numIt / 5:
                     miss = 0
                     district.disconnect()
                     district.connectRandom()
+
+        # Here the district for the next iteration is chosen
         district = deepcopy(contestants[0])
         count += 1
 
+    # return the best configuration
     contestants.sort(key = lambda x: x.costs)
     district = contestants[0]
-
-    district.mode = temp
     return district
 
 
@@ -68,12 +78,16 @@ def kmeans(district, numIt = 10, plot = False):
 def batteriesToMean(district):
     """batteriesToMean.
 
-
+    Centers batteries:
+    1. Calculate mean location of connectedHouses
+    2. Moves batteries to center
+    3. Updates costs
 
     """
     # Set battery to mean location
     for b in district.batteries:
         meanLocation = [0,0]
+        # Get mean location
         for h in b.connectedHouses:
             meanLocation[0] = meanLocation[0] + h.location[0]
             meanLocation[1] = meanLocation[1] + h.location[1]
@@ -82,10 +96,23 @@ def batteriesToMean(district):
             meanLocation[1] = round(meanLocation[1] / len(b.connectedHouses))
         else:
             meanLocation = [0,0]
+        # Set mean location and updte costs
         b.changeLocation(meanLocation)
         district.calculateCosts()
 
 def checkConnections(district, count, contestants):
+    """check connections
+
+    Disconnects and reconnects district.
+    1. Disconnects district
+    2. Reconnects greedy:
+        If reconnecting greedy is not possible because it leaves some houses
+        unconnected a while loop is used to reconnect everything.
+    3. If reconnecting greedy doesnt work random connections are made because
+       they are more likely to yield a valid connection where no houses are
+       unconnected.
+
+    """
     # If Batteries already have been centered
     # the district is reconnected greedy
     if count > 0:

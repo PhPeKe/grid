@@ -2,7 +2,12 @@ from helpers.manhattan import manhattan
 from random import shuffle
 
 class House:
+    """House.
 
+    Class House:
+    - Holds all necessary information about a house
+    - Has methods to connect the house to a battery: greedy or random
+    """
     def __init__(self, x, y, output, id):
         self.location = (x,y)
         self.output = output
@@ -13,6 +18,11 @@ class House:
 
     # Greedy algorithm that connects houses to nearest battery
     def connectNearestBattery(self, batteries, district):
+        """connectNearestBattery.
+
+        Connects a house to the nearest battery if possible if it fits in the
+        capacity.
+        """
         for battery in batteries:
             distance = manhattan(self, battery)
             # Save all possible connections
