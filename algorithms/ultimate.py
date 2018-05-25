@@ -31,6 +31,7 @@ def ultimate(district):
     for i in range(minNumBatteries):
         battery = Battery(i * distance + distance / 2, 25, 450, i)
         battery.costs = 900
+        battery.batteryType = 0
         district.batteries.append(battery)
     district.calculateCosts()
 
@@ -66,8 +67,10 @@ def batteryUpgrade(district, capacities, batCosts, oldCosts, costDifference):
     for b in bats:
         if b.capacity != capacities[len(capacities) - 1]:
             index = capacities.index(b.capacity)
+            b.maxCapacity = capacities[index]
             b.capacity = capacities[index]
             b.costs = batCosts[index]
+            b.batteryType = index
             break
         #random combinaties maken vak een batterij om te upgraden en een batterij om weg te hale
         # en dan kijken of dat beter wordt
@@ -90,4 +93,18 @@ def batteryUpgrade(district, capacities, batCosts, oldCosts, costDifference):
     district.compare
     return district
 
-#def joinBatteries(district):
+def joinClosestBatteries(district):
+    district.setClosestBattery()
+    district.batteries.sort(key = lambda x: x.closestBatteryDistance)
+    closestBatteries = [district.batteries[0], district.batteries[0].closestBattery]
+
+    if closestBatteries[0].batteryType != 2 and closestBatteries[1].batteryType != 2:
+        closestBatteries[0].maxCapacity *= 2
+        closestBatteries[0].batteryType += 1
+        closestBatteries[0].capacity += closestBatteries[1].capacity
+
+        for house in closestBatteries[1].connectedHouses:
+            closestBatteries[0].connectedHouses.append(house)
+            house.connection = closestBatteries[0]
+        district.batteries.remove(closestBatteries[1])
+    return district
