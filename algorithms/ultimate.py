@@ -11,7 +11,8 @@ from helpers.visualize import visualize
 
 def ultimate(district):
     print("ULTIMATE")
-
+    district.mode = "ultimate-"
+    x = 0
     capacities = [450, 900, 1800]
     batCosts = [900, 1350, 1800]
     totalOutput = 0
@@ -37,13 +38,13 @@ def ultimate(district):
 
     costDifference = 1
     costDKmeans = 1
-
     while costDifference > 0:
         oldCosts = district.calculateCosts()
         while costDKmeans > 0:
             print(" while it")
             kmeans(district)
-            visualize(district)
+            visualize(district, True, district.mode + str(x))
+            x += 1
             district.calculateCosts()
             costDKmeans = oldCosts - district.costs
 
@@ -82,6 +83,6 @@ def batteryUpgrade(district, capacities, batCosts, oldCosts, costDifference):
     if len(district.disconnectedHouses) != 0 or preRemoveCosts < district.calculateCosts():
         district.batteries.append(toBeRemoved)
 
-    visualize(district)
+    visualize(district, True, district.mode + "Ultimate Winner")
     district.compare
     return

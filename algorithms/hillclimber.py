@@ -1,5 +1,5 @@
 from random import randint, random
-from functions import visualize
+from helpers import visualize
 from helpers.switch import switch
 from helpers.simultaneousSwitch import simultaneousSwitch
 from copy import deepcopy

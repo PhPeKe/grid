@@ -1,5 +1,5 @@
 from copy import deepcopy
-from functions.visualize import visualize
+from helpers import visualize
 
 def compare(district):
     if district.costs < district.compare.costs and len(district.disconnectedHouses) == 0:

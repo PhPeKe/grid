@@ -17,7 +17,6 @@ def main():
 
     # Get arguments
     args = parseArgs()
-
     # Specify paths for data to load
     housePath = "data/wijk" + args.district + "_huizen.csv"
     batteryPath = "data/wijk" + args.district + "_batterijen.txt"
@@ -45,8 +44,9 @@ def main():
         # Connect all houses to random battery
         district.connectRandom()
     print("Initial costs: ",district.calculateCosts())
+    district.mode = "hillclimber-"
     district.hillClimber(False)
-    #ultimate(district)
+    district.mode = ""
     district = deepcopy(district.compare)
 
     # Calculate costs for this configuration
@@ -58,6 +58,10 @@ def main():
 
     kmeansIt = args.kmeansIt
     district = kmeans(district, numIt = kmeansIt)
+
+    #district = deepcopy(district.compare)
+
+    ultimate(district)
 
     if args.save =="csv":
         district.save("District" + args.district)

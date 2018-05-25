@@ -75,6 +75,7 @@ def visualize(district, save = False, numIt = False):
     else:
         saveName = "plots/plotDistrict.png"
     costs = district.costs
+    title = "Iteration: "+ str(numIt) + "Costs: " + str(costs) 
     ax.grid()
     ax.set_title(costs)
     ax.set_facecolor('xkcd:charcoal')
@@ -83,3 +84,4 @@ def visualize(district, save = False, numIt = False):
         plt.savefig(saveName, dpi=250)
     if save == False:
         plt.show()
+    plt.close()

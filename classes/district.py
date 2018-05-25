@@ -18,6 +18,7 @@ class District:
         self.nthChoiceHouses = []
         self.compare = set()
         self.allConnected = True
+        self.mode = ""
 
     def connectGreedy(self, random = False):
         if random:
@@ -132,6 +133,8 @@ class District:
                 costdifference = firstcosts - self.costs
             print("This Configuration costs", self.costs, "euro")
             firstcosts = self.costs
+
+            visualize(self, True, self.mode + str(iterationCount))
 
         print("hillclimber finished")
         self.save("hillclimberresults")
