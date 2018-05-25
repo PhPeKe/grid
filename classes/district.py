@@ -11,7 +11,8 @@ from random import random
 
 class District:
     """District.py
-        Class District
+        Class District holds all other objects and has methods to disconnect
+        and to make connections
     """
     def __init__(self, loadedData):
         self.houses = loadedData[0]
@@ -52,6 +53,10 @@ class District:
         self.calculateCosts()
 
     def save(self,name):
+        """Save.
+
+        Saves the district and its connections to a csv file
+        """
         with open("configurations/" + name + ".csv", "w", newline="") as file:
             writer = csv.writer(file, dialect = "excel")
             writer.writerow([self.costs])
@@ -62,20 +67,13 @@ class District:
                     if not house.connection == set():
                         writer.writerow([house.id,house.connection.id,house.output, house.location[0],house.location[1]])
 
-    def load(self,name):
-        infile = open("configurations/District1.csv")
-        raw = infile.readlines()
-        i = 0
-        for objects in raw:
-            self.houses = []
-            self.batteries = []
-            if i == 0:
-                self.costs = objects
-            if 0 < i < 5:
-                temp = object.split(",")
-                self.batteries.append(Battery())
 
     def disconnect(self):
+        """disconnect.
+
+        Deletes all connections and resets all values that are dependent on
+        connections.
+        """
         self.costs = set()
         self.disconnectedHouses = []
         self.nthChoiceHouses = []
@@ -90,6 +88,11 @@ class District:
             battery.totalDistance = set()
 
     def calculateCosts(self):
+        """Calculate costs.
+
+        Calculates and updates the costs of the district given its connections
+        and batteries.
+        """
         self.costs = 0
         for house in self.houses:
             if not house.distance == 1000:
@@ -99,6 +102,11 @@ class District:
         return self.costs
 
     def setClosestBattery(self):
+        """setClosestBattery.
+
+        Iterates over all batteries in the district and saves a reference
+        of the closest battery of the same type for each battery.
+        """
         for b in self.batteries:
             b.closestBatteryDistance = 10000
             for b2 in self.batteries:
@@ -108,7 +116,6 @@ class District:
                     b.closestBatteryDistance = manhattan(b,b2)
 
     def hillClimber(self, sa):
-
         if self.compare == set():
             self.compare = deepcopy(self)
 

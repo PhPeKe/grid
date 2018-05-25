@@ -1,6 +1,14 @@
 import argparse
 
 def parseArgs():
+    """parseArgs.
+
+    Parses arguments given to main and returns them
+
+    Forces input for district and method if no arguments are given and sets
+    number of iterations for kmeans to 50 if nothing is specified.
+    Runs everything by default
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument("-d","--district",
                         help = "Specify the number of the district (1, 2, 3)",
@@ -32,7 +40,10 @@ def parseArgs():
             args.district = input("Choose district(1, 2 or 3): ")
 
     if args.kmeansIt == None:
-        args.kmeansIt = 10
+        args.kmeansIt = 50
+
+    if args.part == None:
+        args.part = "d"
 
     if args.method == None:
         args.method = input("Choose method: ")
