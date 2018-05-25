@@ -64,9 +64,7 @@ def ultimate(district):
 
 
 def batteryUpgrade(district, capacities, batCosts, oldCosts, costDifference):
-    # choose fullest battery to upgrade
-    bats = district.batteries
-    bats.sort(key=lambda x: x.capacity)
+
     visualize(district, False, "Before joining")
 
     #district.disconnect()
@@ -75,6 +73,31 @@ def batteryUpgrade(district, capacities, batCosts, oldCosts, costDifference):
     visualize(district)
     return
 
+
+def joinClosestBatteries(district):
+    district.setClosestBattery()
+    district.batteries.sort(key = lambda x: x.closestBatteryDistance)
+    closestBatteries = [district.batteries[0], district.batteries[0].closestBattery]
+
+    if closestBatteries[0].batteryType != 2 and closestBatteries[1].batteryType != 2:
+
+        #closestBatteries[1].maxCapacity-closestBatteries[1].capacity +
+        closestBatteries[0].maxCapacity *= 2
+        closestBatteries[0].batteryType += 1
+        closestBatteries[0].capacity += closestBatteries[1].capacity
+
+        for house in closestBatteries[1].connectedHouses:
+            closestBatteries[0].connectedHouses.append(house)
+            house.connection = closestBatteries[0]
+        district.batteries.remove(closestBatteries[1])
+        for i in range(len(district.batteries)):
+            district.batteries[i].id = i
+    return district
+
+def batteryUpgrade(district, capacities, batCosts):
+    # choose fullest battery to upgrade
+    bats = district.batteries
+    bats.sort(key=lambda x: x.capacity)
     for b in bats:
         if b.capacity != capacities[len(capacities) - 1]:
             print(" pre upgrade", b.id, b.capacity)
@@ -90,10 +113,10 @@ def batteryUpgrade(district, capacities, batCosts, oldCosts, costDifference):
     district.connectGreedy()
     district.setClosestBattery()
     toBeRemoved = upgradeBattery.closestBattery
-    print("remove id",toBeRemoved.id)
-    district.batteries.remove(bats[len(bats)-1])
+    print("remove id", toBeRemoved.id)
+    district.batteries.remove(bats[len(bats) - 1])
 
-    print("len ultimate",len(district.batteries))
+    print("len ultimate", len(district.batteries))
 
     for i in range(len(district.batteries)):
         district.batteries[i].id = i
@@ -103,7 +126,7 @@ def batteryUpgrade(district, capacities, batCosts, oldCosts, costDifference):
     for uc in district.disconnectedHouses:
         hillclimbSwitcher(uc, district, True)
 
-    #visualize(district)
+    # visualize(district)
     if len(district.disconnectedHouses) != 0:
         print("removal failed")
         district.batteries.append(toBeRemoved)
@@ -112,22 +135,4 @@ def batteryUpgrade(district, capacities, batCosts, oldCosts, costDifference):
     district = kmeans(district)
     visualize(district)
     district.compare
-    return district
-
-def joinClosestBatteries(district):
-    district.setClosestBattery()
-    district.batteries.sort(key = lambda x: x.closestBatteryDistance)
-    closestBatteries = [district.batteries[0], district.batteries[0].closestBattery]
-
-    if closestBatteries[0].batteryType != 2 and closestBatteries[1].batteryType != 2:
-        closestBatteries[0].maxCapacity *= 2
-        closestBatteries[0].batteryType += 1
-        closestBatteries[0].capacity += closestBatteries[1].capacity
-
-        for house in closestBatteries[1].connectedHouses:
-            closestBatteries[0].connectedHouses.append(house)
-            house.connection = closestBatteries[0]
-        district.batteries.remove(closestBatteries[1])
-        for i in range(len(district.batteries)):
-            district.batteries[i].id = i
     return district
