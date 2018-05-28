@@ -38,28 +38,82 @@ def main():
     if args.sort == "random":
         shuffle(district.houses)
 
-    if args.method == "greedy":
-        # Connect all houses to nearest battery
-        district.connectGreedy()
 
-    if args.method == "random":
-        # Connect all houses to random battery
-        district.connectRandom()
-    print("Initial costs: ",district.calculateCosts())
-    if args.plot:
-       visualize(district, True, "Initial")
-    district.hillClimber()
-    
-    if args.plot:
-       visualize(district, True, "After hillclimber")
+    if args.part == "a":
+        if args.method == "greedy":
+            # Connect all houses to nearest battery
+            district.connectGreedy()
+            print("Initial costs: ",district.calculateCosts())
 
-    kmeansIt = args.kmeansIt
-    district = kmeans(district, numIt = args.kmeansIt)
+        if args.method == "random":
+            # Connect all houses to random battery
+            district.connectRandom()
 
-    if args.plot:
-       visualize(district, True, "After kmeans")
+        if args.plot:
+           visualize(district, True, "Initial")
 
-    district = ultimate(district)
+    if args.part == "b":
+        if args.method == "greedy":
+            # Connect all houses to nearest battery
+            district.connectGreedy()
+            print("Initial costs: ",district.calculateCosts())
+
+        if args.method == "random":
+            # Connect all houses to random battery
+            district.connectRandom()
+
+        if args.plot:
+           visualize(district, True, "Initial")
+        district.hillClimber()
+        if args.plot:
+           visualize(district, True, "After hillclimber")
+
+    if args.part == "c":
+        if args.method == "greedy":
+            # Connect all houses to nearest battery
+            district.connectGreedy()
+            print("Initial costs: ",district.calculateCosts())
+
+        if args.method == "random":
+            # Connect all houses to random battery
+            district.connectRandom()
+
+        if args.plot:
+           visualize(district, True, "Initial")
+        district.hillClimber()
+        if args.plot:
+           visualize(district, True, "After hillclimber")
+
+        kmeansIt = args.kmeansIt
+        district = kmeans(district, numIt = args.kmeansIt)
+
+        if args.plot:
+           visualize(district, True, "After kmeans")
+
+    if args.part == "d":
+        if args.method == "greedy":
+            # Connect all houses to nearest battery
+            district.connectGreedy()
+            print("Initial costs: ",district.calculateCosts())
+
+        if args.method == "random":
+            # Connect all houses to random battery
+            district.connectRandom()
+
+        if args.plot:
+           visualize(district, True, "Initial")
+
+        district.hillClimber()
+
+        if args.plot:
+           visualize(district, True, "After hillclimber")
+
+        kmeansIt = args.kmeansIt
+        district = kmeans(district, numIt = args.kmeansIt)
+        if args.plot:
+           visualize(district, True, "After kmeans")
+
+        district = ultimate(district)
 
     print("Costs: ",district.costs)
 
